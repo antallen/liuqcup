@@ -1,17 +1,28 @@
+FORMAT: 1A
+HOST: https://liuqcup.tdhome.tw
+
 # 經營者管理總後台功能 API
-+ 店家資料管理：用於管理店家資料，功能有新增與凍結！
+店家資料管理：用於管理店家資料！
+  + 店家列表
+  + 店家新增
+  + 店家凍結
+  + 店家查詢
 
-# Group 店家資料管理
+# Group 店家列表
+取回的參數列表：
+  + storeid (integer): 店家編號
+  + storename (string): 店家名稱
+  + render (boolean): 租用
+## 取得店家資料列表 [/manager/stores/list{?token}]
+必送出的參數
 
-## 店家資料查詢 [/manager/stores]
 
 ### 取得店家資料列表 [GET]
-參數列表：
-+ storeid (integer): 店家編號
-+ storename (string): 店家名稱
-+ render (boolean): 租用
 
-範例：
++ Parameters
+
+    + token: `Ab123456` (required, string) - 管理人員的 Key
+
 + Response 200 (application/json)
 
   + Headers
@@ -32,3 +43,5 @@
                     "render": N
                 }
             ]
+
+

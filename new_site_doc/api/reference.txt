@@ -1,0 +1,6 @@
+#### 參考文獻
+1. [顯示文件](https://htmlpreview.github.io/?https://raw.githubusercontent.com/danielgtaylor/aglio/blob/master/examples/default.html#notes-note-list-get)
+2. [對照寫法文件](https://raw.githubusercontent.com/danielgtaylor/aglio/master/example.apib)
+https://github.com/twtrubiks/aglio_tutorial
+https://dwatow.github.io/2017/11-14-api-blueprint-note/
+https://github.com/danielgtaylor/aglio
