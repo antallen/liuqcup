@@ -13,9 +13,9 @@ HOST: https://liuqcup.tdhome.tw
   + storeid (integer): 店家編號
   + storename (string): 店家名稱
   + render (boolean): 租用
-## 取得店家資料列表 [/manager/stores/v1/list{?token}{?page}]
+# 取得店家資料列表 [/manager/stores/v1/list{?token}{?page}]
 
-### 取得店家資料列表 [GET]
+## 取得店家資料列表 [GET]
 
 + Parameters
 
@@ -43,4 +43,24 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
+# 新增店家資料 [/manager/stores/v1/create{?token}{?storename}{?render}]
+## 新增店家資料 [POST]
 
++ Parameters
+
+    + token: 'Ab123456' (required, string) -- 管理人員的 Key
+     - key 是管理帳號的 Hash code 編碼而成的 
+    + storename: '好棒棒' (required, string) -- 店家名稱
+    + render: 'Y' (required, string) -- 開放租用功能
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : 成功
+                }
+            ]
