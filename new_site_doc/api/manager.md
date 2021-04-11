@@ -13,7 +13,7 @@ HOST: https://liuqcup.tdhome.tw
   + storeid (integer): 店家編號
   + storename (string): 店家名稱
   + render (boolean): 租用
-## 取得店家資料列表 [/manager/stores/list{?token}{?page}]
+## 取得店家資料列表 [/manager/stores/v1/list{?token}{?page}]
 
 ### 取得店家資料列表 [GET]
 
@@ -27,7 +27,6 @@ HOST: https://liuqcup.tdhome.tw
 
   + Headers
 
-            Location: /manager/stores/list
 
   + Body
 
