@@ -2,19 +2,184 @@ FORMAT: 1A
 HOST: https://liuqcup.tdhome.tw
 
 # 經營者管理總後台功能 API
-站台經營者帳號密碼管理：用於管理站台經營者帳號密碼
+#### 站台經營者帳號密碼管理
+用於管理站台經營者帳號密碼
++ 管理者帳號資料列表
++ 新增管理者帳號
++ 凍結管理者帳號
++ 管理者帳號資料修改
 
-店家資料管理功能要項：用於管理店家資料！
-  + 店家資料列表
-  + 新增店家資料
-  + 凍結店家使用
-  + 店家資料查詢
-  + 店家資料修改
+#### 店家資料管理功能要項
+用於管理店家資料！
++ 店家資料列表
++ 新增店家資料
++ 凍結店家使用
++ 店家資料查詢
++ 店家資料修改
 
 # Group 站台經營者帳號密碼管理
 
+## 管理者帳號資料列表 [/manager/accounts/v1/list{?token}]
+
+### 管理者帳號資料列表 [GET]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string) 
+      + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+
++ Response 200 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "adminid": Hello001,
+                    "adminname": Peter,
+                    "password": ****
+                },
+                {
+                    "adminid": Hello002,
+                    "adminname": James,
+                    "password": ****
+                }
+            ]
+
++ Response 404 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "error": "File Not Found or Token is wrong"
+                }
+            ]
+## 新增管理者帳號  [/manager/accounts/v1/create{?token,adminid,adminname,password}]
+
+### 新增管理者帳號 [POST]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string) 
+      + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+    + adminid: 'Hello001' (required, string)
+      + 管理人員的帳號 
+    + adminname: 'Peter' (required, string)
+      + 管理人員的真實姓名
+    + password: 'Ab123456789' (required, string)
+      + 管理人員的密碼
+
++ Response 200 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "result": success
+                }
+            ]
+
++ Response 404 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "error": "Token is wrong"
+                }
+            ]
+
+## 凍結管理者帳號  [/manager/accounts/v1/frozen{?token,adminid,lock}]
+
+### 凍結管理者帳號 [PATCH]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string) 
+      + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+    + adminid: 'Hello001' (required, string)
+      + 管理人員的帳號 
+    + lock: 'Y' (required, string)
+      + 是否凍結管理人員的帳號
+
++ Response 200 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "result": success
+                }
+            ]
+
++ Response 404 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "error": "Token is wrong"
+                }
+            ]
+
+
+
+
+
+## 管理者帳號資料修改  [/manager/accounts/v1/renew{?token,adminid,adminname,password,lock}]
+
+### 管理者帳號資料修改 [PATCH]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string) 
+      + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+    + adminid: 'Hello001' (required, string)
+      + 管理人員的帳號 
+    + adminname: 'Peter' (required, string)
+      + 管理人員的真實姓名
+    + password: 'Ab123456789' (required, string)
+      + 管理人員的密碼
+    + lock: 'N' (required, string)
+      + 是否凍結管理人員的帳號
+
++ Response 200 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "result": success
+                }
+            ]
+
++ Response 404 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "error": "Token is wrong"
+                }
+            ]
 # Group 店家資料管理
-店家資料參數列表：
++ 店家資料參數列表：
   + storeid (integer): 店家編號
   + storename (string): 店家名稱
   + func (string): 店家俱備功能項
@@ -24,9 +189,10 @@ HOST: https://liuqcup.tdhome.tw
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) -- 管理人員的 Key
-     - key 是管理帳號的 Hash code 編碼而成的 
-    + page: '1' (required, integer) -- 指定頁數，例如：第一頁、第二頁，以此類推
+    + token: 'Ab123456' (required, string) 
+      + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+    + page: '1' (required, integer)
+      + 指定頁數，例如：第一頁、第二頁，以此類推
 
 + Response 200 (application/json)
 
@@ -53,10 +219,12 @@ HOST: https://liuqcup.tdhome.tw
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) -- 管理人員的 Key
-     - key 是管理帳號的 Hash code 編碼而成的 
-    + storename: '好棒棒' (required, string) -- 店家名稱
-    + func: 'A01B02C03' (required, string) -- 店家俱備功能項
+    + token: 'Ab123456' (required, string)
+     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+    + storename: '好棒棒' (required, string)
+     - 店家名稱
+    + func: 'A01B02C03' (required, string)
+     - 店家俱備功能項
 
 + Response 200 (application/json)
 
@@ -66,7 +234,7 @@ HOST: https://liuqcup.tdhome.tw
 
             [
                 {
-                    "result" : 成功
+                    "result" : success
                 }
             ]
 
@@ -76,10 +244,12 @@ HOST: https://liuqcup.tdhome.tw
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) -- 管理人員的 Key
-     - key 是管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer) -- 店家編號
-    + lock: 'Y' (required, string) -- 代表需要凍結
+    + token: 'Ab123456' (required, string)
+     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: '100341234' (required, integer)
+     - 店家編號
+    + lock: 'Y' (required, string)
+     - 代表需要凍結
 
 + Response 200 (application/json)
 
@@ -89,7 +259,7 @@ HOST: https://liuqcup.tdhome.tw
 
             [
                 {
-                    "result" : 成功
+                    "result" : success
                 }
             ]
 
@@ -99,9 +269,10 @@ HOST: https://liuqcup.tdhome.tw
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) -- 管理人員的 Key
-     - key 是管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer) -- 店家編號
+    + token: 'Ab123456' (required, string)
+     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: '100341234' (required, integer)
+     - 店家編號
 
 + Response 200 (application/json)
 
@@ -124,20 +295,28 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 店家資料修改 [/manager/stores/v1/renew{?token,storeid,storename,func,address,agent,phone}]
+## 店家資料修改 [/manager/stores/v1/renew{?token,storeid,storename,func,address,agent,phone,lock}]
 
 ### 店家資料修改 [PATCH]
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) -- 管理人員的 Key
-     - key 是管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer) -- 店家編號
-    + storename: '太平洋海底' (required, string) -- 店家名稱
-    + func: 'A01C03' (required, string) -- 店家俱備功能項
-    + address: '中正路1號' (required, string) -- 店家地址
-    + agent: '雞排妹'  (required, string) -- 店家連絡人
-    + phone: '0987654321,081231234' (required, string) -- 店家連絡電話
+    + token: 'Ab123456' (required, string)
+     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: '100341234' (required, integer)
+     - 店家編號
+    + storename: '太平洋海底' (required, string)
+     - 店家名稱
+    + func: 'A01C03' (required, string)
+     - 店家俱備功能項
+    + address: '中正路1號' (optional, string)
+     - 店家地址
+    + agent: '雞排妹'  (optional, string)
+     - 店家連絡人
+    + phone: '0987654321,081231234' (required, string)
+     - 店家連絡電話
+    + lock: 'N' (optional, string)
+     - 代表解凍
 
 + Response 200 (application/json)
 
@@ -147,7 +326,18 @@ HOST: https://liuqcup.tdhome.tw
 
             [
                 {
-                    "result" : 成功
+                    "result" : success
                 }
             ]
 
++ Response 404 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "error" : invalid data
+                }
+            ]
