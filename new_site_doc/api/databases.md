@@ -55,14 +55,20 @@
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
-|classid|char(100)|NOT NULL, UNIQUE|功能編號|
-|classname|char(255)|NOT NULL|功能名稱|
+|classid|char(100)|NOT NULL, UNIQUE|類別編號|
+|classname|char(255)|NOT NULL|類別名稱|
 
 ### 店家可担供服務功能表 functions
 
 + 店家可提供服務功能表
 + 與店家資料表連結
++ 表格名稱 : functions
 
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|funcid|char(100)|NOT NULL, UNIQUE|功能編號|
+|funcname|char(255)|NOT NULL|功能名稱|
 
 ### 店家取送杯記錄表
 

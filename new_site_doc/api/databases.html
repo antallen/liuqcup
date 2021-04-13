@@ -221,13 +221,13 @@
 <td style="text-align:left">classid</td>
 <td style="text-align:left">char(100)</td>
 <td style="text-align:left">NOT NULL, UNIQUE</td>
-<td style="text-align:left">功能編號</td>
+<td style="text-align:left">類別編號</td>
 </tr>
 <tr>
 <td style="text-align:left">classname</td>
 <td style="text-align:left">char(255)</td>
 <td style="text-align:left">NOT NULL</td>
-<td style="text-align:left">功能名稱</td>
+<td style="text-align:left">類別名稱</td>
 </tr>
 </tbody>
 </table>
@@ -239,7 +239,40 @@
 <li>
 <p>與店家資料表連結</p>
 </li>
+<li>
+<p>表格名稱 : functions</p>
+</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">欄位名稱</th>
+<th style="text-align:left">資料類型規格</th>
+<th style="text-align:left">設定參數</th>
+<th style="text-align:left">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">id</td>
+<td style="text-align:left">int</td>
+<td style="text-align:left">PRI</td>
+<td style="text-align:left">流水序號</td>
+</tr>
+<tr>
+<td style="text-align:left">funcid</td>
+<td style="text-align:left">char(100)</td>
+<td style="text-align:left">NOT NULL, UNIQUE</td>
+<td style="text-align:left">功能編號</td>
+</tr>
+<tr>
+<td style="text-align:left">funcname</td>
+<td style="text-align:left">char(255)</td>
+<td style="text-align:left">NOT NULL</td>
+<td style="text-align:left">功能名稱</td>
+</tr>
+</tbody>
+</table>
 <h3 id="header-店家取送杯記錄表">店家取送杯記錄表 <a class="permalink" href="#header-店家取送杯記錄表" aria-hidden="true">¶</a></h3>
 <HR>
 <BR>
