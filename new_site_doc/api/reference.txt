@@ -4,3 +4,6 @@
 https://github.com/twtrubiks/aglio_tutorial
 https://dwatow.github.io/2017/11-14-api-blueprint-note/
 https://github.com/danielgtaylor/aglio
+
+https://laraveldaily.com/working-with-mysql-json-columns-in-laravel-custom-properties-example/
+https://laravel.com/docs/8.x/migrations

@@ -27,15 +27,42 @@
 
 + 店家基本資料表
 + 與功能資料表連結
-<HR>
-<BR>
++ 表格名稱 : stores
 
-### 店長可担供服務功能表 functions
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|storeid|char(100)|NOT NULL, UNIQUE|店家編號|
+|storeclassid|char(100)|NOT NULL, UNIQUE|店家類別編號|
+|storename|char(255)|NOT NULL|店家名稱|
+|businessid|char(20)|NOT NULL, UNIQUE|店家統一編號|
+|funcid|char(100)|NOT NULL|1.店家倶備功能編號<br>2.編號為功能編碼複合形成|
+|salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
+|token|char(255)|NOT NULL, UNIQUE|1.店家管理人員的 Key<br>2.由店家編號的 Hash code 編碼而成的|
+|password|char(100)|NOT NULL|店家密碼|
+|phoneno|char(255)|NOT NULL, json|店家連絡電話|
+|email|char(255)|NOT NULL, json|店家連路用Email|
+|lock|char(2)|NOT NULL|凍結帳號與否|
+|timestamp|timstamp|NOT NULL|建立帳號的時間戳記|
+
+
+### 店家類別表 storesclass
+
++ 店家分類表格
++ 與店家資料表連結
++ 表格名稱 : storesclass
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|classid|char(100)|NOT NULL, UNIQUE|功能編號|
+|classname|char(255)|NOT NULL|功能名稱|
+
+### 店家可担供服務功能表 functions
 
 + 店家可提供服務功能表
 + 與店家資料表連結
-<HR>
-<BR>
+
 
 ### 店家取送杯記錄表
 
