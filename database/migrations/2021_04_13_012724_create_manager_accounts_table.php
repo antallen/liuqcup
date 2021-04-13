@@ -13,8 +13,17 @@ class CreateManagerAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('manager_accounts', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->char('adminid',100)->unique();
+            $table->string('adminname');
+            $table->char('password',100);
+            $table->char('salt',20)->unique();
+            $table->string('token')->unique();
+            $table->integer('level');
+            $table->char('phoneno',20)->unique();
+            $table->char('email',100)->unique();
+            $table->char('lock',2);
             $table->timestamps();
         });
     }
@@ -26,6 +35,6 @@ class CreateManagerAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('manager_accounts');
+        Schema::dropIfExists('accounts');
     }
 }

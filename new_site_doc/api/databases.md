@@ -19,7 +19,7 @@
 |phoneno|char(20)|NOT NULL, UNIQUE|管理人員連絡電話|
 |email|char(100)|NOT NULL, UNIQUE|管理人員連路用Email|
 |lock|char(2)|NOT NULL|凍結帳號與否|
-|timestamp|timstamp|NOT NULL|建立帳號的時間戳記|
+|created_at|timstamp|NOT NULL|建立帳號的時間戳記|
 <HR>
 <BR>
 
@@ -43,8 +43,8 @@
 |phoneno|char(255)|NOT NULL, json|店家連絡電話|
 |email|char(255)|NOT NULL, json|店家連路用Email|
 |lock|char(2)|NOT NULL|凍結帳號與否|
-|timestamp|timstamp|NOT NULL|建立帳號的時間戳記|
-
+|created_at|timstamp|NULL|建立帳號的時間戳記|
+|updated_at|timstamp|NULL|更新帳號的時間戳記|
 
 ### 店家類別表 storesclass
 
