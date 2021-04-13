@@ -10,14 +10,46 @@
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
-|adminid|char(100)|NOT NULL|管理人員的帳號|
+|adminid|char(100)|NOT NULL, UNIQUE|管理人員的帳號|
 |adminname|char(255)|NOT NULL|管理人員的真實姓名|
 |password|char(100)|NOT NULL|管理人員的密碼|
-|salt|char(20)|NOT NULL|加密用的 Hash Key|
-|token|char(255)|NOT NULL|管理人員的 Key，由管理帳號的 Hash code 編碼而成的|
-|level|int|NOT NULL|管理人員等級碼，等級分類：0 最高級，1 一般職員級|
-|phoneno|char(20)|NOT NULL|管理人員連絡電話|
-|email|char(100)|NOT NULL|管理人員連路用Email|
+|salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
+|token|char(255)|NOT NULL, UNIQUE|1.管理人員的 Key<br>2.由管理帳號的 Hash code 編碼而成的|
+|level|int|NOT NULL|1.管理人員等級碼<br>2.等級分類：0 最高級，1 一般職員級|
+|phoneno|char(20)|NOT NULL, UNIQUE|管理人員連絡電話|
+|email|char(100)|NOT NULL, UNIQUE|管理人員連路用Email|
 |lock|char(2)|NOT NULL|凍結帳號與否|
 |timestamp|timstamp|NOT NULL|建立帳號的時間戳記|
 <HR>
+<BR>
+
+### 店家資料表 stores
+
++ 店家基本資料表
++ 與功能資料表連結
+<HR>
+<BR>
+
+### 店長可担供服務功能表 functions
+
++ 店家可提供服務功能表
++ 與店家資料表連結
+<HR>
+<BR>
+
+### 店家取送杯記錄表
+
+<HR>
+<BR>
+
+### 遊客資料表
+
+<HR>
+<BR>
+
+### 遊客借還杯記錄表
+
+<HR>
+<BR>
+
+## Group 關連資料清單
