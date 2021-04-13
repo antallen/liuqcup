@@ -58,7 +58,7 @@ HOST: https://liuqcup.tdhome.tw
                     "error": "File Not Found or Token is wrong"
                 }
             ]
-## 新增管理者帳號  [/manager/accounts/v1/create{?token,adminid,adminname,password}]
+## 新增管理者帳號  [/manager/accounts/v1/create{?token,adminid,adminname,password,level}]
 
 ### 新增管理者帳號 [POST]
 
@@ -72,6 +72,9 @@ HOST: https://liuqcup.tdhome.tw
       + 管理人員的真實姓名
     + password: 'Ab123456789' (required, string)
       + 管理人員的密碼
+    + level: 2 (required, integer)
+      + 管理人員等級碼
+      + 等級分類：0 最高級，1 一般職員級
 
 + Response 200 (application/json)
 
