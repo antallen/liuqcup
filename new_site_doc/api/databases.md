@@ -72,6 +72,21 @@
 
 ### 店家取送杯記錄表
 
++ 店家取杯、送杯記錄表
++ 與店家資料表連結
++ 表格名稱 : 
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|storeid|char(100)|NOT NULL|店家編號|
+|pullcup|int|NOT NULL, Default(0)|取杯數量|
+|pushcup|int|NOT NULL, Default(0)|送杯數量|
+|date|timestamp|NOT NULL|收送時間戳記|
+|adminid|char(100)|NOT NULL, UNIQUE|管理人員的帳號|
+|check|char(2)|NOT NULL, Default(N)|確認章簽|
+|comment|char(255)|NULL|備註|
+
 <HR>
 <BR>
 
