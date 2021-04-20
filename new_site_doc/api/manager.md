@@ -19,7 +19,7 @@ HOST: https://liuqcup.tdhome.tw
 
 # Group 站台經營者帳號密碼管理
 
-## 管理者帳號資料列表 [/manager/accounts/v1/list{?token}]
+## 管理者帳號資料列表 [/manager/accounts/v1/lists{?token}]
 
 ### 管理者帳號資料列表 [GET]
 
@@ -58,7 +58,7 @@ HOST: https://liuqcup.tdhome.tw
                     "error": "File Not Found or Token is wrong"
                 }
             ]
-## 新增管理者帳號  [/manager/accounts/v1/create{?token,adminid,adminname,password,level,phoneno,email}]
+## 新增管理者帳號  [/manager/accounts/v1/creates{?token,adminid,adminname,password,level,phoneno,email}]
 
 ### 新增管理者帳號 [POST]
 
@@ -104,7 +104,7 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 凍結管理者帳號  [/manager/accounts/v1/frozen{?token,adminid,lock}]
+## 凍結管理者帳號  [/manager/accounts/v1/frozens{?token,adminid,lock}]
 
 ### 凍結管理者帳號 [PATCH]
 
@@ -145,7 +145,7 @@ HOST: https://liuqcup.tdhome.tw
 
 
 
-## 管理者帳號資料修改  [/manager/accounts/v1/renew{?token,adminid,adminname,password,lock}]
+## 管理者帳號資料修改  [/manager/accounts/v1/renews{?token,adminid,adminname,password,lock}]
 
 ### 管理者帳號資料修改 [PATCH]
 
@@ -190,7 +190,7 @@ HOST: https://liuqcup.tdhome.tw
   + storeid (integer): 店家編號
   + storename (string): 店家名稱
   + func (string): 店家俱備功能項
-## 店家資料列表 [/manager/stores/v1/list{?token,page}]
+## 店家資料列表 [/manager/stores/v1/lists{?token,page}]
 
 ### 店家資料列表 [GET]
 
@@ -221,7 +221,7 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 新增店家資料 [/manager/stores/v1/create{?token,storename,func}]
+## 新增店家資料 [/manager/stores/v1/creates{?token,storename,func}]
 ### 新增店家資料 [POST]
 
 + Parameters
@@ -245,7 +245,7 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 凍結店家使用 [/manager/stores/v1/frozen{?token,storeid,lock}]
+## 凍結店家使用 [/manager/stores/v1/frozens{?token,storeid,lock}]
 
 ### 凍結店家使用 [PATCH]
 
@@ -270,7 +270,7 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 店家資料查詢 [/manager/stores/v1/query{?token,storeid}]
+## 店家資料查詢 [/manager/stores/v1/querys{?token,storeid}]
 
 ### 店家資料查詢 [GET]
 
@@ -302,7 +302,7 @@ HOST: https://liuqcup.tdhome.tw
                 }
             ]
 
-## 店家資料修改 [/manager/stores/v1/renew{?token,storeid,storename,func,address,agent,phone,lock}]
+## 店家資料修改 [/manager/stores/v1/renews{?token,storeid,storename,func,address,agent,phone,lock}]
 
 ### 店家資料修改 [PATCH]
 
