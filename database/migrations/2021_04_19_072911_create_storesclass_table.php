@@ -14,9 +14,9 @@ class CreateStoresclassTable extends Migration
     public function up()
     {
         Schema::create('storesclass', function (Blueprint $table) {
-            $table->id();
-            $table->char('classid',100)->unique();
-            $table->char('classname');
+            $table->id()->comment('流水序號');
+            $table->char('storeid',100)->unique()->comment('店家編號');
+            $table->char('classid',100)->unique()->comment('類別編號');
             $table->timestamps();
         });
     }

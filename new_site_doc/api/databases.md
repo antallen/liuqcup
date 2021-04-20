@@ -10,7 +10,7 @@
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
-|adminid|char(100)|NOT NULL, UNIQUE|管理人員的帳號|
+|adminid|char(100)|NOT NULL, UNIQUE|1.管理人員的帳號<br>2.總管理帳號 'admin'|
 |adminname|char(255)|NOT NULL|管理人員的真實姓名|
 |password|char(100)|NOT NULL|管理人員的密碼|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
@@ -34,7 +34,7 @@
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
-|storeid|char(100)|NOT NULL, UNIQUE|店家編號|
+|storeid|char(100)|NOT NULL, UNIQUE|1.店家編號<br>2.總管理處設定成 '000000000'|
 |storename|char(255)|NOT NULL|店家名稱|
 |businessid|char(20)|NOT NULL, UNIQUE,Default('00000000')|店家統一編號|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
@@ -46,10 +46,10 @@
 |created_at|timstamp|NULL|建立帳號的時間戳記|
 |updated_at|timstamp|NULL|更新帳號的時間戳記|
 
-### 店家類別表 class
+### 店家類別表 classes
 
 + 店家分類表格
-+ 表格名稱：class
++ 表格名稱：classes
 
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
@@ -132,3 +132,27 @@
 <BR>
 
 ## Group 關連資料清單
+
+### 店家分類外鍵約束
+
++ 多對一
+  + storesclass(storeid) -> stores(storeid)
+    + stores 表格內資料刪除，一併刪除 storesclass 資料
+  + storesclass(classid) -> classes(classid)
+    + classes 表格內資料刪除，一併刪除 storesclass 資料
+
+### 店家提供服務功能外鍵約束
+
++ 多對一
+  + storesfunctions(storeid) -> stores(storeid)
+    + stores 表格內資料刪除，一併刪除 storesfunctions 資料
+  + storesfunctions(funcid) -> functions(funcid)
+    + functions 表格內資料刪除，一併刪除 storesfunctions 資料
+ 
+### 店家取送杯記錄外鍵約束
+
++ 多對一
+  + storescupsrecords(storeid) -> stores(storeid)
+    + stores 表格內資料刪除，storescupsrecords 表格內 storeid 設成 'NO ACTION'
+  + storescupsrecords(adminid) -> accounts(adminid)
+    + accounts 表格內資料刪除，storescupsrecords 表格內 adminid 設成 'NO ACTION'

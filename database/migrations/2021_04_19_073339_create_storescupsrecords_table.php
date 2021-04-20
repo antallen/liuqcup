@@ -14,14 +14,14 @@ class CreateStorescupsrecordsTable extends Migration
     public function up()
     {
         Schema::create('storescupsrecords', function (Blueprint $table) {
-            $table->id();
-            $table->char('storeid',100)->unique();
-            $table->integer('pullcup')->default(0);
-            $table->integer('pushcup')->default(0);
-            $table->timestamp('date')->useCurrent();
-            $table->char('adminid',100);
-            $table->char('check',2)->default('N');
-            $table->char('comment')->nullable();
+            $table->id()->comment('流水序號');
+            $table->char('storeid',100)->unique()->comment('店家編號');
+            $table->integer('pullcup')->default(0)->comment('取杯數量');
+            $table->integer('pushcup')->default(0)->comment('送杯數量');
+            $table->timestamp('date')->useCurrent()->comment('收送時間戳記');
+            $table->char('adminid',100)->comment('管理人員的帳號');
+            $table->char('check',2)->default('N')->comment('確認章簽');
+            $table->char('comment')->nullable()->comment('備註');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoresfunctionsTable extends Migration
+class CreateFunctionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateStoresfunctionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('storesfunctions', function (Blueprint $table) {
+        Schema::create('functions', function (Blueprint $table) {
             $table->id()->comment('流水序號');
-            $table->char('storeid',100)->unique()->comment('店家編號');
-            $table->char('funcid')->unique()->comment('功能編號');
-            $table->timestamps();
+            $table->char('funcid',100)->unique()->comment('功能編號');
+            $table->char('funcname')->comment('功能名稱');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateStoresfunctionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storesfunctions');
+        Schema::dropIfExists('functions');
     }
 }
