@@ -4,6 +4,7 @@ HOST: https://liuqcup.tdhome.tw
 # 經營者管理總後台功能 API
 #### 站台經營者帳號密碼管理
 用於管理站台經營者帳號密碼
++ 管理者帳號密碼驗證
 + 管理者帳號資料列表
 + 新增管理者帳號
 + 凍結管理者帳號
@@ -18,6 +19,29 @@ HOST: https://liuqcup.tdhome.tw
 + 店家資料修改
 
 # Group 站台經營者帳號密碼管理
+
+## 管理者帳號密碼驗證 [/manager/accounts/v1/auths{?account,authword}]
+
+### 管理者帳號密碼驗證 [POST]
+
++ Parameters
+
+    + account: 'admin' (required, string)
+    + authword: 'Aa123456789' (required, string)
+
++ Response 200 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "token":"abcdefghi"
+                }
+            ]
+
++ Response 400 (application/json)
 
 ## 管理者帳號資料列表 [/manager/accounts/v1/lists{?token}]
 
