@@ -24,4 +24,5 @@ class accountsController extends Controller
         $results = $creates->token($request->all());
         return $results;
     }
+
 }
