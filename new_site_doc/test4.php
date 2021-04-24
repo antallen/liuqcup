@@ -13,11 +13,17 @@ try {
     printf($ell);
 }
 
-$runSQL = $dbConn->prepare("SELECT TOP 100 * FROM iliuqcup.badd01 ORDER BY badd05 DESC");
+$runSQL = $dbConn->prepare("SELECT * FROM iliuqcup.cadd01 ORDER BY cadd01 DESC");
 $runSQL->execute();
 
-while ($row = $runSQL->fetch()){
-    print "$row[5]\n";
+
+$fh = fopen('members.csv','wb');
+
+while ($row = $runSQL->fetch(PDO::FETCH_NUM)){
+    fputcsv($fh,$row);
+    print "$row[0]\n";
 }
+
+fclose($fh);
 
 ?>
