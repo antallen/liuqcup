@@ -7,3 +7,5 @@ https://github.com/danielgtaylor/aglio
 
 https://laraveldaily.com/working-with-mysql-json-columns-in-laravel-custom-properties-example/
 https://laravel.com/docs/8.x/migrations
+
+https://www.footmark.info/linux/centos/php7-pdo-mssql-for-centos7/

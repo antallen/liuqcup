@@ -1,0 +1,8 @@
+網頁帳密
+iliuq
+i20191212
+
+192.168.10.181 SQL Server 帳密
+sa /  Franco@2021
+
+"Data source=148.72.232.167;initial catalog=iliuq_cup;User ID=iliuqcup;Password=iliuq2019cup"
