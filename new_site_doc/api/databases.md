@@ -103,6 +103,7 @@
 
 + 店家取杯、送杯記錄表
 + 與店家資料表連結
++ 按月份分表
 + 表格名稱 : storescupsrecords
 
 |欄位名稱|資料類型規格|設定參數|說明|
@@ -121,12 +122,39 @@
 <HR>
 <BR>
 
-### 遊客資料表
+### 遊客資料表 customers
 
-<HR>
-<BR>
++ 遊客資本資料表
++ 與借還杯資料表連結
++ 表格名稱： customers
 
-### 遊客借還杯記錄表
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|cusid|char(20)|NOT NULL, UNIQUE|遊客編號|
+|cusphone|char(100)|NOT NULL, json|遊客手機、市話號碼|
+|email|char(100)|NULL|遊客 Email 資料|
+|lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否(黑名單)|
+|created_at|timstamp|NULL|建立帳號的時間戳記|
+|updated_at|timstamp|NULL|更新帳號的時間戳記|
+
+### 遊客借還杯記錄表 rentlogs
+
++ 遊客借還杯資料表
++ 連結遊客資料表
++ 連結店家資料表
++ 按月份分表
++ 資料表名稱 : rentlogs
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|cusid|char(20)|NOT NULL|遊客編號|
+|storeid|char(100)|NOT NULL|店家編號|
+|rentid|char(2)|NOT NULL,ENUM('R','B'), Default('R')|1.借用：R<br>2.歸還：B|
+|nums|int|NOT NULL,Default(0)|借還數量|
+|comments|char(255)|NULL|註備說明|
+|eventtimes|timstamp|NOT NULL|借還時間戳記|
 
 <HR>
 <BR>

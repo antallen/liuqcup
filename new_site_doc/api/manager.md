@@ -214,6 +214,8 @@ HOST: https://liuqcup.tdhome.tw
   + storeid (integer): 店家編號
   + storename (string): 店家名稱
   + func (string): 店家俱備功能項
+  + address (string): 店家地址
+  + phones (string): 店家電話
 ## 店家資料列表 [/manager/stores/v1/lists{?token,page}]
 
 ### 店家資料列表 [GET]
@@ -234,14 +236,18 @@ HOST: https://liuqcup.tdhome.tw
 
             [
                 {
-                    "storeid": 100341234,
-                    "storename": 好望角落,
-                    "func": A01B02C03
+                    "storeid": "100341234",
+                    "storename": "好望角落",
+                    "func": A01B02C03,
+                    "address" : "中正路",
+                    "phone" : "0987654321"
                 },
                 {
-                    "storeid": 100221566,
-                    "storename": 太平洋海底,
-                    "func": A01C03
+                    "storeid": "100221566",
+                    "storename": "太平洋海底",
+                    "func": A01C03,
+                    "address" : "中正路",
+                    "phone" : "0987654321"
                 }
             ]
 
