@@ -9,3 +9,6 @@ https://laraveldaily.com/working-with-mysql-json-columns-in-laravel-custom-prope
 https://laravel.com/docs/8.x/migrations
 
 https://www.footmark.info/linux/centos/php7-pdo-mssql-for-centos7/
+
+https://packagist.org/packages/brokenice/laravel-mysql-partition
+https://cola.workxplay.net/mysql-partitioning-for-performance-optimization/

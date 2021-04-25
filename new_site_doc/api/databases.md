@@ -1,5 +1,5 @@
 # 琉行杯資料庫表格清單
-
++ 資料表更新指令：php artisan migrate:<font color="red">refresh</font>
 ## Group 基礎表格清單
 
 ### 管理人員帳號表 accounts
@@ -19,8 +19,8 @@
 |phoneno|char(20)|NOT NULL, UNIQUE|管理人員連絡電話|
 |email|char(100)|NOT NULL, UNIQUE|管理人員連絡用Email|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
-|created_at|timstamp|NOT NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NOT NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 <HR>
 <BR>
@@ -43,8 +43,8 @@
 |phoneno|char(255)|NOT NULL, json|店家連絡電話|
 |email|char(255)|NOT NULL, json|店家連路用Email|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
-|created_at|timstamp|NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 ### 店家類別表 classes
 
@@ -69,8 +69,8 @@
 |id|int|PRI|流水序號|
 |storeid|char(100)|NOT NULL|店家編號|
 |classid|char(100)|NOT NULL|類別編號|
-|created_at|timstamp|NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 ### 店家服務功能表 functions
 
@@ -96,8 +96,8 @@
 |id|int|PRI|流水序號|
 |storeid|char(100)|NOT NULL, UNIQUE|店家編號|
 |funcid|char(100)|NOT NULL, UNIQUE|功能編號|
-|created_at|timstamp|NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 ### 店家取送杯記錄表 storescupsrecords
 
@@ -108,16 +108,16 @@
 
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
-|id|int|PRI|流水序號|
-|storeid|char(100)|NOT NULL|店家編號|
+|id|unsignBigInteger|PRI|流水序號|
+|storeid|char(100)|NOT NULL,INDEX|店家編號|
 |pullcup|int|NOT NULL, Default(0)|取杯數量|
 |pushcup|int|NOT NULL, Default(0)|送杯數量|
-|date|timestamp|NOT NULL|收送時間戳記|
-|adminid|char(100)|NOT NULL|管理人員的帳號|
+|date|dateTime|NOT NULL,now,PRI|收送時間戳記|
+|adminid|char(100)|NOT NULL,INDEX|管理人員的帳號|
 |check|char(2)|NOT NULL,ENUM('Y','N'), Default('N')|確認章簽|
 |comment|char(255)|NULL|備註|
-|created_at|timstamp|NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 <HR>
 <BR>
@@ -132,11 +132,12 @@
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
 |cusid|char(20)|NOT NULL, UNIQUE|遊客編號|
+|cusname|char(100)|NOT NULL|遊客姓名|
 |cusphone|char(100)|NOT NULL, json|遊客手機、市話號碼|
 |email|char(100)|NULL|遊客 Email 資料|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否(黑名單)|
-|created_at|timstamp|NULL|建立帳號的時間戳記|
-|updated_at|timstamp|NULL|更新帳號的時間戳記|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
 
 ### 遊客借還杯記錄表 rentlogs
 
@@ -148,13 +149,13 @@
 
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
-|id|int|PRI|流水序號|
-|cusid|char(20)|NOT NULL|遊客編號|
-|storeid|char(100)|NOT NULL|店家編號|
+|id|unsignBigInteger|PRI|流水序號|
+|cusid|char(20)|NOT NULL,INDEX|遊客編號|
+|storeid|char(100)|NOT NULL,INDEX|店家編號|
 |rentid|char(2)|NOT NULL,ENUM('R','B'), Default('R')|1.借用：R<br>2.歸還：B|
 |nums|int|NOT NULL,Default(0)|借還數量|
 |comments|char(255)|NULL|註備說明|
-|eventtimes|timstamp|NOT NULL|借還時間戳記|
+|eventtimes|dateTime|NOT NULL,now,PRI|借還時間戳記|
 
 <HR>
 <BR>
@@ -178,7 +179,7 @@
     + functions 表格內資料刪除，一併刪除 storesfunctions 資料
  
 ### 店家取送杯記錄外鍵約束
-
+分表狀況下，無法使用 FK！！以下完全無效！
 + 多對一
   + storescupsrecords(storeid) -> stores(storeid)
     + stores 表格內資料刪除，storescupsrecords 表格內 storeid 設成 'NO ACTION'

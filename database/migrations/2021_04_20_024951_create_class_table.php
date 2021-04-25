@@ -27,6 +27,6 @@ class CreateClassTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class');
+        Schema::dropIfExists('classes');
     }
 }

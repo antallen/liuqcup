@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a16c3c541bd99241cab1c21ce8e83ac",
+    "content-hash": "e93964e067efa0ed19fb7a5ab94b7927",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -117,6 +117,68 @@
                 }
             ],
             "time": "2021-01-20T22:51:39+00:00"
+        },
+        {
+            "name": "brokenice/laravel-mysql-partition",
+            "version": "1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucabecchetti/laravel-mysql-partition.git",
+                "reference": "2a53ddaf63095e4c4d3f008cf9691b773d486dcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucabecchetti/laravel-mysql-partition/zipball/2a53ddaf63095e4c4d3f008cf9691b773d486dcd",
+                "reference": "2a53ddaf63095e4c4d3f008cf9691b773d486dcd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-pdo": "*",
+                "illuminate/database": "^5.2|^6.0|^7.0|^8.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.5",
+                "laravel/browser-kit-testing": "^2.0",
+                "laravel/laravel": "^5.2|^6.0|^7.0|^8.0",
+                "mockery/mockery": "~1.3.0",
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "~4.8|~5.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Brokenice\\LaravelMysqlPartition\\PartitionServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Brokenice\\LaravelMysqlPartition\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luca Becchetti",
+                    "email": "luca.becchetti@brokenice.it"
+                }
+            ],
+            "description": "MySQL Partition extension for Laravel.",
+            "support": {
+                "issues": "https://github.com/lucabecchetti/laravel-mysql-partition/issues",
+                "source": "https://github.com/lucabecchetti/laravel-mysql-partition/tree/1.0.12"
+            },
+            "time": "2020-11-18T09:56:51+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
