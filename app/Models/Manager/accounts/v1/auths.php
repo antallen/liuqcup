@@ -25,18 +25,19 @@ class auths extends Model
             foreach ($user as $value){
                 $password1 = $value->password;
             }
+            //取得密碼之後，再進行密碼比對
 
-/*
             if ($authword == $password1) {
-                $token = $token;
-                $msg = array(["token" => $token]);
-                return json_encode($msg, JSON_PRETTY_PRINT);
+                //$token = $token;
+                //$msg = array(["token" => $token]);
+                //return json_encode($msg, JSON_PRETTY_PRINT);
+                return "Hello";
             } else {
                 $msg = array(["error" => "Account Not Found or Authword is wrong"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
-*/
-            return $password1;
+
+            //return $password1;
         }
 
     }

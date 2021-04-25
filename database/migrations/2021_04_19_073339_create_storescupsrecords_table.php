@@ -22,7 +22,7 @@ class CreateStorescupsrecordsTable extends Migration
             $table->integer('pushcup')->default(0)->comment('送杯數量');
             $table->dateTime('date')->useCurrent()->comment('收送時間戳記');
             $table->char('adminid',100)->comment('管理人員的帳號');
-            $table->char('check',2)->default('N')->comment('確認章簽');
+            $table->enum('check',['Y','N'])->default('N')->comment('確認章簽');
             $table->char('comment')->nullable()->comment('備註');
             $table->timestamps();
             $table->primary(['date','id']);

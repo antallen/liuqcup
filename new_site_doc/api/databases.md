@@ -59,8 +59,8 @@
 |storeid|char(100)|NOT NULL|1.店家編號<br>2.總管理處設定成 '000000000'<br>3.連結店家資料表用|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
 |token|char(255)|NOT NULL, UNIQUE|1.店家管理人員的 Key<br>2.由店家編號的 Hash code 編碼而成的|
-|password|char(100)|NOT NULL|店家密碼|
-|lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
+|password|char(100)|NOT NULL|店家管理人員密碼|
+|lock|char(2)|NOT NULL,ENUM('Y','N'), Default('N')|凍結帳號與否|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
 
