@@ -12,3 +12,20 @@ https://www.footmark.info/linux/centos/php7-pdo-mssql-for-centos7/
 
 https://packagist.org/packages/brokenice/laravel-mysql-partition
 https://cola.workxplay.net/mysql-partitioning-for-performance-optimization/
+https://iter01.com/508342.html
+
+QRcode 產生器
+https://www.superiorwebsys.com/blog/posts/66/QRCode.php
+<img src="https://chart.apis.google.com/chart?chs=150x150&cht=qr&chld=L|0&chl=https://liuqcup.tdhome.tw/list?id=123456" alt="QR code" widhtHeight="150" widhtHeight="150" />
+<?
+$urlToEncode="http://superiorwebsys.com";
+generateQRwithGoogle($urlToEncode);
+function generateQRwithGoogle($url,$widthHeight ='150',$EC_level='L',$margin='0') {
+    $url = urlencode($url);
+    echo '<img src="http://chart.apis.google.com/chart?chs='.$widthHeight.
+'x'.$widthHeight.'&cht=qr&chld='.$EC_level.'|'.$margin.
+'&chl='.$url.'" alt="QR code" widthHeight="'.$widthHeight.
+'" widthHeight="'.$widthHeight.'"/>';
+}
+?>
+http://phpqrcode.sourceforge.net/

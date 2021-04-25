@@ -37,11 +37,28 @@
 |storeid|char(100)|NOT NULL, UNIQUE|1.店家編號<br>2.總管理處設定成 '000000000'|
 |storename|char(255)|NOT NULL|店家名稱|
 |businessid|char(20)|NOT NULL, UNIQUE,Default('00000000')|店家統一編號|
+|phoneno|char(255)|NOT NULL, json|店家連絡電話|
+|email|char(255)|NOT NULL, json|店家連路用Email|
+|lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
+
+### 店家管理人員資料表 storesagentids
+
++ 店家管理人員資料表
++ 與店家資料表連結
++ 資料表名稱 : storesagentids
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|int|PRI|流水序號|
+|agentid|PRI|char(50)|店家管理人員帳號|
+|agentname|NULL|char(50)|店家管理人員姓名|
+|agentphone|PRI|char(10)|店家管理人員手機號碼|
+|storeid|char(100)|NOT NULL|1.店家編號<br>2.總管理處設定成 '000000000'<br>3.連結店家資料表用|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
 |token|char(255)|NOT NULL, UNIQUE|1.店家管理人員的 Key<br>2.由店家編號的 Hash code 編碼而成的|
 |password|char(100)|NOT NULL|店家密碼|
-|phoneno|char(255)|NOT NULL, json|店家連絡電話|
-|email|char(255)|NOT NULL, json|店家連路用Email|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
@@ -161,6 +178,12 @@
 <BR>
 
 ## Group 關連資料清單
+
+### 店家管理者外鍵約束
+
++ 多對一
+  + storesagentids(storeid) -> stores(storeid)
+    + stores 表格內資料刪除，一併刪除 storesagentids 資料
 
 ### 店家分類外鍵約束
 
