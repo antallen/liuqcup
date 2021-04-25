@@ -37,6 +37,7 @@
 |storeid|char(100)|NOT NULL, UNIQUE|1.店家編號<br>2.總管理處設定成 '000000000'|
 |storename|char(255)|NOT NULL|店家名稱|
 |businessid|char(20)|NOT NULL, UNIQUE,Default('00000000')|店家統一編號|
+|qrcodeid|char(16)|NOT NULL,UNIQUE|店家 QRcode 編碼（其實根本用不到）|
 |phoneno|char(255)|NOT NULL, json|店家連絡電話|
 |email|char(255)|NOT NULL, json|店家連路用Email|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|

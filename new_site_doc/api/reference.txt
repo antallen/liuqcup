@@ -29,3 +29,4 @@ function generateQRwithGoogle($url,$widthHeight ='150',$EC_level='L',$margin='0'
 }
 ?>
 http://phpqrcode.sourceforge.net/
+https://xyz.cinc.biz/2014/08/php-qr-code.html
