@@ -1,7 +1,9 @@
 FORMAT: 1A
-HOST: https://liuqcup.tdhome.tw
+HOST: https://liuqapi.tdhome.tw
 
 # 經營者管理總後台功能 API
++ 網頁放置點 https://liuqcup.antallen.info
++ API 網址 https://liuqapi.tdhome.tw
 #### 站台經營者帳號密碼管理
 用於管理站台經營者帳號密碼
 + 管理者帳號密碼驗證

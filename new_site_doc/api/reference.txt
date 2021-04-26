@@ -30,3 +30,27 @@ function generateQRwithGoogle($url,$widthHeight ='150',$EC_level='L',$margin='0'
 ?>
 http://phpqrcode.sourceforge.net/
 https://xyz.cinc.biz/2014/08/php-qr-code.html
+
+https://getcomposer.org/download/
+
+建立資料庫最初始資料
+CREATE USER 'liuqcup'@'localhost' IDENTIFIED WITH mysql_native_password BY 'liuqCUP$2021$kh';
+CREATE DATABASE liuqcup;
+GRANT ALL PRIVILEGES ON liuqcup.* TO 'liuqcup'@'localhost';
+FLUSH PRIVILEGES;
+
+insert into accounts ( adminid,adminname,password,salt,token,level,phoneno,email ) values ( "admin","admin","ab123456","helloworld","ABC123",'0',"0987654321","test@hello.com" );
+update  accounts set `lock` = 'N' where adminid = "admin";
+
+網站設定
+semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/storage(/.*)?'
+semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/bootstrap/cache(/.*)?'
+setsebool -P httpd_can_network_connect_db on
+setsebool -P httpd_can_network_connect on
+
+佈署流程
+git clone https://github.com/antallen/liuqcup.git
+composer install
+cp .env.example .env
+php artisan key:generate
+vim .env
