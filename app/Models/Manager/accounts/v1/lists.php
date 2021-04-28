@@ -13,10 +13,11 @@ class lists extends Model
     public function token($source){
 
         $token = strval($source['token']);
-        //adminid,adminname,password
-        //return $token;
 
-        $user = DB::select('select adminid,adminname,password from accounts where `lock` = "N"  and `level`="0" and token = ?', [$token]);
+        //首先比對是否正確的 token
+
+        //再列出所有的帳號資料
+        $user = DB::select('select adminid,adminname,password from accounts where `lock` = "N" and `level`="0" token = ?', [$token]);
         if ($user == []) {
             $msg = array(["error" => "File Not Found or Token is wrong"]);
             return json_encode($msg,JSON_PRETTY_PRINT);

@@ -31,7 +31,7 @@ class creates extends Model
 
             DB::insert('insert into accounts
                       (adminid, adminname, password, salt, token, phoneno, email,level)
-                       values (?, ?, ?, ?, ?, ?, ?,?)',
+                       values (?, ?, ?, ?, ?, ?, ?, ?)',
                         [$adminid, $adminname, $password, $salt, $token, $phoneno, $email, $level]);
 
             $user = DB::select('select adminid,adminname,password from accounts where token = ?', [$token]);

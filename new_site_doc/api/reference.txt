@@ -54,3 +54,6 @@ composer install
 cp .env.example .env
 php artisan key:generate
 vim .env
+
+
+return response('OK', 200);
