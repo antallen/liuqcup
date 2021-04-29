@@ -4,8 +4,11 @@ namespace App\Models\Manager\accounts\v1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\PDO\SqlServerDriver;
 use Illuminate\Support\Facades\DB;
+use Stringable;
 
+//管理者帳號列表，只有等級 0 的人，才可以看到其它管理者
 class lists extends Model
 {
     use HasFactory;
@@ -15,15 +18,21 @@ class lists extends Model
         $token = strval($source['token']);
 
         //首先比對是否正確的 token
+        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->get('level');
 
-        //再列出所有的帳號資料
-        $user = DB::select('select adminid,adminname,password from accounts where `lock` = "N" and `level`="0" token = ?', [$token]);
-        if ($user == []) {
-            $msg = array(["error" => "File Not Found or Token is wrong"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-        } else {
-            return $user;
-        }
-
+        if ( $user[0]->level == "0" ){
+            //列出所有人的帳號
+            $users = DB::select('select adminid,adminname,password,`level`,`lock` from accounts');
+            return json_encode($users,JSON_PRETTY_PRINT);
+         } else {
+            //只列出自己的帳號
+            $users = DB::select('select adminid,adminname,password from accounts where `lock` = "N" and token = ?', [$token]);
+            if ($users == []) {
+                $msg = array(["error" => "File Not Found or Token is wrong"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } else {
+                return json_encode($users,JSON_PRETTY_PRINT);
+            }
+         }
     }
 }

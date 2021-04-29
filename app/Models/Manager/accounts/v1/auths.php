@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\SecretClass;
 
+//本程式進行帳密比對，並且吐回 token 供管理者認證
 class auths extends Model
 {
     use HasFactory;

@@ -15,7 +15,8 @@ class accountsController extends Controller
         $lists = new lists;
         $results = $lists->token($request->all());
 
-        return response($results);
+       // return response($results);
+       return $results;
     }
 
     //creates function
