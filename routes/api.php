@@ -8,6 +8,7 @@ use App\Http\Controllers\Manager\authController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
+Route::apiResource('manager/accounts/v1/frozens',authController::class)->only('update');
 Route::apiResource('manager/accounts/v1/lists',accountsController::class)->only('index');
 Route::apiResource('manager/accounts/v1/creates',accountsController::class)->only('store');
 /*
