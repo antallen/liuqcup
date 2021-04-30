@@ -22,11 +22,11 @@ class lists extends Model
 
         if ( $user[0]->level == "0" ){
             //列出所有人的帳號
-            $users = DB::select('select adminid,adminname,password,`level`,`lock` from accounts');
+            $users = DB::select('select adminid,adminname,password,phoneno,email,`level`,`lock`,token from accounts');
             return json_encode($users,JSON_PRETTY_PRINT);
          } else {
             //只列出自己的帳號
-            $users = DB::select('select adminid,adminname,password from accounts where `lock` = "N" and token = ?', [$token]);
+            $users = DB::select('select adminid,adminname,password,phoneno,email from accounts where `lock` = "N" and token = ?', [$token]);
             if ($users == []) {
                 $msg = array(["error" => "File Not Found or Token is wrong"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);

@@ -59,7 +59,7 @@ HOST: https://liuqapi.tdhome.tw/api
 ## 管理者帳號資料列表 [/manager/accounts/v1/lists{?token}]
 + 有管理者的 token ，才可以操作！取得 token 的方式，請參考上一項目
 + level 值為 0 ，表示是最高權限，才可以管理其它管理人員資料！
-+ 基本人員只可看到自己的資料！
++ 基本人員只可看到自己的資料，並且看不到 level 值以及 lock 值！
 ### 管理者帳號資料列表 [GET]
 
 + Parameters
@@ -77,12 +77,12 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "adminid": Hello001,
                     "adminname": Peter,
-                    "password": ****
-                },
-                {
-                    "adminid": Hello002,
-                    "adminname": James,
-                    "password": ****
+                    "password": ****,
+                    "phoneno": "0987654321",
+                    "email":"test@example.com"
+                    "level": "0",
+                    "lock": "Y",
+                    "token":"asdqwe"
                 }
             ]
 
@@ -99,7 +99,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 ## 新增管理者帳號  [/manager/accounts/v1/creates{?token,adminid,adminname,password,level,phoneno,email}]
-+ token 為管理者的 token
++ token 為最高管理者的 token
 + 只有 level 值為 0 的管理者才可以新增其他管理者帳號
 ### 新增管理者帳號 [POST]
 
@@ -146,7 +146,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 ## 凍結/解凍管理者帳號  [/manager/accounts/v1/frozens/{frozen}{?token,adminid,lock}]
-+ token 為管理者的 token
++ token 為最高管理者的 token
 + 只有 level 值為 0 的管理者才可以凍結其他管理者帳號
 + Y : 凍結，N : 解凍
 ### 凍結管理者帳號 [PATCH]
@@ -184,8 +184,10 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 管理者帳號資料修改  [/manager/accounts/v1/renews{?token,adminid,adminname,password,lock}]
-
+## 管理者帳號資料修改  [/manager/accounts/v1/renews/{renews}{?token,adminid,adminname,password,phoneno,email,level,usertoken}]
++ token 為管理者的 token
++ 先利用 lists API 取出資料後，再修正更新內容！
++ 只有 level 值為 0 的管理者，可以修改自己以及別人的 level 值！
 ### 管理者帳號資料修改 [PATCH]
 
 + Parameters
@@ -198,8 +200,14 @@ HOST: https://liuqapi.tdhome.tw/api
       + 管理人員的真實姓名
     + password: 'Ab123456789' (required, string)
       + 管理人員的密碼
-    + lock: 'N' (required, string)
-      + 是否凍結管理人員的帳號
+    + phoneno: '0123456789' (required, string)
+      + 管理人員的雷話
+    + email: 'test@example.com' (required, string)
+      + 管理人員的 email 
+    + level: '2' (required for manager, string)
+      + 更新管理人員的等級
+    + usertoken: "adcdefgh" (required for manager, string)
+      + 人員的 token，用以辨識更新的帳號
 
 + Response 200 (application/json)
 
@@ -209,11 +217,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "result": success
+                    "result": "update success"
                 }
             ]
 
-+ Response 404 (application/json)
++ Response 403 (application/json)
 
   + Headers
 
@@ -221,7 +229,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "error": "Token is wrong"
+                    "error": "update is failed"
                 }
             ]
 # Group 店家資料管理

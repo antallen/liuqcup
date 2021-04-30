@@ -11,6 +11,7 @@ Route::apiResource('manager/accounts/v1/auths',authController::class)->only('sto
 Route::apiResource('manager/accounts/v1/frozens',authController::class)->only('update');
 Route::apiResource('manager/accounts/v1/lists',accountsController::class)->only('index');
 Route::apiResource('manager/accounts/v1/creates',accountsController::class)->only('store');
+Route::apiResource('manager/accounts/v1/renews',accountsController::class)->only('update');
 /*
 |--------------------------------------------------------------------------
 | API Routes

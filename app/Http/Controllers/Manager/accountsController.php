@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Manager\accounts\v1\lists;
 use App\Models\Manager\accounts\v1\creates;
+use App\Models\Manager\accounts\v1\renews;
 
 class accountsController extends Controller
 {
@@ -23,6 +24,12 @@ class accountsController extends Controller
     public function store(Request $request){
         $creates = new creates;
         $results = $creates->token($request->all());
+        return $results;
+    }
+
+    public function update(Request $request){
+        $renews = new renews;
+        $results = $renews->token($request->all());
         return $results;
     }
 
