@@ -1,9 +1,9 @@
 FORMAT: 1A
-HOST: https://liuqapi.tdhome.tw
+HOST: https://liuqapi.tdhome.tw/api
 
 # 經營者管理總後台功能 API
 + 網頁放置點 https://liuqcup.antallen.info
-+ API 網址 https://liuqapi.tdhome.tw
++ API 網址 https://liuqapi.tdhome.tw/api
 #### 站台經營者帳號密碼管理
 用於管理站台經營者帳號密碼
 + 管理者帳號密碼驗證
@@ -23,7 +23,8 @@ HOST: https://liuqapi.tdhome.tw
 # Group 站台經營者帳號密碼管理
 
 ## 管理者帳號密碼驗證 [/manager/accounts/v1/auths{?account,authword}]
-
++ 用於管理者登入系統時使用！
++ 登入正確後，取得 token ，做為操作其它功能項目的依據
 ### 管理者帳號密碼驗證 [POST]
 
 + Parameters
@@ -43,10 +44,22 @@ HOST: https://liuqapi.tdhome.tw
                 }
             ]
 
-+ Response 400 (application/json)
++ Response 403 (application/json)
+
+  + Headers
+
+  + Body
+
+            [
+                {
+                    "error": "File Not Found or Token is wrong"
+                }
+            ]
 
 ## 管理者帳號資料列表 [/manager/accounts/v1/lists{?token}]
-
++ 有管理者的 token ，才可以操作！取得 token 的方式，請參考上一項目
++ level 值為 0 ，表示是最高權限，才可以管理其它管理人員資料！
++ 基本人員只可看到自己的資料！
 ### 管理者帳號資料列表 [GET]
 
 + Parameters
@@ -73,7 +86,7 @@ HOST: https://liuqapi.tdhome.tw
                 }
             ]
 
-+ Response 404 (application/json)
++ Response 403 (application/json)
 
   + Headers
 
@@ -84,8 +97,10 @@ HOST: https://liuqapi.tdhome.tw
                     "error": "File Not Found or Token is wrong"
                 }
             ]
-## 新增管理者帳號  [/manager/accounts/v1/creates{?token,adminid,adminname,password,level,phoneno,email}]
 
+## 新增管理者帳號  [/manager/accounts/v1/creates{?token,adminid,adminname,password,level,phoneno,email}]
++ token 為管理者的 token
++ 只有 level 值為 0 的管理者才可以新增其他管理者帳號
 ### 新增管理者帳號 [POST]
 
 + Parameters
@@ -118,7 +133,7 @@ HOST: https://liuqapi.tdhome.tw
                 }
             ]
 
-+ Response 404 (application/json)
++ Response 403 (application/json)
 
   + Headers
 
@@ -166,10 +181,6 @@ HOST: https://liuqapi.tdhome.tw
                     "error": "Token is wrong"
                 }
             ]
-
-
-
-
 
 ## 管理者帳號資料修改  [/manager/accounts/v1/renews{?token,adminid,adminname,password,lock}]
 

@@ -28,11 +28,12 @@ class creates extends Model
             $level = strval($source['level']);
             $salt = strval(SecretClass::generateSalt());
             $token = strval(SecretClass::generateToken($salt,$password));
+            $timestamp = date('Y-m-d H:i:s');
 
             DB::insert('insert into accounts
-                      (adminid, adminname, password, salt, token, phoneno, email,level)
-                       values (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [$adminid, $adminname, $password, $salt, $token, $phoneno, $email, $level]);
+                      (adminid, adminname, password, salt, token, phoneno, email,level,`lock`,created_at,updated_at)
+                       values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        [$adminid, $adminname, $password, $salt, $token, $phoneno, $email, $level,'N',$timestamp,$timestamp]);
 
             $user = DB::select('select adminid,adminname,password from accounts where token = ?', [$token]);
 

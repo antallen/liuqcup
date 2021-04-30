@@ -32,8 +32,9 @@ class auths extends Model
             if ($authword == $password1) {
                 $newSalt=SecretClass::generateSalt();
                 $newtoken=SecretClass::generateToken($newSalt,$password1);
+                $timestamp = date('Y-m-d H:i:s');
 
-                DB::table('accounts')->where('adminid',$account)->update(array('salt' => $newSalt,'token' => $newtoken));
+                DB::table('accounts')->where('adminid',$account)->update(array('salt' => $newSalt,'token' => $newtoken, 'updated_at' => $timestamp));
                 $msg = array(["token" => $newtoken]);
                 return json_encode($msg, JSON_PRETTY_PRINT);
 
