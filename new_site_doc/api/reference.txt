@@ -33,6 +33,9 @@ https://xyz.cinc.biz/2014/08/php-qr-code.html
 
 https://getcomposer.org/download/
 
+https://www.toptal.com/laravel/restful-laravel-api-tutorial
+
+
 建立資料庫最初始資料
 CREATE USER 'liuqcup'@'localhost' IDENTIFIED WITH mysql_native_password BY 'liuqCUP$2021$kh';
 CREATE DATABASE liuqcup;

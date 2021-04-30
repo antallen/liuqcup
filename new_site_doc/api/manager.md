@@ -204,9 +204,9 @@ HOST: https://liuqapi.tdhome.tw/api
       + 管理人員的雷話
     + email: 'test@example.com' (required, string)
       + 管理人員的 email 
-    + level: '2' (required for manager, string)
+    + level: '2' (optional, string)
       + 更新管理人員的等級
-    + usertoken: "adcdefgh" (required for manager, string)
+    + usertoken: "adcdefgh" (optional, string)
       + 人員的 token，用以辨識更新的帳號
 
 + Response 200 (application/json)
@@ -239,8 +239,9 @@ HOST: https://liuqapi.tdhome.tw/api
   + func (string): 店家俱備功能項
   + address (string): 店家地址
   + phones (string): 店家電話
-## 店家資料列表 [/manager/stores/v1/lists{?token,page}]
-
+## 店家資料列表 [/manager/v1/stores/lists{?token,page}]
++ 管理人員用的店家資料列表
++ 管理人員需要登入帳密，取得 token 才可以讀取店家資料
 ### 店家資料列表 [GET]
 
 + Parameters
@@ -253,7 +254,6 @@ HOST: https://liuqapi.tdhome.tw/api
 + Response 200 (application/json)
 
   + Headers
-
 
   + Body
 

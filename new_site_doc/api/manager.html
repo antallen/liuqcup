@@ -68,7 +68,7 @@
 <p>level 值為 0 ，表示是最高權限，才可以管理其它管理人員資料！</p>
 </li>
 <li>
-<p>基本人員只可看到自己的資料！</p>
+<p>基本人員只可看到自己的資料，並且看不到 level 值以及 lock 值！</p>
 </li>
 </ul>
 <div id="站台經營者帳號密碼管理-管理者帳號資料列表-get" class="action get"><h4 class="action-heading"><div class="name">管理者帳號資料列表</div><a href="#站台經營者帳號密碼管理-管理者帳號資料列表-get" class="method get">GET</a><code class="uri">/manager/accounts/v1/lists{?token}</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://liuqapi.tdhome.tw/api</span>/manager/accounts/v1/lists?<span class="hljs-attribute">token=</span><span class="hljs-literal">'Ab123456'</span></span></div><div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456'</span></span><ul>
@@ -78,12 +78,12 @@
     {
         "<span class="hljs-attribute">adminid</span>": <span class="hljs-value">Hello001</span>,
         "<span class="hljs-attribute">adminname</span>": <span class="hljs-value">Peter</span>,
-        "<span class="hljs-attribute">password</span>": <span class="hljs-value">****
-    </span>},
-    {
-        "<span class="hljs-attribute">adminid</span>": <span class="hljs-value">Hello002</span>,
-        "<span class="hljs-attribute">adminname</span>": <span class="hljs-value">James</span>,
-        "<span class="hljs-attribute">password</span>": <span class="hljs-value">****
+        "<span class="hljs-attribute">password</span>": <span class="hljs-value">****</span>,
+        "<span class="hljs-attribute">phoneno</span>": <span class="hljs-value"><span class="hljs-string">"0987654321"</span></span>,
+        "<span class="hljs-attribute">email</span>":<span class="hljs-value"><span class="hljs-string">"test@example.com"</span>
+        <span class="hljs-string">"level"</span>: <span class="hljs-string">"0"</span></span>,
+        "<span class="hljs-attribute">lock</span>": <span class="hljs-value"><span class="hljs-string">"Y"</span></span>,
+        "<span class="hljs-attribute">token</span>":<span class="hljs-value"><span class="hljs-string">"asdqwe"</span>
     </span>}
 ]</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>403</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
   {
@@ -91,7 +91,7 @@
   </span>}
 ]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="站台經營者帳號密碼管理-新增管理者帳號" class="resource"><h3 class="resource-heading">新增管理者帳號 <a href="#站台經營者帳號密碼管理-新增管理者帳號" class="permalink">&nbsp;&para;</a></h3><ul>
 <li>
-<p>token 為管理者的 token</p>
+<p>token 為最高管理者的 token</p>
 </li>
 <li>
 <p>只有 level 值為 0 的管理者才可以新增其他管理者帳號</p>
@@ -133,7 +133,7 @@
   </span>}
 ]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="站台經營者帳號密碼管理-凍結-解凍管理者帳號" class="resource"><h3 class="resource-heading">凍結/解凍管理者帳號 <a href="#站台經營者帳號密碼管理-凍結-解凍管理者帳號" class="permalink">&nbsp;&para;</a></h3><ul>
 <li>
-<p>token 為管理者的 token</p>
+<p>token 為最高管理者的 token</p>
 </li>
 <li>
 <p>只有 level 值為 0 的管理者才可以凍結其他管理者帳號</p>
@@ -159,7 +159,18 @@
   {
     "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Level or Token is wrong"</span>
   </span>}
-]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="站台經營者帳號密碼管理-管理者帳號資料修改" class="resource"><h3 class="resource-heading">管理者帳號資料修改 <a href="#站台經營者帳號密碼管理-管理者帳號資料修改" class="permalink">&nbsp;&para;</a></h3><div id="站台經營者帳號密碼管理-管理者帳號資料修改-patch" class="action patch"><h4 class="action-heading"><div class="name">管理者帳號資料修改</div><a href="#站台經營者帳號密碼管理-管理者帳號資料修改-patch" class="method patch">PATCH</a><code class="uri">/manager/accounts/v1/renews{?token,adminid,adminname,password,lock}</code></h4><h4>Example URI</h4><div class="definition"><span class="method patch">PATCH</span>&nbsp;<span class="uri"><span class="hostname">https://liuqapi.tdhome.tw/api</span>/manager/accounts/v1/renews?<span class="hljs-attribute">token=</span><span class="hljs-literal">'Ab123456'</span>&<span class="hljs-attribute">adminid=</span><span class="hljs-literal">'Hello001'</span>&<span class="hljs-attribute">adminname=</span><span class="hljs-literal">'Peter'</span>&<span class="hljs-attribute">password=</span><span class="hljs-literal">'Ab123456789'</span>&<span class="hljs-attribute">lock=</span><span class="hljs-literal">'N'</span></span></div><div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456'</span></span><ul>
+]</code></pre><div style="height: 1px;"></div></div></div></div></div><div id="站台經營者帳號密碼管理-管理者帳號資料修改" class="resource"><h3 class="resource-heading">管理者帳號資料修改 <a href="#站台經營者帳號密碼管理-管理者帳號資料修改" class="permalink">&nbsp;&para;</a></h3><ul>
+<li>
+<p>token 為管理者的 token</p>
+</li>
+<li>
+<p>先利用 lists API 取出資料後，再修正更新內容！</p>
+</li>
+<li>
+<p>只有 level 值為 0 的管理者，可以修改自己以及別人的 level 值！</p>
+</li>
+</ul>
+<div id="站台經營者帳號密碼管理-管理者帳號資料修改-patch" class="action patch"><h4 class="action-heading"><div class="name">管理者帳號資料修改</div><a href="#站台經營者帳號密碼管理-管理者帳號資料修改-patch" class="method patch">PATCH</a><code class="uri">/manager/accounts/v1/renews/{?token,adminid,adminname,password,phoneno,email,level,usertoken}</code></h4><h4>Example URI</h4><div class="definition"><span class="method patch">PATCH</span>&nbsp;<span class="uri"><span class="hostname">https://liuqapi.tdhome.tw/api</span>/manager/accounts/v1/renews/?<span class="hljs-attribute">token=</span><span class="hljs-literal">'Ab123456'</span>&<span class="hljs-attribute">adminid=</span><span class="hljs-literal">'Hello001'</span>&<span class="hljs-attribute">adminname=</span><span class="hljs-literal">'Peter'</span>&<span class="hljs-attribute">password=</span><span class="hljs-literal">'Ab123456789'</span>&<span class="hljs-attribute">phoneno=</span><span class="hljs-literal">'0123456789'</span>&<span class="hljs-attribute">email=</span><span class="hljs-literal">'test@example.com'</span>&<span class="hljs-attribute">level=</span><span class="hljs-literal">'2'</span>&<span class="hljs-attribute">usertoken=</span><span class="hljs-literal">"adcdefgh"</span></span></div><div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456'</span></span><ul>
 <li>管理人員的 Key，由管理帳號的 Hash code 編碼而成的</li>
 </ul>
 </dd><dt>adminid</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Hello001'</span></span><ul>
@@ -171,16 +182,25 @@
 </dd><dt>password</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456789'</span></span><ul>
 <li>管理人員的密碼</li>
 </ul>
-</dd><dt>lock</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'N'</span></span><ul>
-<li>是否凍結管理人員的帳號</li>
+</dd><dt>phoneno</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'0123456789'</span></span><ul>
+<li>管理人員的雷話</li>
+</ul>
+</dd><dt>email</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'test@example.com'</span></span><ul>
+<li>管理人員的 email</li>
+</ul>
+</dd><dt>level</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'2'</span></span><ul>
+<li>更新管理人員的等級</li>
+</ul>
+</dd><dt>usertoken</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>&quot;adcdefgh&quot;</span></span><ul>
+<li>人員的 token，用以辨識更新的帳號</li>
 </ul>
 </dd></dl></div><div class="title"><strong>Response&nbsp;&nbsp;<code>200</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
-    {
-        "<span class="hljs-attribute">result</span>": <span class="hljs-value">success
-    </span>}
-]</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>404</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
   {
-    "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"Token is wrong"</span>
+    "<span class="hljs-attribute">result</span>": <span class="hljs-value"><span class="hljs-string">"update success"</span>
+  </span>}
+]</code></pre><div style="height: 1px;"></div></div></div><div class="title"><strong>Response&nbsp;&nbsp;<code>403</code></strong><div class="collapse-button"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>[
+  {
+    "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"update is failed"</span>
   </span>}
 ]</code></pre><div style="height: 1px;"></div></div></div></div></div></section><section id="店家資料管理" class="resource-group"><h2 class="group-heading">店家資料管理 <a href="#店家資料管理" class="permalink">&para;</a></h2><ul>
 <li>店家資料參數列表：
@@ -193,7 +213,15 @@
 </ul>
 </li>
 </ul>
-<div id="店家資料管理-店家資料列表" class="resource"><h3 class="resource-heading">店家資料列表 <a href="#店家資料管理-店家資料列表" class="permalink">&nbsp;&para;</a></h3><div id="店家資料管理-店家資料列表-get" class="action get"><h4 class="action-heading"><div class="name">店家資料列表</div><a href="#店家資料管理-店家資料列表-get" class="method get">GET</a><code class="uri">/manager/stores/v1/lists{?token,page}</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://liuqapi.tdhome.tw/api</span>/manager/stores/v1/lists?<span class="hljs-attribute">token=</span><span class="hljs-literal">'Ab123456'</span>&<span class="hljs-attribute">page=</span><span class="hljs-literal">'1'</span></span></div><div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456'</span></span><ul>
+<div id="店家資料管理-店家資料列表" class="resource"><h3 class="resource-heading">店家資料列表 <a href="#店家資料管理-店家資料列表" class="permalink">&nbsp;&para;</a></h3><ul>
+<li>
+<p>管理人員用的店家資料列表</p>
+</li>
+<li>
+<p>管理人員需要登入帳密，取得 token 才可以讀取店家資料</p>
+</li>
+</ul>
+<div id="店家資料管理-店家資料列表-get" class="action get"><h4 class="action-heading"><div class="name">店家資料列表</div><a href="#店家資料管理-店家資料列表-get" class="method get">GET</a><code class="uri">/manager/v1/stores/lists{?token,page}</code></h4><h4>Example URI</h4><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://liuqapi.tdhome.tw/api</span>/manager/v1/stores/lists?<span class="hljs-attribute">token=</span><span class="hljs-literal">'Ab123456'</span>&<span class="hljs-attribute">page=</span><span class="hljs-literal">'1'</span></span></div><div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>token</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'Ab123456'</span></span><ul>
 <li>管理人員的 Key，由管理帳號的 Hash code 編碼而成的</li>
 </ul>
 </dd><dt>page</dt><dd><code>integer</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>'1'</span></span><ul>
