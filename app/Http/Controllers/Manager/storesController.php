@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Manager\stores\v1\lists;
+use App\Models\Manager\v1\stores\lists;
 
 class storesController extends Controller
 {

@@ -239,6 +239,7 @@ HOST: https://liuqapi.tdhome.tw/api
   + func (string): 店家俱備功能項
   + address (string): 店家地址
   + phones (string): 店家電話
+
 ## 店家資料列表 [/manager/v1/stores/lists{?token,page}]
 + 管理人員用的店家資料列表
 + 管理人員需要登入帳密，取得 token 才可以讀取店家資料
@@ -274,7 +275,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 新增店家資料 [/manager/stores/v1/creates{?token,storename,func}]
+## 新增店家資料 [/manager/v1/stores/creates{?token,storename,func}]
 ### 新增店家資料 [POST]
 
 + Parameters
@@ -298,7 +299,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 凍結店家使用 [/manager/stores/v1/frozens{?token,storeid,lock}]
+## 凍結店家使用 [/manager/v1/stores/frozens{?token,storeid,lock}]
 
 ### 凍結店家使用 [PATCH]
 
@@ -323,7 +324,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家資料查詢 [/manager/stores/v1/querys{?token,storeid}]
+## 店家資料查詢 [/manager/v1/stores/querys{?token,storeid}]
 
 ### 店家資料查詢 [GET]
 
@@ -355,7 +356,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家資料修改 [/manager/stores/v1/renews{?token,storeid,storename,func,address,agent,phone,lock}]
+## 店家資料修改 [/manager/v1/stores/renews{?token,storeid,storename,func,address,agent,phone,lock}]
 
 ### 店家資料修改 [PATCH]
 
