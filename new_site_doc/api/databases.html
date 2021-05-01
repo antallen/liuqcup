@@ -137,14 +137,8 @@
 <td style="text-align:left">店家名稱</td>
 </tr>
 <tr>
-<td style="text-align:left">businessid</td>
-<td style="text-align:left">char(20)</td>
-<td style="text-align:left">NOT NULL, UNIQUE,Default(‘00000000’)</td>
-<td style="text-align:left">店家統一編號</td>
-</tr>
-<tr>
 <td style="text-align:left">qrcodeid</td>
-<td style="text-align:left">char(16)</td>
+<td style="text-align:left">char(20)</td>
 <td style="text-align:left">NOT NULL,UNIQUE</td>
 <td style="text-align:left">店家 QRcode 編碼（其實根本用不到）</td>
 </tr>
@@ -183,6 +177,12 @@
 <td style="text-align:left">char(255)</td>
 <td style="text-align:left">NULL</td>
 <td style="text-align:left">店家地址</td>
+</tr>
+<tr>
+<td style="text-align:left">businessid</td>
+<td style="text-align:left">char(20)</td>
+<td style="text-align:left">NOT NULL,UNIQUE</td>
+<td style="text-align:left">店家統一編號</td>
 </tr>
 </tbody>
 </table>
