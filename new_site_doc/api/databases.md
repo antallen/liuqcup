@@ -113,8 +113,8 @@
 |欄位名稱|資料類型規格|設定參數|說明|
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
-|storeid|char(100)|NOT NULL, UNIQUE|店家編號|
-|funcid|char(100)|NOT NULL, UNIQUE|功能編號|
+|storeid|char(100)|NOT NULL|店家編號|
+|funcid|char(100)|NOT NULL|功能編號|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
 

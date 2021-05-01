@@ -45,6 +45,11 @@ FLUSH PRIVILEGES;
 insert into accounts ( adminid,adminname,password,salt,token,level,phoneno,email ) values ( "admin","admin","ab123456","helloworld","ABC123",'0',"0987654321","test@hello.com" );
 update  accounts set `lock` = 'N' where adminid = "admin";
 
+select COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME, REFERENCED_TABLE_NAME from information_schema. KEY_COLUMN_USAGE where TABLE_NAME = 'storesfunctions';
+
+alter table storesclass add constraint storesclass_classid_classes foreign key (classid) references classes(classid);
+
+
 網站設定
 semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/storage(/.*)?'
 semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/bootstrap/cache(/.*)?'
