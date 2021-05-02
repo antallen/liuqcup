@@ -26,11 +26,13 @@ class lists extends Model
 
     //店家列表
     public function getStores(){
+
         $stores = DB::table('stores')
-                    ->join('storesclasses','stores.storeid','=','classes.storeid')
-                    ->join('classes','storesclasses.classid','=','classes.classesid')
+                    ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                    ->join('classes','storesclass.classid','=','classes.classid')
                     ->join('storesfunctions','stores.storeid','=','storesfunctions.storeid')
-                    ->join('functions','storesfunctions.funcid','=','functions.funcid')->get();
+                    ->join('functions','storesfunctions.funcid','=','functions.funcid')->get('stores.storeid');
         return $stores;
+
     }
 }
