@@ -65,3 +65,9 @@ vim .env
 
 
 return response('OK', 200);
+
+
+VUE 佈署方式
+https://segmentfault.com/a/1190000038672615
+https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/55227/#outline__4
+https://zhuanlan.zhihu.com/p/337533899

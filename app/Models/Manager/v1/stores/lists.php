@@ -30,8 +30,15 @@ class lists extends Model
         $stores = DB::table('stores')
                     ->join('storesclass','stores.storeid','=','storesclass.storeid')
                     ->join('classes','storesclass.classid','=','classes.classid')
+                    ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname')->get();
+
+        /*
+        $stores = DB::table('stores')
+                    ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                    ->join('classes','storesclass.classid','=','classes.classid')
                     ->join('storesfunctions','stores.storeid','=','storesfunctions.storeid')
                     ->join('functions','storesfunctions.funcid','=','functions.funcid')->get('stores.storeid');
+        */
         return $stores;
 
     }

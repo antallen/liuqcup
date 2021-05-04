@@ -240,17 +240,22 @@ HOST: https://liuqapi.tdhome.tw/api
   + address (string): 店家地址
   + phones (string): 店家電話
 
-## 店家資料列表 [/manager/v1/stores/lists{?token,page}]
-+ 管理人員用的店家資料列表
+## 店家資料列表 [/manager/v1/stores/lists{?token,classes}]
++ 店家資料列表
+  + 有帶入 token，表示是管理人員要管理店家資料
+  + 沒有帶入 token，表示是前台要列店家資料
 + 管理人員需要登入帳密，取得 token 才可以讀取店家資料
 ### 店家資料列表 [GET]
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) 
+    + token: 'Ab123456' (optional, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + page: '1' (required, integer)
-      + 指定頁數，例如：第一頁、第二頁，以此類推
+    + classes: '1' (required, integer)
+      + 店家型態分類值！
+      + 1：專賣店
+      + 2：民宿
+      + 3：商店
 
 + Response 200 (application/json)
 
