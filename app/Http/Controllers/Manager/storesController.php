@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Manager\v1\stores\lists;
 use App\Models\Manager\v1\stores\renews;
 use App\Models\Manager\v1\stores\creates;
-
+use App\Models\Manager\v1\stores\querys;
 class storesController extends Controller
 {
     //店家資料列表
@@ -87,8 +87,33 @@ class storesController extends Controller
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
         $creates = new creates();
-        $results = $creates->token($request->all());
-        return $results;
+        $auths = $creates->token($request->all());
+        if ($auths == "Manager"){
+            $result = $creates->createStores($request->all());
+            return $result;
+        } else {
+            $msg = array(["error" => "Create Failed"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
     }
 
+    //查詢各別店家資料
+    public function show(Request $request){
+        if (!(isset($_REQUEST['token']))){
+            $msg = array(["error" => "invalid data"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
+        $querys = new querys();
+        $auths = $querys->token($request->all());
+
+        if ($auths == "Manager"){
+            $results = $querys->queryStores($request->all());
+            return $results;
+        } else {
+            $msg = array(["error" => "Create Failed"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
+    }
 }

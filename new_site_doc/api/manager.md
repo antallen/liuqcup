@@ -329,16 +329,18 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家資料查詢 [/manager/v1/stores/querys{?token,storeid}]
-
+## 店家資料查詢 [/manager/v1/stores/querys/query{?token,storeid,keyword}]
++ 查詢各別店家詳細基本資料
 ### 店家資料查詢 [GET]
 
 + Parameters
 
     + token: 'Ab123456' (required, string)
-     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer)
-     - 店家編號
+      - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: '100341234' (optional, string)
+      - 使用店家編號查詢
+    + keyword: '太平洋' (optional, string)
+      - 使用關鍵字查詢  
 
 + Response 200 (application/json)
 
@@ -350,9 +352,8 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "storeid": 100221566,
                     "storename": 太平洋海底,
-                    "func": A01C03,
+                    "class": 民宿,
                     "address": 中正路1號,
-                    "agent": 雞排妹,
                     "phone": {
                         0987654321,
                         081231234

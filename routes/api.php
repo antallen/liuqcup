@@ -18,6 +18,7 @@ Route::apiResource('manager/v1/stores/lists',storesController::class)->only('ind
 Route::apiResource('manager/v1/stores/creates',storesController::class)->only('store');
 Route::apiResource('manager/v1/stores',storesController::class)->only('update');
 Route::apiResource('manager/v1/stores/frozens',storesLocksController::class)->only('store');
+Route::apiResource('manager/v1/stores/querys',storesController::class)->only('show');
 /*
 |--------------------------------------------------------------------------
 | API Routes
