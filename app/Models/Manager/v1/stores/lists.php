@@ -31,7 +31,9 @@ class lists extends Model
                     ->join('storesclass','stores.storeid','=','storesclass.storeid')
                     ->join('classes','storesclass.classid','=','classes.classid')
                     ->select('stores.storeid','stores.storename','stores.phoneno','stores.address')
-                    ->where('storesclass.classid',trim($classes))->get();
+                    ->where('storesclass.classid',trim($classes))
+                    ->where('stores.lock','N')
+                    ->get();
         return $stores;
 
     }
