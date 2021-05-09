@@ -265,18 +265,15 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "storeid": "100341234",
-                    "storename": "好望角落",
-                    "func": A01B02C03,
-                    "address" : "中正路",
-                    "phone" : "0987654321"
-                },
-                {
-                    "storeid": "100221566",
-                    "storename": "太平洋海底",
-                    "func": A01C03,
-                    "address" : "中正路",
-                    "phone" : "0987654321"
+                    "storeid": "13354475",
+                    "storename": "輪廓莊園",
+                    "phoneno": null,
+                    "address": "屏東縣琉球鄉杉福村復興路163號-5",
+                    "classname": "民宿",
+                    以下管理帳號才可以看到！
+                    "lock": "Y",
+                    "funid1": "還杯",
+                    "funid2": "借杯"
                 }
             ]
 

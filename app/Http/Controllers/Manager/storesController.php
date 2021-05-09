@@ -53,9 +53,6 @@ class storesController extends Controller
         }
         return $results;
       }
-        /*
-
-       */
     }
 
     //
@@ -67,4 +64,5 @@ class storesController extends Controller
     public function update(Request $request){
 
     }
+
 }

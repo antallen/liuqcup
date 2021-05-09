@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Manager\accountsController;
 use App\Http\Controllers\Manager\authController;
 use App\Http\Controllers\Manager\storesController;
+use App\Http\Controllers\Manager\storesLocksController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -16,7 +17,7 @@ Route::apiResource('manager/accounts/v1/renews',accountsController::class)->only
 Route::apiResource('manager/v1/stores/lists',storesController::class)->only('index');
 Route::apiResource('manager/v1/stores/creates',storesController::class)->only('store');
 Route::apiResource('manager/v1/stores',storesController::class)->only('update');
-
+Route::apiResource('manager/v1/stores/frozens',storesLocksController::class)->only('store');
 /*
 |--------------------------------------------------------------------------
 | API Routes
