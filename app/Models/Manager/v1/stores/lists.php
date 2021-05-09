@@ -24,22 +24,36 @@ class lists extends Model
         }
     }
 
-    //店家列表
-    public function getStores(){
+    //店家列表_for 一般使用者
+    public function getStores($classes){
 
         $stores = DB::table('stores')
                     ->join('storesclass','stores.storeid','=','storesclass.storeid')
                     ->join('classes','storesclass.classid','=','classes.classid')
-                    ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname')->get();
-
-        /*
-        $stores = DB::table('stores')
-                    ->join('storesclass','stores.storeid','=','storesclass.storeid')
-                    ->join('classes','storesclass.classid','=','classes.classid')
-                    ->join('storesfunctions','stores.storeid','=','storesfunctions.storeid')
-                    ->join('functions','storesfunctions.funcid','=','functions.funcid')->get('stores.storeid');
-        */
+                    ->select('stores.storeid','stores.storename','stores.phoneno','stores.address')
+                    ->where('storesclass.classid',trim($classes))->get();
         return $stores;
 
+    }
+    //店家列表_for 管理者
+    public function mgetStores($classes){
+
+        $stores = DB::table('stores')
+                    ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                    ->join('classes','storesclass.classid','=','classes.classid')
+                    ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname','stores.lock')
+                    ->where('storesclass.classid',trim($classes))->get();
+        return $stores;
+
+    }
+
+    //店家功能列表
+    public function getStoresFuncs($storeid){
+        $funcs = DB::table('storesfunctions')
+                    ->join('functions','storesfunctions.funcid','=','functions.funcid')
+                    ->where('storesfunctions.storeid',trim($storeid))
+                    ->orderBy('functions.funcid')
+                    ->get('functions.funcname');
+        return $funcs;
     }
 }
