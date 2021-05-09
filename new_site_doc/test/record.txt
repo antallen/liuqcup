@@ -1,1 +1,0 @@
-http://127.0.0.1:8000/api/manager/v1/stores/lists?classes=2&token=$2y$10$Xy.ZUrjO/NpGZlcgm1SpLuTK6Otao0TQ9Z1ybNsol9KNwF4Nm26z.

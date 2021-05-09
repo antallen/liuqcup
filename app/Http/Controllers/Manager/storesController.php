@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Manager\v1\stores\lists;
+use App\Models\Manager\v1\stores\renews;
 
 class storesController extends Controller
 {
@@ -55,13 +56,30 @@ class storesController extends Controller
       }
     }
 
-    //
-    public function store(Request $request){
-        # code...
+    //更新店家資料
+    public function update(Request $request){
+
+        if (!(isset($_REQUEST['token']))){
+            $msg = array(["error" => "invalid data"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
+        $renews = new renews();
+        $auths = $renews->token($request->all());
+        if ($auths == "Manager"){
+            $result = $renews->updateStores($request->all());
+            return $result;
+        }elseif ($auths == "Agent"){
+                $msg = array(["error" => "This Functions are not opened!!"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+        }else{
+                $msg = array(["error" => "invalid data"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+        }
     }
 
     //
-    public function update(Request $request){
+    public function store(Request $request){
 
     }
 

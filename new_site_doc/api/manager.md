@@ -358,28 +358,22 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家資料修改 [/manager/v1/stores/renews{?token,storeid,storename,func,address,agent,phone,lock}]
+## 店家基本資料修改 [/manager/v1/stores/store{?token,storeid,storename,address,phone}]
 
-### 店家資料修改 [PATCH]
+### 店家基本資料修改 [PATCH]
 
 + Parameters
 
     + token: 'Ab123456' (required, string)
-     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+     - 總管理處人員或是店家管理人員的 Key，由管理帳號的 Hash code 編碼而成的
     + storeid: '100341234' (required, integer)
      - 店家編號
-    + storename: '太平洋海底' (required, string)
+    + storename: '太平洋海底' (optional, string)
      - 店家名稱
-    + func: 'A01C03' (required, string)
-     - 店家俱備功能項
     + address: '中正路1號' (optional, string)
      - 店家地址
-    + agent: '雞排妹'  (optional, string)
-     - 店家連絡人
-    + phone: '0987654321,081231234' (required, string)
+    + phone: '0987654321,081231234' (optional, string)
      - 店家連絡電話
-    + lock: 'N' (optional, string)
-     - 代表解凍
 
 + Response 200 (application/json)
 
