@@ -277,17 +277,20 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 新增店家資料 [/manager/v1/stores/creates{?token,storename,func}]
+## 新增店家資料 [/manager/v1/stores/creates{?token,storename,phoneno,address}]
++ 只有管理處人員才可以新增店家資料
 ### 新增店家資料 [POST]
 
 + Parameters
 
     + token: 'Ab123456' (required, string)
-     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
+      - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
     + storename: '好棒棒' (required, string)
-     - 店家名稱
-    + func: 'A01B02C03' (required, string)
-     - 店家俱備功能項
+      - 店家名稱
+    + phoneno: '0912345678' (required, string)
+      - 店家電話
+    + address: '中正路四號' (required, string)
+      - 店家地址
 
 + Response 200 (application/json)
 

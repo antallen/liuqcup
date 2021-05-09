@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Manager\v1\stores\lists;
 use App\Models\Manager\v1\stores\renews;
+use App\Models\Manager\v1\stores\creates;
 
 class storesController extends Controller
 {
@@ -63,7 +64,7 @@ class storesController extends Controller
             $msg = array(["error" => "invalid data"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
-
+        //決定由管理處人員更新，或是店家各自更新
         $renews = new renews();
         $auths = $renews->token($request->all());
         if ($auths == "Manager"){
@@ -78,9 +79,16 @@ class storesController extends Controller
         }
     }
 
-    //
+    //新增店家資料
     public function store(Request $request){
 
+        if (!(isset($_REQUEST['token']))){
+            $msg = array(["error" => "invalid data"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+        $creates = new creates();
+        $results = $creates->token($request->all());
+        return $results;
     }
 
 }

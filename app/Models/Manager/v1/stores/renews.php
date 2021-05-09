@@ -40,26 +40,44 @@ class renews extends Model
 
     //更新店家資料
     public function updateStores($source){
-        $storeid = trim($source['storeid']);
-        $storename = trim($source['storename']);
-        $address = trim($source['address']);
-        $phone = trim($source['phone']);
         $timestamp = date('Y-m-d H:i:s');
-        $results = DB::table('stores')->where('storeid',$storeid)
+        if ((!isset($source['storeid'])) or (empty($source['storeid'])) or (is_null($source['storeid']))) {
+            $msg = array(["result" => "failure"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } else {
+            $storeid = trim($source['storeid']);
+        }
+
+        //修正基本資料
+        if ((isset($source['storename'])) and (!empty($source['storename'])) and (!is_null($source['storename']))){
+            $storename = trim($source['storename']);
+            DB::table('stores')->where('storeid',$storeid)
                     ->update(array(
                         'storename' => $storename,
-                        'address'=> $address,
+                        'updated_at' => $timestamp
+                    ));
+        }
+
+        if ((isset($source['address'])) and (!empty($source['address'])) and (!is_null($source['address']))){
+            $address = trim($source['address']);
+            $results = DB::table('stores')->where('storeid',$storeid)
+                    ->update(array(
+                        'address' => $address,
+                        'updated_at' => $timestamp
+                    ));
+        }
+
+        if ((isset($source['phone'])) and (!empty($source['phone'])) and (!is_null($source['phone']))){
+            $phone = trim($source['phone']);
+            $results = DB::table('stores')->where('storeid',$storeid)
+                    ->update(array(
                         'phoneno' => $phone,
                         'updated_at' => $timestamp
                     ));
-        if ($results){
-            $msg = array(["result" => "sucess"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-        } else {
-            $msg = array(["result" => "failure"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-
         }
+
+        $msg = array(["result" => "sucess"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
     }
 
 }
