@@ -36,5 +36,21 @@ class querys extends Model
 
             //return $source;
         }
+
+        if (isset($source['keyword'])){
+            $keyword = trim($source['keyword']);
+            $result = DB::table('stores')
+                            ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                            ->join('classes','storesclass.classid','=','classes.classid')
+                            ->select('stores.storeid','stores.storename','stores.address','stores.phoneno','stores.lock','classes.classname')
+                            ->where('stores.storename','like','%'.$keyword.'%');
+            $result1 = DB::table('stores')
+                            ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                            ->join('classes','storesclass.classid','=','classes.classid')
+                            ->select('stores.storeid','stores.storename','stores.address','stores.phoneno','stores.lock','classes.classname')
+                            ->where('stores.address','like','%'.$keyword.'%')->union($result)
+                            ->get();
+            return $result1;
+        }
     }
 }
