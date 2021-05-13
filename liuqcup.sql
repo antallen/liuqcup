@@ -175,10 +175,10 @@ DROP TABLE IF EXISTS `storesagentids`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storesagentids` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `agentid` char(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員帳號',
   `agentname` char(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家管理人員姓名',
-  `agentphone` char(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員手機號碼',
+  `agentphone` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `storeid` char(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
   `salt` char(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '加密用的 Hash Key',
   `token` char(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員的 Key',
@@ -186,13 +186,13 @@ CREATE TABLE `storesagentids` (
   `lock` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '凍結帳號與否',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`,`agentphone`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `storesagentids_agentid_unique` (`agentid`),
   UNIQUE KEY `storesagentids_salt_unique` (`salt`),
   UNIQUE KEY `storesagentids_token_unique` (`token`),
   KEY `storesagentids_storeid_foreign` (`storeid`),
   CONSTRAINT `storesagentids_storeid_foreign` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,6 +201,7 @@ CREATE TABLE `storesagentids` (
 
 LOCK TABLES `storesagentids` WRITE;
 /*!40000 ALTER TABLE `storesagentids` DISABLE KEYS */;
+INSERT INTO `storesagentids` VALUES (3,'peter','Peter Wang','0912345679','13354477','l$,sSceI2o','$2y$10$ih4YeLpz2b61qj804SK9p.CMn7YRWI1UxTCS45svVCj0fMF/HPJVu','CDEF1234','N','2021-05-13 06:03:53','2021-05-13 06:59:13');
 /*!40000 ALTER TABLE `storesagentids` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +223,7 @@ CREATE TABLE `storesclass` (
   KEY `storesclass_classid_index` (`classid`),
   CONSTRAINT `storesclass_classid_classes` FOREIGN KEY (`classid`) REFERENCES `classes` (`classid`),
   CONSTRAINT `storesclass_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,7 +232,7 @@ CREATE TABLE `storesclass` (
 
 LOCK TABLES `storesclass` WRITE;
 /*!40000 ALTER TABLE `storesclass` DISABLE KEYS */;
-INSERT INTO `storesclass` VALUES (1,NULL,NULL,'13354475','2');
+INSERT INTO `storesclass` VALUES (2,'2021-05-13 02:16:47','2021-05-13 02:16:47','13354477','1'),(7,'2021-05-13 02:23:05','2021-05-13 02:23:05','13354475','2');
 /*!40000 ALTER TABLE `storesclass` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +457,7 @@ CREATE TABLE `storesfunctions` (
   KEY `storesfunctions_storeid_stores` (`storeid`),
   CONSTRAINT `storesfunctions_funcid_functions` FOREIGN KEY (`funcid`) REFERENCES `functions` (`funcid`),
   CONSTRAINT `storesfunctions_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -465,7 +466,7 @@ CREATE TABLE `storesfunctions` (
 
 LOCK TABLES `storesfunctions` WRITE;
 /*!40000 ALTER TABLE `storesfunctions` DISABLE KEYS */;
-INSERT INTO `storesfunctions` VALUES (1,'13354475',NULL,NULL,'2'),(2,'13354475',NULL,NULL,'1');
+INSERT INTO `storesfunctions` VALUES (4,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','1'),(5,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','2'),(6,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','1'),(7,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','2'),(8,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','1'),(9,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','2');
 /*!40000 ALTER TABLE `storesfunctions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -478,4 +479,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-10  9:47:28
+-- Dump completed on 2021-05-13 23:02:54
