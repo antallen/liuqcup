@@ -240,6 +240,9 @@ HOST: https://liuqapi.tdhome.tw/api
   + address (string): 店家地址
   + phones (string): 店家電話
 
++ 店家缺項目：
+  + 社群網址欄位，如：FB 網址
+
 ## 店家資料列表 [/manager/v1/stores/lists{?token,classes}]
 + 店家資料列表
   + 有帶入 token，表示是管理人員要管理店家資料
@@ -402,3 +405,77 @@ HOST: https://liuqapi.tdhome.tw/api
                     "error" : invalid data
                 }
             ]
+
+# Group 店家功能與分類管理
++ 功能項目管理(稍晚)
++ 分類項目管理(稍晚)
++ 店家功能設定與修改
++ 店家分類設定與修改
+
+## 店家功能設定與修改 [/manager/v1/funcs/config{?token,storeid,funcs}]
++ 只有有管理處的人才可以修改
+### 店家功能設定與修改 [POST]
+
++ Parameters
+
+    + token: "2!qwe@asd#zxf$" (required, string)
+      + 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: "10034532" (required, string)
+      + 店家代號
+    + funcs: "A01B02C03" (required, string)
+      + 功能項目：
+        + A01：還杯
+        + B02：借杯
+        + C03：使用琉行杯消費
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : success
+                }
+            ]
+
+## 店家分類設定與修改 [/manager/v1/classes/config{?token,storeid,classes}]
++ 只有有管理處的人才可以修改
+### 店家分類設定與修改 [POST]
+
++ Parameters
+
+    + token: "2!qwe@asd#zxf$" (required, string)
+      + 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + storeid: "10034532" (required, string)
+      + 店家代號
+    + classes: "A01" (required, string)
+      + 功能項目：
+        + A01：專賣
+        + B02：民宿
+        + C03：商店
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : success
+                }
+            ]
+
+# Group 店家借還杯功能管理
++ 店家 QRcode 資料設定與修改
++ 店家收杯功能 (店家收總管理處的杯子)
++ 店家取杯功能 (總管理處取走店家的杯子)
++ 店家代收杯功能 
+# Group 遊客資料與記錄管理
++ 遊客基本資料管理
++ 遊客借杯記錄(店家出借給遊客)
++ 遊客還杯記錄(遊客還杯給店家)
+  + 同一店歸還
+  + 不同店歸還
