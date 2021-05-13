@@ -240,6 +240,14 @@ HOST: https://liuqapi.tdhome.tw/api
   + address (string): 店家地址
   + phones (string): 店家電話
 
++ 店家管理員資料參數列表：
+  + agentid (string): 店家管理員編號
+  + agentname  (string): 店家管理員姓名
+  + agentphone (string): 店家管理員電話
+  + storeid (string): 店家編號
+  + password (string): 店家管理員密碼
+  + lock (string): 店家管理員凍結與否
+
 + 店家缺項目：
   + 社群網址欄位，如：FB 網址
 
@@ -381,6 +389,59 @@ HOST: https://liuqapi.tdhome.tw/api
      - 店家地址
     + phone: '0987654321,081231234' (optional, string)
      - 店家連絡電話
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : success
+                }
+            ]
+
++ Response 404 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "error" : invalid data
+                }
+            ]
+
+## 店家管理員資料設定 [/manager/v1/stores/agent{?token,storeid,agentid,agentname,agentphone,password,lock,action}]
++ 由管理處人員進行各店家管理者設定
++ 各店家可自行修改自家的管理者帳號
++ 修改密碼時，一併更新 salt 以及 token
+### 店家管理員資料設定 [POST]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string)
+     - 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
+    + agentid: 'peter' (required, string)
+      - 店家管理員編號
+    + agentname: 'Peter Wang' (optional, string)
+      - 店家管理員姓名
+    + agentphone: '0912345678' (optional, string)
+      - 店家管理員電話
+    + storeid: '100334544' (required, string)
+      - 店家編號
+    + password: 'Helloworld' (optional, string)
+      - 店家管理員密碼
+    + lock: "Y" (optional string)
+      - 店家管理員凍結與否
+    + action: "A01" (required, string)
+      - 設定功能：
+        - A01: 新增
+        - B02: 修改
+        - C03: 刪除
+        - D04: 查詢 
 
 + Response 200 (application/json)
 

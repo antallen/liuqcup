@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Models\Manager\v1\stores;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use App\Models\SecretClass;
+use Illuminate\Database\QueryException;
+
+class agents extends Model
+{
+    use HasFactory;
+    //驗證管理人員的 token
+    public function token($source){
+
+        //沒有 token 不給過
+        if (!isset($source['token'])){
+            $msg = array(["result" => "Have Not Token"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
+        $token = trim($source['token']);
+        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->get('level');
+        $agent = DB::table('storesagentids')->where('lock','N')->where('token',$token)->get('agentid');
+        if (!empty($user[0])){
+            return "Manager";
+        }
+        if (!empty($agent[0])){
+            return "Agent";
+        } else {
+            return "NOT";
+        }
+    }
+    //設定店家管理員資料 -- Manager: 管理處人員  Agent:店家管理人員
+    public function agentManager($source,$auths){
+
+        if (isset($source['storeid']) and isset($source['action'])){
+            //新增資料--Manager
+            if (($auths == "Manager") and ($source['action']=="A01")){
+                $result = $this->insertData($source);
+                return $result;
+            }
+
+            //修改資料 -- Manager
+            if (($auths == "Manager") and ($source['action']=="B02")){
+                $agentToken = DB::select('select token from storesagentids where agentid = ?', [strval(trim($source['agentid']))]);
+                $result = $this->updateData($source,$agentToken[0]->token);
+                return $result;
+            }
+
+            //修改資料 -- Agent
+            if (($auths == "Agent") and ($source['action']=="B02")){
+                $result = $this->updateData($source, trim($source['token']));
+                return $result;
+            }
+        } else {
+            $msg = array(["result" => "Invalidated data"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+
+    //新增店家管理員資料
+    public function insertData($source){
+        $storeid = strval(trim($source['storeid']));
+        $agentid = strval(trim($source['agentid']));
+        $password = strval(trim($source['password']));
+        $salt = strval(SecretClass::generateSalt());
+        $token = strval(SecretClass::generateToken($salt,$password));
+        $timestamp = date('Y-m-d H:i:s');
+        try {
+            DB::insert('insert into storesagentids (storeid, agentid, password, salt, token, created_at, updated_at)
+            values (?,?,?,?,?,?,?)', [$storeid,$agentid,$password,$salt,$token,$timestamp,$timestamp]);
+            $msg = array(["result" => "Insert Success"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } catch(QueryException $e){
+
+            $msg = array(["result" => "Data is not good !!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
+    }
+
+    //修改店家管理員資料
+    public function updateData($source,$token){
+        $timestamp = date('Y-m-d H:i:s');
+        try {
+            //更新 agentid
+            if (isset($source['agentid']) and (!empty($source['agentid']))){
+                DB::update('update storesagentids set agentid = ? where storeid = ? and token = ?', [strval(trim($source['agentid'])),strval(trim($source['storeid'])),$token]);
+            }
+            //更新 agentname
+            if (isset($source['agentname']) and (!empty($source['agentname']))){
+                DB::update('update storesagentids set agentname = ? where storeid = ? and token = ?', [strval(trim($source['agentname'])),strval(trim($source['storeid'])),$token]);
+            }
+            //更新 agentphone
+            if (isset($source['agentphone']) and (!empty($source['agentphone']))){
+                DB::update('update storesagentids set agentphone = ? where storeid = ? and token = ?', [strval(trim($source['agentphone'])),strval(trim($source['storeid'])),$token]);
+            }
+            //更新 password
+            if (isset($source['password']) and (!empty($source['password']))){
+                $password = strval(trim($source['password']));
+                $salt = strval(SecretClass::generateSalt());
+                $newtoken = strval(SecretClass::generateToken($salt,$password));
+                DB::update('update storesagentids set password = ?, salt = ? , token = ? where storeid = ? and token = ?', [$password,$salt,$newtoken,strval(trim($source['storeid'])),$token]);
+            }
+            //更新時間
+            DB::update('update storesagentids set updated_at = ? where storeid = ? and token = ?', [$timestamp,strval(trim($source['storeid'])),$token]);
+
+                $msg = array(["result" => "Update Success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } catch(QueryException $e){
+                $msg = array(["result" => "Update Fails"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
+    }
+}
