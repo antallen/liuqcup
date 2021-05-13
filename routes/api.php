@@ -8,6 +8,7 @@ use App\Http\Controllers\Manager\authController;
 use App\Http\Controllers\Manager\storesController;
 use App\Http\Controllers\Manager\storesLocksController;
 use App\Http\Controllers\Manager\funcsController;
+use App\Http\Controllers\Manager\classesController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -21,6 +22,7 @@ Route::apiResource('manager/v1/stores',storesController::class)->only('update');
 Route::apiResource('manager/v1/stores/frozens',storesLocksController::class)->only('store');
 Route::apiResource('manager/v1/stores/querys',storesController::class)->only('show');
 Route::apiResource('manager/v1/funcs/config',funcsController::class)->only('store');
+Route::apiResource('manager/v1/classes/config',classesController::class)->only('store');
 /*
 |--------------------------------------------------------------------------
 | API Routes
