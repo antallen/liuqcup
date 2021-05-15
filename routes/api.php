@@ -10,6 +10,7 @@ use App\Http\Controllers\Manager\storesLocksController;
 use App\Http\Controllers\Manager\funcsController;
 use App\Http\Controllers\Manager\classesController;
 use App\Http\Controllers\Manager\agentsController;
+use App\Http\Controllers\Manager\customersController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -25,7 +26,7 @@ Route::apiResource('manager/v1/stores/querys',storesController::class)->only('sh
 Route::apiResource('manager/v1/stores/agent',agentsController::class)->only('store');
 Route::apiResource('manager/v1/funcs/config',funcsController::class)->only('store');
 Route::apiResource('manager/v1/classes/config',classesController::class)->only('store');
-
+Route::apiResource('manager/v1/customers/config',customersController::class)->only('store');
 /*
 |--------------------------------------------------------------------------
 | API Routes

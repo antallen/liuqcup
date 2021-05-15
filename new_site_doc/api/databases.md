@@ -14,7 +14,7 @@
 |adminname|char(255)|NOT NULL|管理人員的真實姓名|
 |password|char(100)|NOT NULL|管理人員的密碼|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
-|token|char(255)|NOT NULL, UNIQUE|1.管理人員的 Key<br>2.由管理帳號的 Hash code 編碼而成的|
+|token|char(255)|NOT NULL, UNIQUE|1.管理人員的 Key<br>2.由管理帳號密碼的 Hash code 編碼而成的|
 |level|int|NOT NULL,ENUM(0,1,2),Default(2)|1.管理人員等級碼<br>2.等級分類：0 最高級，1 一般職員級，2 工讀生|
 |phoneno|char(20)|NOT NULL, UNIQUE|管理人員連絡電話|
 |email|char(100)|NOT NULL, UNIQUE|管理人員連絡用Email|
@@ -38,9 +38,9 @@
 |id|int|PRI|流水序號|
 |storeid|char(100)|NOT NULL, UNIQUE|1.店家編號<br>2.總管理處設定成 '000000000'|
 |storename|char(150)|NOT NULL|店家名稱|
-|qrcodeid|char(20)|NOT NULL,UNIQUE|店家 QRcode 編碼（其實根本用不到）|
-|phoneno|char(50)|NULL, json|店家連絡電話|
-|email|char(100)|NULL, json|店家連絡用Email|
+|qrcodeid|char(20)|NOT NULL,UNIQUE|店家 QRcode 編碼|
+|phoneno|varchar(150)|NULL|店家連絡電話|
+|email|longtext|NULL|店家連絡用Email|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
@@ -61,7 +61,7 @@
 |agentphone|PRI|char(10)|店家管理人員手機號碼|
 |storeid|char(100)|NOT NULL|1.店家編號<br>2.總管理處設定成 '000000000'<br>3.連結店家資料表用|
 |salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
-|token|char(255)|NOT NULL, UNIQUE|1.店家管理人員的 Key<br>2.由店家編號的 Hash code 編碼而成的|
+|token|char(255)|NOT NULL, UNIQUE|1.店家管理人員的 Key<br>2.由店家管理人員密碼的 Hash code 編碼而成的|
 |password|char(100)|NOT NULL|店家管理人員密碼|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('N')|凍結帳號與否|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
@@ -153,8 +153,11 @@
 |:-------|:-----------|:-------|:---|
 |id|int|PRI|流水序號|
 |cusid|char(20)|NOT NULL, UNIQUE|遊客編號|
-|cusname|char(100)|NOT NULL|遊客姓名|
-|cusphone|char(100)|NOT NULL, json|遊客手機、市話號碼|
+|cusname|char(100)|NULL|遊客姓名|
+|salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
+|token|char(255)|NOT NULL, UNIQUE|1.遊客的 Key<br>2.由遊客密碼的 Hash code 編碼而成的|
+|password|varchar(100)|NOT NULL, DEFAULT("ABC123")|遊客的私人密碼|
+|cusphone|varchar(150)|NOT NULL|遊客手機、市話號碼|
 |email|char(100)|NULL|遊客 Email 資料|
 |lock|char(2)|NOT NULL,ENUM('Y','N'), Default('Y')|凍結帳號與否(黑名單)|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
@@ -176,7 +179,7 @@
 |rentid|char(2)|NOT NULL,ENUM('R','B'), Default('R')|1.借用：R<br>2.歸還：B|
 |nums|int|NOT NULL,Default(0)|借還數量|
 |comments|char(255)|NULL|註備說明|
-|eventtimes|dateTime|NOT NULL,now,PRI|借還時間戳記|
+|eventtimes|timestamp|NOT NULL, PRI|借還時間戳記|
 
 <HR>
 <BR>

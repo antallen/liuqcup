@@ -541,3 +541,48 @@ HOST: https://liuqapi.tdhome.tw/api
 + 遊客還杯記錄(遊客還杯給店家)
   + 同一店歸還
   + 不同店歸還
+
+## 遊客基本資料管理  [/manager/v1/customers/config{?token,cusname,cusphone,cuspassword,cusid,email,lock,action}]
++ 新增時，帶入管理人員的 token 值，進行新增！
++ 修改時，可由遊客自行登入，進行修改！
++ 預留功能：
+  + 讓遊客可以自行產生 qrcode ，給店家掃瞄用！
+
+### 遊客基本資料管理 [POST]
+
++ Parameters
+
+    + token: 'Ab123456' (required, string)
+     - 管理處人員的 Key
+     - 店家人員的 Key
+     - 遊客的 key
+    + cusname: 'peter' (optional, string)
+      - 遊客姓名
+    + cusphone: '0912345678' (required, string)
+      - 遊客電話
+    + cuspassword: 'ABC123' (optional, string)
+      - 遊客密碼
+    + cusid: 'ABC12345678' (optional, string)
+      - 遊客 ID
+    + email: 'test@hello.com' (optional, string)
+      - 遊客 Email
+    + lock: "Y" (optional, string)
+      - 遊客與否列黑名單，預設值為 N
+    + action: "A01" (required, string)
+      - 設定功能：
+        - A01: 新增
+        - B02: 修改
+        - C03: 凍結
+        - D04: 查詢
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
