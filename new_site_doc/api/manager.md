@@ -434,14 +434,15 @@ HOST: https://liuqapi.tdhome.tw/api
       - 店家編號
     + password: 'Helloworld' (optional, string)
       - 店家管理員密碼
-    + lock: "Y" (optional string)
+    + lock: "Y" (optional, string)
       - 店家管理員凍結與否
     + action: "A01" (required, string)
       - 設定功能：
         - A01: 新增
         - B02: 修改
         - C03: 刪除
-        - D04: 查詢 
+        - D04: 查詢
+        - E05: 凍結 
 
 + Response 200 (application/json)
 

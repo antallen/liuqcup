@@ -1,0 +1,7 @@
+https://www.cnblogs.com/goloving/p/9170269.html
+https://www.codeprj.com/blog/8bed5d1.html
+https://blog.theodo.com/2016/06/improve-the-performance-of-your-webapp-configure-nginx-to-cache/
+https://www.nginx.com/blog/10-tips-for-10x-application-performance/
+https://vueschool.io/articles/vuejs-tutorials/vue-js-router-performance/
+https://geekflare.com/laravel-optimization/
+http://www.matthiassommer.it/programming/frontend/speed-up-your-vue-js-single-page-app/

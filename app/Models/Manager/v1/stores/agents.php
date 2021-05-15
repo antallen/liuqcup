@@ -44,8 +44,32 @@ class agents extends Model
 
             //修改資料 -- Manager
             if (($auths == "Manager") and ($source['action']=="B02")){
-                $agentToken = DB::select('select token from storesagentids where agentid = ?', [strval(trim($source['agentid']))]);
+                $agentToken = DB::select('select token from storesagentids where storeid = ? and agentid = ?', [strval(trim($source['storeid'])),strval(trim($source['agentid']))]);
                 $result = $this->updateData($source,$agentToken[0]->token);
+                return $result;
+            }
+
+            //凍結資料 -- Manager
+            if (($auths == "Manager") and ($source['action']=="E05")){
+                $agentToken = DB::select('select token from storesagentids where storeid = ? and agentid = ?', [strval(trim($source['storeid'])),strval(trim($source['agentid']))]);
+                $result = $this->frozenData($source,$agentToken[0]->token);
+                return $result;
+            }
+
+            //刪除店家管理人員帳號 -- Manager
+            if (($auths == "Manager") and ($source['action']=="C03")){
+                $agentToken = DB::select('select token from storesagentids where storeid = ? and agentid = ?', [strval(trim($source['storeid'])),strval(trim($source['agentid']))]);
+                if (empty($agentToken)){
+                    $msg = array(["result" => "This agentID is not here!"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
+                $result = $this->deleteData($source,$agentToken[0]->token);
+                return $result;
+            }
+
+            //查詢資料 -- Manager
+            if (($auths == "Manager") and ($source['action']=="D04")){
+                $result = $this->queryData($source,"Manager");
                 return $result;
             }
 
@@ -54,6 +78,13 @@ class agents extends Model
                 $result = $this->updateData($source, trim($source['token']));
                 return $result;
             }
+
+            //查詢資料 -- Agent
+            if (($auths == "Agent") and ($source['action']=="D04")){
+                $result = $this->queryData($source,"Agent");
+                return $result;
+            }
+
         } else {
             $msg = array(["result" => "Invalidated data"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
@@ -62,6 +93,12 @@ class agents extends Model
 
     //新增店家管理員資料
     public function insertData($source){
+
+        if (!isset($source['storeid']) or !isset($source['agentid']) or !isset($source['password'])){
+            $msg = array(["error" => "Invalidated data"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
         $storeid = strval(trim($source['storeid']));
         $agentid = strval(trim($source['agentid']));
         $password = strval(trim($source['password']));
@@ -71,7 +108,7 @@ class agents extends Model
         try {
             DB::insert('insert into storesagentids (storeid, agentid, password, salt, token, created_at, updated_at)
             values (?,?,?,?,?,?,?)', [$storeid,$agentid,$password,$salt,$token,$timestamp,$timestamp]);
-            $msg = array(["result" => "Insert Success"]);
+            $msg = array(["result" => "Add account Success"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch(QueryException $e){
 
@@ -113,6 +150,81 @@ class agents extends Model
                 $msg = array(["result" => "Update Fails"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
+
+    }
+
+    //凍結與解凍店家管理人員
+    public function frozenData($source,$agentToken){
+        $timestamp = date('Y-m-d H:i:s');
+        try {
+            //更動 lock 欄位值
+            if (isset($source['lock']) and (!empty($source['lock']))){
+                DB::update('update storesagentids set `lock` = ? where storeid = ? and token = ?', [strval(trim($source['lock'])),strval(trim($source['storeid'])),$agentToken]);
+            }
+            //更新時間
+            DB::update('update storesagentids set updated_at = ? where storeid = ? and token = ?', [$timestamp,strval(trim($source['storeid'])),$agentToken]);
+
+            // 查詢是否有解凍或是凍結成功
+            $results = DB::table('storesagentids')->where('token',$agentToken)->get('lock');
+
+            if ($results[0]->lock == "Y") {
+                $msg = array(["result" => "Frozen Success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+            if ($results[0]->lock == "N") {
+                $msg = array(["result" => "Unfrozen Success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
+        }catch(QueryException $e){
+            return $e;
+            $msg = array(["result" => "Frozen Fails"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+
+    //刪除店家管理人員帳號
+    public function deleteData($source,$agentToken){
+        try {
+            DB::delete('delete from storesagentids where storeid = ? and token = ?', [strval(trim($source['storeid'])),$agentToken]);
+
+            $msg = array(["result" => "Delete Success"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+
+        }catch(QueryException $e){
+
+            $msg = array(["result" => "Frozen Fails"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+
+    //查詢店家管理人員資料
+    public function queryData($source,$level){
+        if (isset($source['storeid']) and isset($source['agentid'])){
+            if ($level == "Manager"){
+                //使用 Manager 觀點查詢
+                try {
+                    $result = DB::select('select agentid,agentname,agentphone,password,`lock` from storesagentids where (storeid = ? and agentid = ?)',[strval(trim($source['storeid'])),strval(trim($source['agentid']))]);
+                    return $result;
+                }catch(QueryException $e) {
+                    $msg = array(["error" => "Query Fails"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
+            }
+            if ($level == "Agent"){
+                //使用 Agent 觀點查詢
+                try {
+                    $result = DB::select('select agentid,agentname,agentphone,password,`lock` from storesagentids where (storeid = ? and agentid = ? and token = ?)',[strval(trim($source['storeid'])),strval(trim($source['agentid'])),strval(trim($source['token']))]);
+                    return $result;
+                }catch(QueryException $e) {
+                    $msg = array(["error" => "Query Fails"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
+            }
+        } else {
+            $msg = array(["error" => "Data is not correct!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
 
     }
 }
