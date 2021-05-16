@@ -537,14 +537,34 @@ HOST: https://liuqapi.tdhome.tw/api
 + 店家取杯功能 (總管理處取走店家的杯子)
 + 店家代收杯功能 
 
-## 店家登入取得QRcode資料 [/rent/v1/stores/qrcode{?agentid,agentauth}]
+## 店家登入取得QRcode資料 [/rent/v1/stores/qrcode{?agentid,agentauth,action}]
++ QRcode 作用：
+  + 遊客借杯用
+  + 遊客還杯用
+  + 總管理處收杯用
+  + 總管理處放杯用
 
++ QRcode 結構：
+  + 連結url: http://liuqcup.tdhome.tw/api
+  + 連結uri: rent/v1/customers/rent
+  + 必要參數:
+    + storeid: 店家 ID
+    + agenttoken: 店家管理人員的 token
+    + action: 用途代碼
 ### 店家登入取得QRcode資料 [GET]
 
 + Parameters
 
     + agentid: "peter" (required, string)
+      - 店家管理者帳號
     + agentauth: "ABC123" (required, string)
+      - 店家管理者密碼
+    + action: "A01" (required, string)
+      - QRcode 功能項
+        - A01: 借杯(店家借杯給遊客)
+        - B02: 還杯(遊客還杯給店家)
+        - C03: 收杯(總管理處向店家收杯)
+        - D04: 取杯(店家向總管理處取杯)
 
 + Response 200 (application/json)
 
@@ -554,7 +574,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "qrcode" : "http://liuqcupapi.tdhome.tw/api/rent/v1/customers/rent?storeid=ABC123?token=fds"
+                    "qrcode" : "http://liuqcupapi.tdhome.tw/api/rent/v1/customers/rent?storeid=ABC123&token=fds&action=A01"
                 }
             ]
 

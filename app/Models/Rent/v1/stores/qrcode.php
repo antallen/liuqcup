@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 class qrcode extends Model
 {
     use HasFactory;
-    public function token(){
+    public function token($source,$hosturl){
+        //$source = array_push($source,$hosturl);
+        return $hosturl;
 
     }
 
