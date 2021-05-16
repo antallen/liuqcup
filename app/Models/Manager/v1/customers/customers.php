@@ -50,6 +50,9 @@ class customers extends Model
         if (!isset($source['cusphone']) or (strlen(trim($source['cusphone'])) !== 10) ){
             $msg = array(["error" => "Have Not Customers Phone"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
+        } else {
+            //遊客 ID ，預設使用 storeid + 
+            $cusid =
         }
     }
 }

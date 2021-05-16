@@ -180,6 +180,7 @@
 |nums|int|NOT NULL,Default(0)|借還數量|
 |comments|char(255)|NULL|註備說明|
 |eventtimes|timestamp|NOT NULL, PRI|借還時間戳記|
+|cusphone|varchar(20)|NOT NULL|遊客借杯時的手機號碼|
 
 <HR>
 <BR>
