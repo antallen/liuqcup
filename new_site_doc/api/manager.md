@@ -571,6 +571,8 @@ HOST: https://liuqapi.tdhome.tw/api
     + action: "A01" (required, string)
       - 設定功能：
         - A01: 新增
+          - 管理人員 (必要欄位：token,cusphone)
+          - 遊客註冊 (必要欄位：cusphone, cusphone, cuspassword)
         - B02: 修改
         - C03: 凍結
         - D04: 查詢

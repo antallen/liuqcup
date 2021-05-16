@@ -38,5 +38,18 @@ class customers extends Model
     //依不同的操作者，進行客戶資料管理
     public function cusManager($source,$auths){
 
+        //新增遊客資料 -- Manager & Agent
+        if (trim($source['action'] == "A01") and ( ($auths == "Manager") or ($auths == "Agent"))){
+            $result = $this->newCustomers($source);
+            return $result;
+        }
+    }
+
+    //新增遊客資料 -- Manager & Agent
+    public function newCustomers($source){
+        if (!isset($source['cusphone']) or (strlen(trim($source['cusphone'])) !== 10) ){
+            $msg = array(["error" => "Have Not Customers Phone"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
     }
 }
