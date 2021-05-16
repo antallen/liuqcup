@@ -469,8 +469,8 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 # Group 店家功能與分類管理
-+ 功能項目管理(稍晚)
-+ 分類項目管理(稍晚)
++ 功能項目管理<font color="green">(稍晚)</font>
++ 分類項目管理<font color="green">(稍晚)</font>
 + 店家功能設定與修改
 + 店家分類設定與修改
 
@@ -572,10 +572,11 @@ HOST: https://liuqapi.tdhome.tw/api
       - 設定功能：
         - A01: 新增
           - 管理人員 (必要欄位：token,cusphone)
-          - 遊客註冊 (必要欄位：cusphone, cusphone, cuspassword)
-        - B02: 修改
-        - C03: 凍結
-        - D04: 查詢
+            - <font color="blue">遊客借杯時，新增資料由此寫入</font>
+          - 遊客註冊 (必要欄位：cusphone, cusphone, cuspassword)<font color="red">(暫時不開放)</font>
+        - B02: 修改<font color="green">(稍晚)</font>
+        - C03: 凍結<font color="green">(稍晚)</font>
+        - D04: 查詢<font color="green">(稍晚)</font>
 
 + Response 200 (application/json)
 

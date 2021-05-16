@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\SecretClass;
 
 class customers extends Model
 {
@@ -43,6 +43,9 @@ class customers extends Model
             $result = $this->newCustomers($source);
             return $result;
         }
+
+        //遊客自行註冊資料 -- Customer
+
     }
 
     //新增遊客資料 -- Manager & Agent
@@ -51,8 +54,48 @@ class customers extends Model
             $msg = array(["error" => "Have Not Customers Phone"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
-            //遊客 ID ，預設使用 storeid + 
-            $cusid =
+            //判斷手機號碼是否己經註冊過了
+            $detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->get('cusid');
+
+            if ($detect == "[]"){
+
+                //遊客 ID ，預設使用時間編號
+              do {
+                    $rand = strval(rand(0,1000));
+                    $date = strval(date("YmdHis"));
+                    $cusid = "CUS".$date.$rand;
+                    $detect1 = DB::table('customers')->where('cusid','like',$cusid)->get('cusid');
+
+                    if ($detect1 == "[]"){
+                        if (isset($source['cuspassword'])){
+                            $password = trim($source['cuspassword']);
+                        } else {
+                            $password = "ABC123";
+                        }
+                        $salt = strval(SecretClass::generateSalt());
+                        $custoken = strval(SecretClass::generateToken($salt,$password));
+                        $timestamp = date('Y-m-d H:i:s');
+                        DB::table('customers')->insert([
+                            'cusphone' => trim($source['cusphone']),
+                            'cusid' => $cusid,
+                            'salt' => $salt,
+                            'token' => $custoken,
+                            'password' => $password,
+                            'created_at' => $timestamp,
+                            'updated_at'=> $timestamp
+                        ]);
+                        $msg = array(["result" => "success"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    }
+                } while (!empty($detect1));
+            } else {
+                $msg = array(["result" => "Customer's phone is here !!"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
         }
     }
+
+    //遊客自行註冊資料 --> Customer
+
 }
