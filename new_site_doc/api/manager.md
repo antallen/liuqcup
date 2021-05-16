@@ -473,6 +473,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 分類項目管理<font color="green">(稍晚)</font>
 + 店家功能設定與修改
 + 店家分類設定與修改
++ 店家 QRcode 資料設定與修改<font color="green">(稍晚)</font>
 
 ## 店家功能設定與修改 [/manager/v1/funcs/config{?token,storeid,funcs}]
 + 只有有管理處的人才可以修改
@@ -503,7 +504,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 ## 店家分類設定與修改 [/manager/v1/classes/config{?token,storeid,classes}]
-+ 只有有管理處的人才可以修改
++ 只有管理處的人才可以修改
 ### 店家分類設定與修改 [POST]
 
 + Parameters
@@ -531,10 +532,58 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 # Group 店家借還杯功能管理
-+ 店家 QRcode 資料設定與修改
++ 店家登入取得 QRcode 資料
 + 店家收杯功能 (店家收總管理處的杯子)
 + 店家取杯功能 (總管理處取走店家的杯子)
 + 店家代收杯功能 
+
+## 店家登入取得QRcode資料 [/rent/v1/stores/qrcode{?agentid,agentauth}]
+
+### 店家登入取得QRcode資料 [GET]
+
++ Parameters
+
+    + agentid: "peter" (required, string)
+    + agentauth: "ABC123" (required, string)
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "qrcode" : "http://liuqcupapi.tdhome.tw/api/rent/v1/customers/rent?storeid=ABC123?token=fds"
+                }
+            ]
+
+## 遊客借杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone}]
+
+### 遊客借杯記錄 [POST]
+
++ Parameters
+
+    + token: "ABC123" (required, string)
+      - 店家管理員 key 或是管理處人員 key
+    + storeid: "100345654" (required, string)
+      - 出借店家 ID
+    + nums: 3 (required, integer)
+      - 出借杯數
+    + cusphone: "0912345678" (required, integer)
+      - 遊客電話
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
 # Group 遊客資料與記錄管理
 + 遊客基本資料管理
 + 遊客借杯記錄(店家出借給遊客)
@@ -589,3 +638,5 @@ HOST: https://liuqapi.tdhome.tw/api
                     "result" : "success"
                 }
             ]
+
+

@@ -11,6 +11,8 @@ use App\Http\Controllers\Manager\funcsController;
 use App\Http\Controllers\Manager\classesController;
 use App\Http\Controllers\Manager\agentsController;
 use App\Http\Controllers\Manager\customersController;
+use App\Http\Controllers\Rent\rentController;
+use App\Http\Controllers\Rent\storesloginController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -27,6 +29,8 @@ Route::apiResource('manager/v1/stores/agent',agentsController::class)->only('sto
 Route::apiResource('manager/v1/funcs/config',funcsController::class)->only('store');
 Route::apiResource('manager/v1/classes/config',classesController::class)->only('store');
 Route::apiResource('manager/v1/customers/config',customersController::class)->only('store');
+Route::apiResource('rent/v1/customeers/rent',rentController::class)->only('store');
+Route::apiResource('rent/v1/stores/qrcode',storesloginController::class)->only('index');
 /*
 |--------------------------------------------------------------------------
 | API Routes
