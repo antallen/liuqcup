@@ -595,11 +595,11 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone}]
+## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone,password,action}]
 + action 功能項說明
   - A01: 借杯(店家借杯給遊客)
   - B02: 還杯(遊客還杯給店家)
-       
++ 若無遊客手機號碼，立即建立新的遊客帳號、密碼       
 ### 遊客借還杯記錄 [POST]
 
 + Parameters
@@ -612,6 +612,12 @@ HOST: https://liuqapi.tdhome.tw/api
       - 出借杯數
     + cusphone: "0912345678" (required, integer)
       - 遊客電話
+    + password: "ABC123" (required, string)
+      - 遊客自設密碼
+    + action: "A01" (required, string)
+      - 借還杯功能代號
+        - A01: 借杯
+        - B02: 還杯 
 
 + Response 200 (application/json)
 

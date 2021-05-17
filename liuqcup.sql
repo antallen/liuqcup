@@ -81,6 +81,42 @@ INSERT INTO `classes` VALUES (1,'1','專賣'),(2,'2','民宿'),(3,'3','商店');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cusid` varchar(20) NOT NULL,
+  `cusname` varchar(100) DEFAULT NULL,
+  `salt` char(20) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `password` varchar(100) NOT NULL DEFAULT 'ABC123',
+  `cusphone` varchar(150) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `lock` enum('Y','N') NOT NULL DEFAULT 'Y',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cusid` (`cusid`),
+  UNIQUE KEY `salt` (`salt`),
+  UNIQUE KEY `token` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'CUS20210516043825341',NULL,'1yJ?SxsEq+','$2y$10$vtSbr35nnVSRwkJgRfvb1.2FbH9Gpea0CoKcux.Khty8FMBMUOaxy','ABC123','0912345678',NULL,'Y','2021-05-15 20:38:25','2021-05-15 20:38:25'),(2,'CUS20210516043830302',NULL,'8;Wglirw&F','$2y$10$ZWJMIrx7crTGWlcmx88CPOKo9JnQzBzZJfhM33KPRIwBYoLbHfa8q','ABC123','0912345677',NULL,'Y','2021-05-15 20:38:30','2021-05-15 20:38:30'),(3,'CUS20210516043910420',NULL,'iC.sP1&FNt','$2y$10$mRyKvahDh50SeM83inhzTOSg7iShJ7lEKc4JO.9MZB12fD8ovBiE.','CDE12345','0912345676',NULL,'Y','2021-05-15 20:39:10','2021-05-15 20:39:10');
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `functions`
 --
 
@@ -132,6 +168,206 @@ INSERT INTO `migrations` VALUES (1,'2021_04_13_012724_create_manager_accounts_ta
 UNLOCK TABLES;
 
 --
+-- Table structure for table `rentlogs`
+--
+
+DROP TABLE IF EXISTS `rentlogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rentlogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cusid` varchar(20) NOT NULL,
+  `storeid` char(100) NOT NULL,
+  `rentid` enum('R','B') NOT NULL DEFAULT 'R',
+  `nums` int(11) NOT NULL DEFAULT 0,
+  `comments` varchar(255) DEFAULT NULL,
+  `eventtimes` datetime NOT NULL DEFAULT current_timestamp(),
+  `cusphone` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`,`eventtimes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+ PARTITION BY RANGE (year(`eventtimes`))
+SUBPARTITION BY HASH (month(`eventtimes`))
+(PARTITION `year2019` VALUES LESS THAN (2020)
+ (SUBPARTITION `dec2019` ENGINE = InnoDB,
+  SUBPARTITION `jan2019` ENGINE = InnoDB,
+  SUBPARTITION `feb2019` ENGINE = InnoDB,
+  SUBPARTITION `mar2019` ENGINE = InnoDB,
+  SUBPARTITION `apr2019` ENGINE = InnoDB,
+  SUBPARTITION `may2019` ENGINE = InnoDB,
+  SUBPARTITION `jun2019` ENGINE = InnoDB,
+  SUBPARTITION `jul2019` ENGINE = InnoDB,
+  SUBPARTITION `aug2019` ENGINE = InnoDB,
+  SUBPARTITION `sep2019` ENGINE = InnoDB,
+  SUBPARTITION `oct2019` ENGINE = InnoDB,
+  SUBPARTITION `nov2019` ENGINE = InnoDB),
+ PARTITION `year2020` VALUES LESS THAN (2021)
+ (SUBPARTITION `dec2020` ENGINE = InnoDB,
+  SUBPARTITION `jan2020` ENGINE = InnoDB,
+  SUBPARTITION `feb2020` ENGINE = InnoDB,
+  SUBPARTITION `mar2020` ENGINE = InnoDB,
+  SUBPARTITION `apr2020` ENGINE = InnoDB,
+  SUBPARTITION `may2020` ENGINE = InnoDB,
+  SUBPARTITION `jun2020` ENGINE = InnoDB,
+  SUBPARTITION `jul2020` ENGINE = InnoDB,
+  SUBPARTITION `aug2020` ENGINE = InnoDB,
+  SUBPARTITION `sep2020` ENGINE = InnoDB,
+  SUBPARTITION `oct2020` ENGINE = InnoDB,
+  SUBPARTITION `nov2020` ENGINE = InnoDB),
+ PARTITION `year2021` VALUES LESS THAN (2022)
+ (SUBPARTITION `dec2021` ENGINE = InnoDB,
+  SUBPARTITION `jan2021` ENGINE = InnoDB,
+  SUBPARTITION `feb2021` ENGINE = InnoDB,
+  SUBPARTITION `mar2021` ENGINE = InnoDB,
+  SUBPARTITION `apr2021` ENGINE = InnoDB,
+  SUBPARTITION `may2021` ENGINE = InnoDB,
+  SUBPARTITION `jun2021` ENGINE = InnoDB,
+  SUBPARTITION `jul2021` ENGINE = InnoDB,
+  SUBPARTITION `aug2021` ENGINE = InnoDB,
+  SUBPARTITION `sep2021` ENGINE = InnoDB,
+  SUBPARTITION `oct2021` ENGINE = InnoDB,
+  SUBPARTITION `nov2021` ENGINE = InnoDB),
+ PARTITION `year2022` VALUES LESS THAN (2023)
+ (SUBPARTITION `dec2022` ENGINE = InnoDB,
+  SUBPARTITION `jan2022` ENGINE = InnoDB,
+  SUBPARTITION `feb2022` ENGINE = InnoDB,
+  SUBPARTITION `mar2022` ENGINE = InnoDB,
+  SUBPARTITION `apr2022` ENGINE = InnoDB,
+  SUBPARTITION `may2022` ENGINE = InnoDB,
+  SUBPARTITION `jun2022` ENGINE = InnoDB,
+  SUBPARTITION `jul2022` ENGINE = InnoDB,
+  SUBPARTITION `aug2022` ENGINE = InnoDB,
+  SUBPARTITION `sep2022` ENGINE = InnoDB,
+  SUBPARTITION `oct2022` ENGINE = InnoDB,
+  SUBPARTITION `nov2022` ENGINE = InnoDB),
+ PARTITION `year2023` VALUES LESS THAN (2024)
+ (SUBPARTITION `dec2023` ENGINE = InnoDB,
+  SUBPARTITION `jan2023` ENGINE = InnoDB,
+  SUBPARTITION `feb2023` ENGINE = InnoDB,
+  SUBPARTITION `mar2023` ENGINE = InnoDB,
+  SUBPARTITION `apr2023` ENGINE = InnoDB,
+  SUBPARTITION `may2023` ENGINE = InnoDB,
+  SUBPARTITION `jun2023` ENGINE = InnoDB,
+  SUBPARTITION `jul2023` ENGINE = InnoDB,
+  SUBPARTITION `aug2023` ENGINE = InnoDB,
+  SUBPARTITION `sep2023` ENGINE = InnoDB,
+  SUBPARTITION `oct2023` ENGINE = InnoDB,
+  SUBPARTITION `nov2023` ENGINE = InnoDB),
+ PARTITION `year2024` VALUES LESS THAN (2025)
+ (SUBPARTITION `dec2024` ENGINE = InnoDB,
+  SUBPARTITION `jan2024` ENGINE = InnoDB,
+  SUBPARTITION `feb2024` ENGINE = InnoDB,
+  SUBPARTITION `mar2024` ENGINE = InnoDB,
+  SUBPARTITION `apr2024` ENGINE = InnoDB,
+  SUBPARTITION `may2024` ENGINE = InnoDB,
+  SUBPARTITION `jun2024` ENGINE = InnoDB,
+  SUBPARTITION `jul2024` ENGINE = InnoDB,
+  SUBPARTITION `aug2024` ENGINE = InnoDB,
+  SUBPARTITION `sep2024` ENGINE = InnoDB,
+  SUBPARTITION `oct2024` ENGINE = InnoDB,
+  SUBPARTITION `nov2024` ENGINE = InnoDB),
+ PARTITION `year2025` VALUES LESS THAN (2026)
+ (SUBPARTITION `dec2025` ENGINE = InnoDB,
+  SUBPARTITION `jan2025` ENGINE = InnoDB,
+  SUBPARTITION `feb2025` ENGINE = InnoDB,
+  SUBPARTITION `mar2025` ENGINE = InnoDB,
+  SUBPARTITION `apr2025` ENGINE = InnoDB,
+  SUBPARTITION `may2025` ENGINE = InnoDB,
+  SUBPARTITION `jun2025` ENGINE = InnoDB,
+  SUBPARTITION `jul2025` ENGINE = InnoDB,
+  SUBPARTITION `aug2025` ENGINE = InnoDB,
+  SUBPARTITION `sep2025` ENGINE = InnoDB,
+  SUBPARTITION `oct2025` ENGINE = InnoDB,
+  SUBPARTITION `nov2025` ENGINE = InnoDB),
+ PARTITION `year2026` VALUES LESS THAN (2027)
+ (SUBPARTITION `dec2026` ENGINE = InnoDB,
+  SUBPARTITION `jan2026` ENGINE = InnoDB,
+  SUBPARTITION `feb2026` ENGINE = InnoDB,
+  SUBPARTITION `mar2026` ENGINE = InnoDB,
+  SUBPARTITION `apr2026` ENGINE = InnoDB,
+  SUBPARTITION `may2026` ENGINE = InnoDB,
+  SUBPARTITION `jun2026` ENGINE = InnoDB,
+  SUBPARTITION `jul2026` ENGINE = InnoDB,
+  SUBPARTITION `aug2026` ENGINE = InnoDB,
+  SUBPARTITION `sep2026` ENGINE = InnoDB,
+  SUBPARTITION `oct2026` ENGINE = InnoDB,
+  SUBPARTITION `nov2026` ENGINE = InnoDB),
+ PARTITION `year2027` VALUES LESS THAN (2028)
+ (SUBPARTITION `dec2027` ENGINE = InnoDB,
+  SUBPARTITION `jan2027` ENGINE = InnoDB,
+  SUBPARTITION `feb2027` ENGINE = InnoDB,
+  SUBPARTITION `mar2027` ENGINE = InnoDB,
+  SUBPARTITION `apr2027` ENGINE = InnoDB,
+  SUBPARTITION `may2027` ENGINE = InnoDB,
+  SUBPARTITION `jun2027` ENGINE = InnoDB,
+  SUBPARTITION `jul2027` ENGINE = InnoDB,
+  SUBPARTITION `aug2027` ENGINE = InnoDB,
+  SUBPARTITION `sep2027` ENGINE = InnoDB,
+  SUBPARTITION `oct2027` ENGINE = InnoDB,
+  SUBPARTITION `nov2027` ENGINE = InnoDB),
+ PARTITION `year2028` VALUES LESS THAN (2029)
+ (SUBPARTITION `dec2028` ENGINE = InnoDB,
+  SUBPARTITION `jan2028` ENGINE = InnoDB,
+  SUBPARTITION `feb2028` ENGINE = InnoDB,
+  SUBPARTITION `mar2028` ENGINE = InnoDB,
+  SUBPARTITION `apr2028` ENGINE = InnoDB,
+  SUBPARTITION `may2028` ENGINE = InnoDB,
+  SUBPARTITION `jun2028` ENGINE = InnoDB,
+  SUBPARTITION `jul2028` ENGINE = InnoDB,
+  SUBPARTITION `aug2028` ENGINE = InnoDB,
+  SUBPARTITION `sep2028` ENGINE = InnoDB,
+  SUBPARTITION `oct2028` ENGINE = InnoDB,
+  SUBPARTITION `nov2028` ENGINE = InnoDB),
+ PARTITION `year2029` VALUES LESS THAN (2030)
+ (SUBPARTITION `dec2029` ENGINE = InnoDB,
+  SUBPARTITION `jan2029` ENGINE = InnoDB,
+  SUBPARTITION `feb2029` ENGINE = InnoDB,
+  SUBPARTITION `mar2029` ENGINE = InnoDB,
+  SUBPARTITION `apr2029` ENGINE = InnoDB,
+  SUBPARTITION `may2029` ENGINE = InnoDB,
+  SUBPARTITION `jun2029` ENGINE = InnoDB,
+  SUBPARTITION `jul2029` ENGINE = InnoDB,
+  SUBPARTITION `aug2029` ENGINE = InnoDB,
+  SUBPARTITION `sep2029` ENGINE = InnoDB,
+  SUBPARTITION `oct2029` ENGINE = InnoDB,
+  SUBPARTITION `nov2029` ENGINE = InnoDB),
+ PARTITION `year2030` VALUES LESS THAN (2031)
+ (SUBPARTITION `dec2030` ENGINE = InnoDB,
+  SUBPARTITION `jan2030` ENGINE = InnoDB,
+  SUBPARTITION `feb2030` ENGINE = InnoDB,
+  SUBPARTITION `mar2030` ENGINE = InnoDB,
+  SUBPARTITION `apr2030` ENGINE = InnoDB,
+  SUBPARTITION `may2030` ENGINE = InnoDB,
+  SUBPARTITION `jun2030` ENGINE = InnoDB,
+  SUBPARTITION `jul2030` ENGINE = InnoDB,
+  SUBPARTITION `aug2030` ENGINE = InnoDB,
+  SUBPARTITION `sep2030` ENGINE = InnoDB,
+  SUBPARTITION `oct2030` ENGINE = InnoDB,
+  SUBPARTITION `nov2030` ENGINE = InnoDB),
+ PARTITION `future` VALUES LESS THAN MAXVALUE
+ (SUBPARTITION `dec` ENGINE = InnoDB,
+  SUBPARTITION `jan` ENGINE = InnoDB,
+  SUBPARTITION `feb` ENGINE = InnoDB,
+  SUBPARTITION `mar` ENGINE = InnoDB,
+  SUBPARTITION `apr` ENGINE = InnoDB,
+  SUBPARTITION `may` ENGINE = InnoDB,
+  SUBPARTITION `jun` ENGINE = InnoDB,
+  SUBPARTITION `jul` ENGINE = InnoDB,
+  SUBPARTITION `aug` ENGINE = InnoDB,
+  SUBPARTITION `sep` ENGINE = InnoDB,
+  SUBPARTITION `oct` ENGINE = InnoDB,
+  SUBPARTITION `nov` ENGINE = InnoDB));
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rentlogs`
+--
+
+LOCK TABLES `rentlogs` WRITE;
+/*!40000 ALTER TABLE `rentlogs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rentlogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `stores`
 --
 
@@ -143,7 +379,7 @@ CREATE TABLE `stores` (
   `storeid` char(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
   `storename` char(150) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家名稱',
   `qrcodeid` char(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家 QRcode 編碼',
-  `phoneno` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家連絡電話(DC2Type:json)',
+  `phoneno` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家連絡用Email(DC2Type:json)',
   `lock` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Y' COMMENT '凍結帳號與否',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -176,7 +412,7 @@ DROP TABLE IF EXISTS `storesagentids`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storesagentids` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `agentid` char(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員帳號',
+  `agentid` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `agentname` char(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家管理人員姓名',
   `agentphone` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `storeid` char(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
@@ -192,7 +428,7 @@ CREATE TABLE `storesagentids` (
   UNIQUE KEY `storesagentids_token_unique` (`token`),
   KEY `storesagentids_storeid_foreign` (`storeid`),
   CONSTRAINT `storesagentids_storeid_foreign` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +437,7 @@ CREATE TABLE `storesagentids` (
 
 LOCK TABLES `storesagentids` WRITE;
 /*!40000 ALTER TABLE `storesagentids` DISABLE KEYS */;
-INSERT INTO `storesagentids` VALUES (3,'peter','Peter Wang','0912345679','13354477','l$,sSceI2o','$2y$10$ih4YeLpz2b61qj804SK9p.CMn7YRWI1UxTCS45svVCj0fMF/HPJVu','CDEF1234','N','2021-05-13 06:03:53','2021-05-13 06:59:13');
+INSERT INTO `storesagentids` VALUES (5,'peter@hello.com',NULL,NULL,'13354477','SgN3O*u8?e','$2y$10$TyYEEN95.aNeWc2rWOeSGO/Ci3J5ugOCB/GZJnpmXtHfFnPc1ClYa','ABC123','N','2021-05-15 04:42:50','2021-05-16 20:53:16'),(7,'james',NULL,NULL,'13354477','5Go4rx7&H!','$2y$10$h.Gzb1Gyu2VcTZEe.TFdEev8//Nq.fGB8jjXMrHLY82csriVY64P6','ABC1234','N','2021-05-15 05:08:14','2021-05-15 05:08:14');
 /*!40000 ALTER TABLE `storesagentids` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,4 +715,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-13 23:02:54
+-- Dump completed on 2021-05-17 16:38:03
