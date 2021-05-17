@@ -580,6 +580,8 @@ HOST: https://liuqapi.tdhome.tw/api
     + action: "A01" (required, string)
       + A01: 借杯
       + B02: 還杯
+      + C03: 收杯(總管理處向店家收杯)
+      + D04: 送杯(店家向總管理處取杯)
 
 + Response 200 (application/json)
 

@@ -25,10 +25,10 @@ class storesloginController extends Controller
         $qrcode = new qrcode();
         $result = $qrcode->token($request->all());
         if ($result == "success"){
-            $url = $qrcode->getqrcode($request->all(),$hosturl);
+            $url = $qrcode->getqrcode($request->all());
             return $url;
         }else {
-            $msg = array(["error" => "Agentid is not here!"]);
+            $msg = array(["error" => "Token is not here!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
 
         }
