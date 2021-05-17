@@ -11,10 +11,18 @@ use Illuminate\Support\Facades\DB;
 class qrcode extends Model
 {
     use HasFactory;
-    public function token($source,$hosturl){
-        //$source = array_push($source,$hosturl);
-        return $hosturl;
-
+    public function token($source){
+        //先比對密碼
+        if (isset($source['agentid'])){
+            $stores = DB::table('storesagentids')->where('agentid',trim($source['agentid']))->get('password');
+            if ($stores['password'] == trim($source['agentauth'])){
+                return "success";
+            } else {
+                return "failed";
+            }
+        } else {
+            return "failed";
+        }
     }
 
 }

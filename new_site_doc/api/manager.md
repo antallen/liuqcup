@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://liuqapi.tdhome.tw/api
 
-# 經營者管理總後台功能 API
+# 琉行杯借還系統功能 API
 + 網頁放置點 https://liuqcup.antallen.info
 + API 網址 https://liuqapi.tdhome.tw/api
 #### 站台經營者帳號密碼管理
@@ -424,8 +424,9 @@ HOST: https://liuqapi.tdhome.tw/api
 
     + token: 'Ab123456' (required, string)
      - 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + agentid: 'peter' (required, string)
+    + agentid: 'peter@hello.com' (required, string)
       - 店家管理員編號
+      - 使用 email 格式，避免重覆
     + agentname: 'Peter Wang' (optional, string)
       - 店家管理員姓名
     + agentphone: '0912345678' (optional, string)
@@ -532,26 +533,21 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 # Group 店家借還杯功能管理
-+ 店家登入取得 QRcode 資料
-+ 店家收杯功能 (店家收總管理處的杯子)
-+ 店家取杯功能 (總管理處取走店家的杯子)
++ 店家登入功能
+  + 取得管理人員的 token
++ 店家取得 QRcode 資料
+  + QRcode 功能：給遊客、總管理處方便收取杯用
++ 店家借杯/還杯/收杯/送杯功能
+  + 借杯功能(店家借杯給遊客)
+  + 還杯功能(遊客還杯給店家)
+  + 送杯功能 (店家收總管理處的杯子)
+  + 取杯功能 (總管理處取走店家的杯子)
 + 店家代收杯功能 
 
-## 店家登入取得QRcode資料 [/rent/v1/stores/qrcode{?agentid,agentauth,action}]
-+ QRcode 作用：
-  + 遊客借杯用
-  + 遊客還杯用
-  + 總管理處收杯用
-  + 總管理處放杯用
-
-+ QRcode 結構：
-  + 連結url: http://liuqcup.tdhome.tw/api
-  + 連結uri: rent/v1/customers/rent
-  + 必要參數:
-    + storeid: 店家 ID
-    + agenttoken: 店家管理人員的 token
-    + action: 用途代碼
-### 店家登入取得QRcode資料 [GET]
+## 店家登入 [/rent/v1/stores/login{?agentid,agentauth}]
++ 店家管理人員登入
+  + 登入後，取得 token 以利接下來的運用
+### 店家登入 [GET]
 
 + Parameters
 
@@ -559,12 +555,6 @@ HOST: https://liuqapi.tdhome.tw/api
       - 店家管理者帳號
     + agentauth: "ABC123" (required, string)
       - 店家管理者密碼
-    + action: "A01" (required, string)
-      - QRcode 功能項
-        - A01: 借杯(店家借杯給遊客)
-        - B02: 還杯(遊客還杯給店家)
-        - C03: 收杯(總管理處向店家收杯)
-        - D04: 取杯(店家向總管理處取杯)
 
 + Response 200 (application/json)
 
@@ -574,20 +564,46 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "qrcode" : "http://liuqcupapi.tdhome.tw/api/rent/v1/customers/rent?storeid=ABC123&token=fds&action=A01"
+                    "token" : "ABCD123"
                 }
             ]
 
-## 遊客借杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone}]
+## 店家取得QRcode資料  [/rent/v1/stores/qrcode{?token,action}]
 
-### 遊客借杯記錄 [POST]
+### 店家取得QRcode資料 [PATCH]
+
++ Parameters
+
+    + token: "ABC123" (required, string)
+    + action: "A01" (required, string)
+      + A01: 借杯
+      + B02: 還杯
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "qrcode" : "http://liuqcup.antallen.info/#/rent
+                }
+            ]
+
+## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone}]
++ action 功能項說明
+  - A01: 借杯(店家借杯給遊客)
+  - B02: 還杯(遊客還杯給店家)
+       
+### 遊客借還杯記錄 [POST]
 
 + Parameters
 
     + token: "ABC123" (required, string)
       - 店家管理員 key 或是管理處人員 key
     + storeid: "100345654" (required, string)
-      - 出借店家 ID
+      - 借還杯店家 ID
     + nums: 3 (required, integer)
       - 出借杯數
     + cusphone: "0912345678" (required, integer)
@@ -604,6 +620,27 @@ HOST: https://liuqapi.tdhome.tw/api
                     "result" : "success"
                 }
             ]
+
+## 店家收送杯記錄 [/rent/v1/stores/rent]
++ action 功能項說明
+  - C03: 收杯(總管理處向店家收杯)
+  - D04: 送杯(店家向總管理處取杯)
+
+### 店家收送杯記錄 [POST]
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
+
+
 # Group 遊客資料與記錄管理
 + 遊客基本資料管理
 + 遊客借杯記錄(店家出借給遊客)

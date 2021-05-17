@@ -16,9 +16,14 @@ class storesloginController extends Controller
         $url = \Config::get('qrcode', 'qrcode');
         $hosturl = $url['qrcode'];
         $qrcode = new qrcode();
-        $result = $qrcode->token($request->all(),$hosturl);
-        return $result;
+        $result = $qrcode->token($request->all());
+        if ($result == "success"){
+            $url = $qrcode->getqrcode($request->all(),$hosturl);
+            return $url;
+        }else {
+            $msg = array(["error" => "Agentid is not here!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+
+        }
     }
-
-
 }
