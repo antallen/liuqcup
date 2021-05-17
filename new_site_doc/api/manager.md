@@ -564,13 +564,15 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "token" : "ABCD123"
+                    "storeid": "100333222",
+                    "storename": "ALoHa",
+                    "token": "ABCD123"
                 }
             ]
 
 ## 店家取得QRcode資料  [/rent/v1/stores/qrcode{?token,action}]
 
-### 店家取得QRcode資料 [PATCH]
+### 店家取得QRcode資料 [POST]
 
 + Parameters
 

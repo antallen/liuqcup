@@ -1,2 +1,5 @@
-.env 檔案內
+.env 檔案內設定值取用方式
 QRCODE_URL="http://127.0.0.1:8000/api"
+
+$url = \Config::get('qrcode', 'qrcode');
+        $hosturl = $url['qrcode'];

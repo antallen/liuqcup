@@ -30,7 +30,8 @@ Route::apiResource('manager/v1/funcs/config',funcsController::class)->only('stor
 Route::apiResource('manager/v1/classes/config',classesController::class)->only('store');
 Route::apiResource('manager/v1/customers/config',customersController::class)->only('store');
 Route::apiResource('rent/v1/customeers/rent',rentController::class)->only('store');
-Route::apiResource('rent/v1/stores/qrcode',storesloginController::class)->only('index');
+Route::apiResource('rent/v1/stores/qrcode',storesloginController::class)->only('store');
+Route::apiResource('rent/v1/stores/login',storesloginController::class)->only('index');
 /*
 |--------------------------------------------------------------------------
 | API Routes
