@@ -69,10 +69,41 @@ class rent extends Model
         $storeid = trim($source['storeid']);
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
-        $cus = DB::table('rentlogscustomers')->where('cusphone','like','%'.$cusphone.'%')->get();
-        if (!empty($cus[0]->cusid)){
-            $cusid = $cus[0]->cusid;
+        //$timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
+        $timestamp = date('Y-m-d H:i:s');
+
+        //取出最近的還杯記錄
+        $cus = DB::table('rentlogs')
+            ->where('cusphone','like','%'.$cusphone.'%')
+            //->where('eventtimes','>',$timestamp)
+            ->where('checks',"Y")
+            ->where('rentid',"B")
+            ->orderByDesc('eventtimes')
+            ->first();
+
+        //如果找不出記錄，就取得所有的借杯資訊
+        if (is_null($cus)){
+            return "null";
+        } else {
+            return $cus;
         }
+
+        //取出這個月的借杯記錄
+        $cusstatis = DB::table('rentlogs')
+            ->where('cusphone','like','%'.$cusphone.'%')
+            ->where('eventtimes','>',$timestamp)
+            ->where('checks',"Y")
+            ->where('rentid',"R")
+            ->orderBy('eventtimes')
+            ->count('nums');
+
+        //進行還杯記錄處理
+        return $cusstatis." ".$nums;
+
+        //if ($cusstatis >= 1){
+
+            return $cus;
+        //}
         return $source;
     }
 }

@@ -617,7 +617,7 @@ HOST: https://liuqapi.tdhome.tw/api
     + action: "A01" (required, string)
       - 借還杯功能代號
         - A01: 借杯
-        - B02: 還杯 
+        - B02: 還杯
 
 + Response 200 (application/json)
 

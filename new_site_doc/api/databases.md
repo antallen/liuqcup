@@ -175,13 +175,15 @@
 |:-------|:-----------|:-------|:---|
 |id|unsignBigInteger|PRI|流水序號|
 |cusid|char(20)|NOT NULL,INDEX|遊客編號|
-|storeid|char(100)|NOT NULL,INDEX|店家編號|
+|storeid|char(100)|NOT NULL,INDEX|借杯店家編號|
 |rentid|char(2)|NOT NULL,ENUM('R','B'), Default('R')|1.借用：R<br>2.歸還：B|
 |nums|int|NOT NULL,Default(0)|借還數量|
 |comments|char(255)|NULL|註備說明|
-|eventtimes|timestamp|NOT NULL, Default(now())|借還時間戳記|
+|eventtimes|timestamp|NOT NULL, Default(now())|借杯時間戳記|
 |cusphone|varchar(20)|NOT NULL|遊客借杯時的手機號碼|
-|checks|char(2)|NOT NULL, ENUM('Y','N'), Default('N')|店家確認記錄|
+|checks|char(2)|NOT NULL, ENUM('Y','N','B'), Default('N')|1.店家確認記錄<br>2.Y:借杯確認<br>3.B:還杯確認|
+|backtimes|timestamp|NULL|還杯時間戳記|
+|backstoreid|char(100)|NULL|還杯店家編號|
 
 <HR>
 <BR>
