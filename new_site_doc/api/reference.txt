@@ -71,6 +71,7 @@ CREATE TABLE rentlogs (
     nums INT NOT NULL default(0),
     comments VARCHAR(255) NULL,
     eventtimes datetime NOT NULL DEFAULT current_timestamp(),
+    checks ENUM("Y", "N") NOT NULL Default("N"),
     PRIMARY KEY(id,eventtimes)
 ) ENGINE=innodb, CHARSET="utf8";
 

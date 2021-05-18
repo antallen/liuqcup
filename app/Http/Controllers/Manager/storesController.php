@@ -20,8 +20,9 @@ class storesController extends Controller
       //有 token 表示是管理者
       if (isset($_REQUEST['token'])){
         $auths = $lists->token($request->all());
+        //return $auths;
         if ($auths == "Good"){
-            $results = $lists->mgetStores($_GET['classes']);
+            $results = $lists->mgetStores(strval(trim($_GET['classes'])));
             foreach ($results as $result){
                 $funcs = $lists->getStoresFuncs($result->storeid);
                 $idname = "funid";
@@ -40,8 +41,8 @@ class storesController extends Controller
         }
 
       } else {
-
-        $results = $lists->getStores($_GET['classes']);
+        //前台「配合店家」列表
+        $results = $lists->getStores(strval(trim($_GET['classes'])));
         foreach ($results as $result){
             $funcs = $lists->getStoresFuncs($result->storeid);
             $idname = "funid";

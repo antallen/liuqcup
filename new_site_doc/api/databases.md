@@ -179,8 +179,9 @@
 |rentid|char(2)|NOT NULL,ENUM('R','B'), Default('R')|1.借用：R<br>2.歸還：B|
 |nums|int|NOT NULL,Default(0)|借還數量|
 |comments|char(255)|NULL|註備說明|
-|eventtimes|timestamp|NOT NULL, PRI|借還時間戳記|
+|eventtimes|timestamp|NOT NULL, Default(now())|借還時間戳記|
 |cusphone|varchar(20)|NOT NULL|遊客借杯時的手機號碼|
+|checks|char(2)|NOT NULL, ENUM('Y','N'), Default('N')|店家確認記錄|
 
 <HR>
 <BR>

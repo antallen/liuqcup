@@ -14,9 +14,8 @@ class lists extends Model
     //測試是否是有效的管理人員資料
     public function token($source){
         $token = strval($source['token']);
-
-        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->get('level');
-
+        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->get();
+        //return $user[0]->level;
         if ($user[0]->level !== "[]"){
             return "Good";
         } else {
@@ -31,7 +30,7 @@ class lists extends Model
                     ->join('storesclass','stores.storeid','=','storesclass.storeid')
                     ->join('classes','storesclass.classid','=','classes.classid')
                     ->select('stores.storeid','stores.storename','stores.phoneno','stores.address')
-                    ->where('storesclass.classid',trim($classes))
+                    ->where('storesclass.classid',strval(trim($classes)))
                     ->where('stores.lock','N')
                     ->get();
         return $stores;
@@ -44,7 +43,7 @@ class lists extends Model
                     ->join('storesclass','stores.storeid','=','storesclass.storeid')
                     ->join('classes','storesclass.classid','=','classes.classid')
                     ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname','stores.lock')
-                    ->where('storesclass.classid',trim($classes))->get();
+                    ->where('storesclass.classid',strval(trim($classes)))->get();
         return $stores;
 
     }

@@ -262,7 +262,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
     + token: 'Ab123456' (optional, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + classes: '1' (required, integer)
+    + classes: 1 (required, integer)
       + 店家型態分類值！
       + 1：專賣店
       + 2：民宿
@@ -281,7 +281,7 @@ HOST: https://liuqapi.tdhome.tw/api
                     "phoneno": null,
                     "address": "屏東縣琉球鄉杉福村復興路163號-5",
                     "classname": "民宿",
-                    以下管理帳號才可以看到！
+                    以下管理帳號才可以看到是否有 lock ！
                     "lock": "Y",
                     "funid1": "還杯",
                     "funid2": "借杯"
@@ -599,7 +599,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + action 功能項說明
   - A01: 借杯(店家借杯給遊客)
   - B02: 還杯(遊客還杯給店家)
-+ 若無遊客手機號碼，立即建立新的遊客帳號、密碼       
++ 若無遊客手機號碼，立即建立新的遊客帳號、密碼
 ### 遊客借還杯記錄 [POST]
 
 + Parameters
