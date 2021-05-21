@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manager\v1\customers\customers as CustomersCustomers;
+use Doctrine\DBAL\FetchMode;
 use LengthException;
 
 class rent extends Model
@@ -14,7 +15,7 @@ class rent extends Model
     use HasFactory;
 
     public function token($source){
-        //確認有店家 token 以及客戶的手機號碼
+        //確認有店家 token 以及客戶的手機號碼，未來需要增加「店家專屬 QRcode」判斷！
 
             if (isset($source['token']) and isset($source['cusphone'])){
                 $auth =  DB::table('storesagentids')->where('token',trim($source['token']))->get();
@@ -69,41 +70,96 @@ class rent extends Model
         $storeid = trim($source['storeid']);
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
-        //$timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
-        $timestamp = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
+        //$timestamp = date('Y-m-d H:i:s');
 
-        //取出最近的還杯記錄
+        //取出最近 30 天的還杯記錄
         $cus = DB::table('rentlogs')
             ->where('cusphone','like','%'.$cusphone.'%')
-            //->where('eventtimes','>',$timestamp)
+            ->where('eventtimes','>',$timestamp)
             ->where('checks',"Y")
             ->where('rentid',"B")
             ->orderByDesc('eventtimes')
             ->first();
 
-        //如果找不出記錄，就取得所有的借杯資訊
+        //若沒有，則是取出最近 30 天的借杯記錄
         if (is_null($cus)){
-            return "null";
-        } else {
-            return $cus;
-        }
-
-        //取出這個月的借杯記錄
-        $cusstatis = DB::table('rentlogs')
+            $cus = DB::table('rentlogs')
             ->where('cusphone','like','%'.$cusphone.'%')
             ->where('eventtimes','>',$timestamp)
             ->where('checks',"Y")
             ->where('rentid',"R")
-            ->orderBy('eventtimes')
-            ->count('nums');
+            ->orderByDesc('eventtimes')
+            ->get();
 
-        //進行還杯記錄處理
-        return $cusstatis." ".$nums;
+            foreach ($cus as $num){
+                $timestamp = date('Y-m-d H:i:s');
+                if ($num->nums <= $nums){
+                    $nums = $nums - $num->nums;
+                    DB::table('rentlogs')
+                    ->where('cusphone','like','%'.$cusphone.'%')
+                    ->where('eventtimes',$num->eventtimes)
+                    ->where('storeid',$num->storeid)
+                    ->where('cusid',$num->cusid)
+                    ->orderByDesc('eventtimes')
+                    ->update(['rentid' => "B",
+                              'backtimes' => $timestamp,
+                              'backstoreid' => $storeid]);
+                }
+            }
+            //歸還成功與否
+            if ($nums == 0){
+                $msg = array(["result" => "success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } else {
+                //歸還失敗處理方式，集中呼叫 doCheck() !!
+                $result = $this->doCheck();
+                return $result;
+            }
 
-        //if ($cusstatis >= 1){
+        } else {
+        //若有，從還杯的時間點到現在時間，取出借杯資料
+            $timestamp = $cus->eventtimes;
+            $cus = DB::table('rentlogs')
+                ->where('cusphone','like','%'.$cusphone.'%')
+                ->where('eventtimes','>',$timestamp)
+                ->where('checks',"Y")
+                ->where('rentid',"R")
+                ->orderByDesc('eventtimes')
+                ->get();
 
-            return $cus;
-        //}
-        return $source;
+                foreach ($cus as $num){
+                    $timestamp = date('Y-m-d H:i:s');
+                    if ($num->nums <= $nums){
+                        $nums = $nums - $num->nums;
+                        DB::table('rentlogs')
+                        ->where('cusphone','like','%'.$cusphone.'%')
+                        ->where('eventtimes',$num->eventtimes)
+                        ->where('storeid',$num->storeid)
+                        ->where('cusid',$num->cusid)
+                        ->orderByDesc('eventtimes')
+                        ->update(['rentid' => "B",
+                                  'backtimes' => $timestamp,
+                                  'backstoreid' => $storeid]);
+                    }
+                }
+            //歸還成功與否
+            if ($nums == 0){
+                $msg = array(["result" => "success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } else {
+                //歸還失敗處理方式，集中呼叫 doCheck() !!
+                $result = $this->doCheck();
+                return $result;
+            }
+        }
+
+        $msg = array(["Error" => "Other Exception !!"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
+    }
+
+    //集中處理還杯失敗問題
+    public function doCheck(){
+        return "Hello3";
     }
 }
