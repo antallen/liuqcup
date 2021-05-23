@@ -200,6 +200,7 @@
 |eventtimes|timestamp|NOT NULL, Default(now())|還杯時間戳記|
 |cusphone|varchar(20)|NOT NULL|遊客借杯時的手機號碼|
 |checks|char(2)|NOT NULL, ENUM('Y','N','B'), Default('N')|1.確認記錄<br>2.Y:己處理確認<br>3.B:其它異常確認|
+|rentlogid|varchar(200)|NULL|借杯記錄號碼|
 
 
 <HR>
