@@ -73,197 +73,154 @@ class rent extends Model
         $timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
         //$timestamp = date('Y-m-d H:i:s');
 
+        //隔離還杯數量小於零的惡作劇
+        if ($nums <= 0){
+            $msg = array(["Error" => "請勿惡作劇！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
         //取出最近 30 天的還杯記錄
         $cus = DB::table('rentlogs')
             ->where('cusphone','like','%'.$cusphone.'%')
             ->where('eventtimes','>',$timestamp)
-            ->where('checks',"Y")
+            ->where('checks',"B")
             ->where('rentid',"B")
             ->orderByDesc('backtimes')
             ->first();
 
         //若沒有，則是取出最近 30 天的借杯記錄
-        if ($cus == "[]"){
-            $cus1 = DB::table('rentlogs')
-            ->where('cusphone','like','%'.$cusphone.'%')
-            ->where('eventtimes','>',$timestamp)
-            ->where('checks',"Y")
-            ->where('rentid',"R")
-            ->where('comments','not',"異常")
-            ->orderByDesc('eventtimes')
-            ->get();
-            $coda = 0; //欠的杯數統計
-            $codaid = array(); // 欠杯的記錄 id
-            foreach ($cus1 as $num){
-                $timestamp = date('Y-m-d H:i:s');
-
-                if ($num->nums <= $nums){
-                    $nums = $nums - $num->nums;
-                    DB::table('rentlogs')
-                    ->where('cusphone','like','%'.$cusphone.'%')
-                    ->where('eventtimes',$num->eventtimes)
-                    ->where('storeid',$num->storeid)
-                    ->where('cusid',$num->cusid)
-                    ->orderByDesc('eventtimes')
-                    ->update(['rentid' => "B",
-                              'backtimes' => $timestamp,
-                              'backstoreid' => $storeid]);
-                } else {
-                    $coda = $coda + $num->nums;
-                    array_push($codaid,$num->id);
-                }
-            }
-            //歸還成功與否
-            if (($nums == 0) and ($coda == 0)){
-                $msg = array(["result" => "success"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            } else {
-                //歸還失敗處理方式，集中呼叫 doCheck() !!
-                $result = $this->doCheck($cus,$nums,$coda,$codaid);
-                return $result;
-            }
-
+        if (($cus == "[]") or (is_null($cus))){
+            $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
+            return $result;
         } else {
         //若有，從上次還杯的時間點到現在時間，取出借杯資料
-
             $timestamp = $cus->backtimes;
-
-            $cus2 = DB::table('rentlogs')
-                ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
-                ->where('checks',"Y")
-                ->where('rentid',"R")
-                ->orderByDesc('eventtimes')
-                ->get();
-
-            //避免重複還杯
-            if ($cus2 == "[]"){
-                //先確認是否為店家忘了處理
-                $cus3 = DB::table('rentlogs')
-                    ->where('cusphone','like','%'.$cusphone.'%')
-                    ->where('eventtimes','>',$timestamp)
-                    ->where('checks',"N")
-                    ->where('rentid',"R")
-                    ->orderByDesc('eventtimes')
-                    ->get();
-
-                if (!($cus3 == "[]")){
-                    $msg = array(["result" => "店家未處理借杯確認，無法還杯，請洽管理人員！"]);
-                    return json_encode($msg,JSON_PRETTY_PRINT);
-                }
-            }
-            $coda = 0; //欠杯數量總計
-            $codaid = array(); //欠杯的借杯記錄號碼
-                foreach ($cus2 as $num){
-                    $timestamp = date('Y-m-d H:i:s');
-
-                    if ($num->nums <= $nums){
-                        $nums = $nums - $num->nums;
-                        //DB::table('rentlogs')
-                        //->where('cusphone','like','%'.$cusphone.'%')
-                        //->where('eventtimes',$num->eventtimes)
-                        //->where('storeid',$num->storeid)
-                        //->where('cusid',$num->cusid)
-                        DB::table('rentlogs')->where('id',$num->id)
-                            ->orderByDesc('eventtimes')
-                            ->update(['rentid' => "B",
-                                  'backtimes' => $timestamp,
-                                  'backstoreid' => $storeid]);
-                    } else {
-                        //還杯異常呼叫
-                        $coda = $coda + $num->nums;
-                        array_push($codaid,$num->id);
-
-                    }
-
-                }
-            //歸還成功與否
-            if (($nums == 0) and ($coda == 0)){
-                $msg = array(["result" => "success"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            } else {
-                //歸還失敗處理方式，集中呼叫 doCheck() !!
-                $result = $this->doCheck($cus,$nums,$coda,$codaid);
-                return $result;
-            }
+            $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
+            return $result;
         }
 
         $msg = array(["Error" => "Other Exception !!"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
+    //還杯流程
+    public function rentCups($cus,$cusphone,$timestamp,$nums,$storeid){
+        //應還杯的借杯記錄
+        $cus2 = DB::table('rentlogs')
+        ->where('cusphone','like','%'.$cusphone.'%')
+        ->where('eventtimes','>',$timestamp)
+        ->where('checks',"Y")
+        ->where('rentid',"R")
+        ->orderByDesc('eventtimes')
+        ->get();
 
-    //集中處理還杯失敗問題
-    public function doCheck($cus,$nums,$coda,$codaid){
-        if ($nums < 0 or $coda < 0){
-            $msg = array(["Error" => "有駭客入侵！"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-        }
-        $timestamp = $cus->eventtimes;
-        //狀況1：店家沒有完成借杯確認
-        $cus3 = DB::table('rentlogs')->whereIn('id',$codaid)->get();
-        foreach ($cus3 as $value){
-            if ($value->checks == "N"){
-                $msg = array(["result" => "店家未處理借杯確認，無法還杯，請洽管理人員！"]);
+        $cus2_count = DB::table('rentlogs')
+                ->where('cusphone','like','%'.$cusphone.'%')
+                ->where('eventtimes','>',$timestamp)
+                ->where('checks',"Y")
+                ->where('rentid',"R")
+                ->orderByDesc('eventtimes')
+                ->sum('nums');
+
+        //避免重複還杯
+        //先確認是否為店家忘了處理
+        if ($cus2 == "[]"){
+
+            $cus3 = DB::table('rentlogs')
+                ->where('cusphone','like','%'.$cusphone.'%')
+                ->where('eventtimes','>',$timestamp)
+                ->where('checks',"N")
+                ->where('rentid',"R")
+                ->orderByDesc('eventtimes')
+                ->get();
+
+            if (!($cus3 == "[]")){
+                $msg = array(["Error" => "店家未處理借杯確認，無法還杯，請洽店家或管理人員！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } elseif ($cus2_count == 0) {
+                $msg = array(["Error" => "請勿重複還杯！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
         }
-        //狀況2：還杯過多
-        if ($nums > $coda) {
-            //將多餘的還杯，寫入異常資料表內
-            if (empty($codaid)){
-                $msg = array(["result" => "重複還杯！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
+        //還杯手續開始
+        //先處理正常的狀況：還杯數與借杯數相同
+        $timestamp = date('Y-m-d H:i:s');
+        if ($nums == $cus2_count){
+
+            foreach ($cus2 as $num){
+            DB::table('rentlogs')->where('id',$num->id)
+                ->orderByDesc('eventtimes')
+                ->update(['rentid' => "B",
+                        'backtimes' => $timestamp,
+                        'backstoreid' => $storeid]);
             }
-            if ($coda == 0 and $nums > 0){
-                $timestamp_now = date('Y-m-d H:i:s');
-                DB::table('aberrantlogs')->insert([
-                    'cusid' => $cus->cusid,
-                    'storeid' => $cus->storeid,
-                    'nums' => $nums,
-                    'cusphone' => $cus->cusphone,
-                    'eventtimes' =>$timestamp_now]);
-
-                $msg = array(["result" => "己列入異常記錄！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-
-            }
-
-        } elseif($coda > $nums){
-        //狀況3：借杯過多
-
-            // 未還的部份在備註上寫入「異常」
-            if ($coda > 0){
-                DB::table('rentlogs')->whereIN('id',$codaid)->update(['comments' => "異常"]);
-            }
-
-            // 將多出來的杯數先寫入異常記錄
-            if ( $nums > 0) {
-                $timestamp_now = date('Y-m-d H:i:s');
-                $idstring = "";
-                foreach($codaid as $value){
-                    $idstring = $idstring."H".strval($value);
-                }
-                $idstring = $idstring."H";
-                $maxid = strval(max($codaid));
-
-                $research = DB::table('aberrantlogs')->where('rentlogid','like','%H'.$maxid.'H%')->get();
-                //return $research;
-                if ($research == "[]"){
-                    DB::table('aberrantlogs')
-                    ->insert([
-                        'cusid' => $cus->cusid,
-                        'storeid' => $cus->storeid,
-                        'nums' => $nums,
-                        'cusphone' => $cus->cusphone,
-                        'eventtimes' =>$timestamp_now,
-                        'rentlogid'=> $idstring]);
-                }
-            }
-            $msg = array(["result" => "己列入異常記錄！"]);
+            $msg = array(["result" => "success"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
 
+        } elseif ($nums > $cus2_count) {
+            // 還杯數量大於借杯數量
+            // 先還掉相對數量的杯子
+
+            foreach ($cus2 as $num){
+                DB::table('rentlogs')->where('id',$num->id)
+                    ->orderByDesc('eventtimes')
+                    ->update(['rentid' => "B",
+                            'backtimes' => $timestamp,
+                            'backstoreid' => $storeid]);
+            }
+            //計算多餘的杯子
+            $cups = $nums - $cus2_count;
+            //計入異常記錄表
+            $result = $this->writeAberrantlogs($storeid,$cups,$cusphone,$timestamp,$cus->cusid,"多還杯");
+            return $result;
+        } elseif ($nums < $cus2_count){
+            // 還杯數量小於借杯數量
+            // 先還掉杯數小的，再將大的記錄標示異常
+            $codeid = "";
+            foreach ($cus2 as $value) {
+                if ($nums >= $value->nums){
+                    DB::table('rentlogs')->where('id',$value->id)
+                    ->update(['rentid' => "B",
+                            'backtimes' => $timestamp,
+                            'backstoreid' => $storeid]);
+                    $nums = $nums - $value->nums;
+                } else {
+                    DB::table('rentlogs')->where('id',$value->id)
+                    ->update(['rentid' => "B",
+                            'backtimes' => $timestamp,
+                            'backstoreid' => $storeid,
+                            'comments' => "異常"]);
+                    $codeid = $codeid."H".$value->id;
+                }
+            }
+            $codeid = $codeid."H";
+            //計入異常記錄表
+            $result = $this->writeAberrantlogs($storeid,$nums,$cusphone,$timestamp,$cus->cusid,$codeid);
+            return $result;
         }
-        $msg = array(["Error" => "有駭客入侵！"]);
+    }
+
+    //集中處理異常還杯情況
+    public function writeAberrantlogs($storeid,$cups,$cusphone,$timestamp,$cusid,$key){
+        if ($key == "多還杯"){
+            DB::table('aberrantlogs')
+                ->insert(['cusid' => $cusid,
+                        'storeid' => $storeid,
+                        'nums' => $cups,
+                        'comments' => "多還杯",
+                        'eventtimes' => $timestamp,
+                        'cusphone' => $cusphone]);
+        } else {
+            DB::table('aberrantlogs')
+                ->insert(['cusid' => $cusid,
+                        'storeid' => $storeid,
+                        'nums' => $cups,
+                        'comments' => "欠杯",
+                        'eventtimes' => $timestamp,
+                        'cusphone' => $cusphone,
+                        'rentlogid' => $key]);
+        }
+        $msg = array(["result" => "己列入異常記錄表內"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
+
 }
