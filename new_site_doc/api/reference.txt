@@ -48,6 +48,7 @@ update  accounts set `lock` = 'N' where adminid = "admin";
 select COLUMN_NAME, CONSTRAINT_NAME, REFERENCED_COLUMN_NAME, REFERENCED_TABLE_NAME from information_schema. KEY_COLUMN_USAGE where TABLE_NAME = 'storesfunctions';
 
 alter table storesclass add constraint storesclass_classid_classes foreign key (classid) references classes(classid);
+alter table storescups drop constraint storeid;
 
 customers 資料表建立
 CREATE TABLE customers (

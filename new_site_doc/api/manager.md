@@ -29,8 +29,8 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + account: 'admin' (required, string)
-    + authword: 'Aa123456789' (required, string)
+    + account: admin (required, string)
+    + authword: Aa123456789 (required, string)
 
 + Response 200 (application/json)
 
@@ -64,7 +64,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) 
+    + token: Ab123456 (required, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
 
 + Response 200 (application/json)
@@ -105,20 +105,20 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) 
+    + token: Ab123456 (required, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + adminid: 'Hello001' (required, string)
+    + adminid: Hello001 (required, string)
       + 管理人員的帳號 
-    + adminname: 'Peter' (required, string)
+    + adminname: Peter (required, string)
       + 管理人員的真實姓名
-    + password: 'Ab123456789' (required, string)
+    + password: Ab123456789 (required, string)
       + 管理人員的密碼
     + level: 2 (required, integer)
       + 管理人員等級碼
       + 等級分類：0 最高級，1 一般職員級
-    + phoneno: '0987654321' (required, string)
+    + phoneno: 0987654321 (required, string)
       + 管理人員連絡電話
-    + email: 'test@example.com' (required, string)
+    + email: test@example.com (required, string)
       + 管理人員連絡 Email，可用於二階段驗證
 
 + Response 200 (application/json)
@@ -153,11 +153,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) 
+    + token: Ab123456 (required, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + adminid: 'Hello001' (required, string)
+    + adminid: Hello001 (required, string)
       + 管理人員的帳號 
-    + lock: 'Y' (required, string)
+    + lock: Y (required, string)
       + 是否凍結管理人員的帳號
 
 + Response 200 (application/json)
@@ -192,21 +192,21 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string) 
+    + token: Ab123456 (required, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + adminid: 'Hello001' (required, string)
+    + adminid: Hello001 (required, string)
       + 管理人員的帳號 
-    + adminname: 'Peter' (required, string)
+    + adminname: Peter (required, string)
       + 管理人員的真實姓名
-    + password: 'Ab123456789' (required, string)
+    + password: Ab123456789 (required, string)
       + 管理人員的密碼
-    + phoneno: '0123456789' (required, string)
+    + phoneno: 0123456789 (required, string)
       + 管理人員的雷話
-    + email: 'test@example.com' (required, string)
+    + email: test@example.com (required, string)
       + 管理人員的 email 
-    + level: '2' (optional, string)
+    + level: 2 (optional, string)
       + 更新管理人員的等級
-    + usertoken: "adcdefgh" (optional, string)
+    + usertoken: adcdefgh (optional, string)
       + 人員的 token，用以辨識更新的帳號
 
 + Response 200 (application/json)
@@ -260,7 +260,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (optional, string) 
+    + token: Ab123456 (optional, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
     + classes: 1 (required, integer)
       + 店家型態分類值！
@@ -294,13 +294,13 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
       - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + storename: '好棒棒' (required, string)
+    + storename: 好棒棒 (required, string)
       - 店家名稱
-    + phoneno: '0912345678' (required, string)
+    + phoneno: 0912345678 (required, string)
       - 店家電話
-    + address: '中正路四號' (required, string)
+    + address: 中正路四號 (required, string)
       - 店家地址
 
 + Response 200 (application/json)
@@ -321,11 +321,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
      - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer)
+    + storeid: 100341234 (required, integer)
      - 店家編號
-    + lock: 'Y' (required, string)
+    + lock: Y (required, string)
      - 代表需要凍結
 
 + Response 200 (application/json)
@@ -346,11 +346,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
       - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (optional, string)
+    + storeid: 100341234 (optional, string)
       - 使用店家編號查詢
-    + keyword: '太平洋' (optional, string)
+    + keyword: 太平洋 (optional, string)
       - 使用關鍵字查詢  
 
 + Response 200 (application/json)
@@ -379,15 +379,15 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
      - 總管理處人員或是店家管理人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: '100341234' (required, integer)
+    + storeid: 100341234 (required, integer)
      - 店家編號
-    + storename: '太平洋海底' (optional, string)
+    + storename: 太平洋海底 (optional, string)
      - 店家名稱
-    + address: '中正路1號' (optional, string)
+    + address: 中正路1號 (optional, string)
      - 店家地址
-    + phone: '0987654321,081231234' (optional, string)
+    + phone: 0987654321,081231234 (optional, string)
      - 店家連絡電話
 
 + Response 200 (application/json)
@@ -422,22 +422,22 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
      - 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + agentid: 'peter@hello.com' (required, string)
+    + agentid: peter@hello.com (required, string)
       - 店家管理員編號
       - 使用 email 格式，避免重覆
-    + agentname: 'Peter Wang' (optional, string)
+    + agentname: Peter Wang (optional, string)
       - 店家管理員姓名
-    + agentphone: '0912345678' (optional, string)
+    + agentphone: 0912345678 (optional, string)
       - 店家管理員電話
-    + storeid: '100334544' (required, string)
+    + storeid: 100334544 (required, string)
       - 店家編號
-    + password: 'Helloworld' (optional, string)
+    + password: Helloworld (optional, string)
       - 店家管理員密碼
-    + lock: "Y" (optional, string)
+    + lock: Y (optional, string)
       - 店家管理員凍結與否
-    + action: "A01" (required, string)
+    + action: A01 (required, string)
       - 設定功能：
         - A01: 新增
         - B02: 修改
@@ -482,11 +482,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: "2!qwe@asd#zxf$" (required, string)
+    + token: 2!qwe@asd#zxf$ (required, string)
       + 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: "10034532" (required, string)
+    + storeid: 10034532 (required, string)
       + 店家代號
-    + funcs: "A01B02C03" (required, string)
+    + funcs: A01B02C03 (required, string)
       + 功能項目：
         + A01：還杯
         + B02：借杯
@@ -510,11 +510,11 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: "2!qwe@asd#zxf$" (required, string)
+    + token: 2!qwe@asd#zxf$ (required, string)
       + 總管理處人員的 Key，由管理帳號的 Hash code 編碼而成的
-    + storeid: "10034532" (required, string)
+    + storeid: 10034532 (required, string)
       + 店家代號
-    + classes: "A01" (required, string)
+    + classes: A01 (required, string)
       + 功能項目：
         + A01：專賣
         + B02：民宿
@@ -538,6 +538,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 店家取得 QRcode 資料
   + QRcode 功能：給遊客、總管理處方便收取杯用
 + 店家借杯/還杯/收杯/送杯功能
+  + 不是每個店家都有借還杯功能(需要注意)
   + 借杯功能(店家借杯給遊客)
   + 還杯功能(遊客還杯給店家)
   + 送杯功能 (店家收總管理處的杯子)
@@ -551,9 +552,9 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + agentid: "peter" (required, string)
+    + agentid: peter (required, string)
       - 店家管理者帳號
-    + agentauth: "ABC123" (required, string)
+    + agentauth: ABC123 (required, string)
       - 店家管理者密碼
 
 + Response 200 (application/json)
@@ -566,18 +567,21 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "storeid": "100333222",
                     "storename": "ALoHa",
-                    "token": "ABCD123"
+                    "token": "ABCD123",
+                    "function": "A01,B02"
+                    "class": "1"
                 }
             ]
 
 ## 店家取得QRcode資料  [/rent/v1/stores/qrcode{?token,action}]
-
++ <font color="red">注意事項</red>
+  - 不是每個店家都有借還杯的功能項目
 ### 店家取得QRcode資料 [POST]
 
 + Parameters
 
-    + token: "ABC123" (required, string)
-    + action: "A01" (required, string)
+    + token: ABC123 (required, string)
+    + action: A01 (required, string)
       + A01: 借杯
       + B02: 還杯
       + C03: 收杯(總管理處向店家收杯)
@@ -600,21 +604,22 @@ HOST: https://liuqapi.tdhome.tw/api
   - A01: 借杯(店家借杯給遊客)
   - B02: 還杯(遊客還杯給店家)
 + 若無遊客手機號碼，立即建立新的遊客帳號、密碼
++ 借還時，同步更新最新的店家杯量庫存表
 ### 遊客借還杯記錄 [POST]
 
 + Parameters
 
-    + token: "ABC123" (required, string)
+    + token: ABC123 (required, string)
       - 店家管理員 key 或是管理處人員 key
-    + storeid: "100345654" (required, string)
+    + storeid: 100345654 (required, string)
       - 借還杯店家 ID
     + nums: 3 (required, integer)
       - 出借杯數
-    + cusphone: "0912345678" (required, integer)
+    + cusphone: 0912345678 (required, integer)
       - 遊客電話
-    + password: "ABC123" (required, string)
+    + password: ABC123 (required, string)
       - 遊客自設密碼
-    + action: "A01" (required, string)
+    + action: A01 (required, string)
       - 借還杯功能代號
         - A01: 借杯
         - B02: 還杯
@@ -631,12 +636,24 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄 [/rent/v1/stores/rent]
+## 店家收送杯記錄 [/rent/v1/stores/rent/rent{?token,action,nums}]
 + action 功能項說明
-  - C03: 收杯(總管理處向店家收杯)
-  - D04: 送杯(店家向總管理處取杯)
+  - C03: 收杯(總管理處向店家收杯 pullcup)
+  - D04: 送杯(總管理處向店家送杯 pushcup)
++ 收送杯時，同步更新最新的店家杯量庫存表
++ 以總管理處的觀點進行設計
++ 店家可向總管理處預約杯量、要求收杯！
+### 店家收送杯記錄 [PATCH]
 
-### 店家收送杯記錄 [POST]
++ Parameters
+
+    + token: ABC123 (required, string)
+      - 管理處人員 key
+    + action: C03 (required, string)
+      - C03: 收杯
+      - D04: 送杯
+    + nums: 3 (required, integer)
+      - 收送杯數量
 
 + Response 200 (application/json)
 
@@ -668,23 +685,23 @@ HOST: https://liuqapi.tdhome.tw/api
 
 + Parameters
 
-    + token: 'Ab123456' (required, string)
+    + token: Ab123456 (required, string)
      - 管理處人員的 Key
      - 店家人員的 Key
      - 遊客的 key
-    + cusname: 'peter' (optional, string)
+    + cusname: peter (optional, string)
       - 遊客姓名
-    + cusphone: '0912345678' (required, string)
+    + cusphone: 0912345678 (required, string)
       - 遊客電話
-    + cuspassword: 'ABC123' (optional, string)
+    + cuspassword: ABC123 (optional, string)
       - 遊客密碼
-    + cusid: 'ABC12345678' (optional, string)
+    + cusid: ABC12345678 (optional, string)
       - 遊客 ID
-    + email: 'test@hello.com' (optional, string)
+    + email: test@hello.com (optional, string)
       - 遊客 Email
-    + lock: "Y" (optional, string)
+    + lock: Y (optional, string)
       - 遊客與否列黑名單，預設值為 N
-    + action: "A01" (required, string)
+    + action: A01 (required, string)
       - 設定功能：
         - A01: 新增
           - 管理人員 (必要欄位：token,cusphone)

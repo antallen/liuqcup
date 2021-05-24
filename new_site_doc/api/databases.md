@@ -137,8 +137,22 @@
 |adminid|char(100)|NOT NULL,INDEX|管理人員的帳號|
 |check|char(2)|NOT NULL,ENUM('Y','N'), Default('N')|確認章簽|
 |comment|char(255)|NULL|備註|
-|created_at|timestamp|NULL|建立帳號的時間戳記|
-|updated_at|timestamp|NULL|更新帳號的時間戳記|
+
+### 店家杯量庫存表 storescups
+
++ 店家目前杯量的統計表
++ 計算時，連同遊客借還杯一起計入
++ 與店家資料表連結
++ 表格名稱 : storescups
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|NOT NULL,auto_increment, PRI|流水序號|
+|storeid|char(100)|NOT NULL, UNI|店家編號|
+|pullcup|int|NOT NULL, Default(0)|取杯數量|
+|pushcup|int|NOT NULL, Default(0)|送杯數量|
+|date|dateTime|NOT NULL,now,PRI|收送時間戳記|
+|comment|varchar(255)|NULL|備註|
 
 <HR>
 <BR>
@@ -222,6 +236,10 @@
   + storesclass(classid) -> classes(classid)
     + classes 表格內資料刪除，一併刪除 storesclass 資料
 
+### 店家庫存資料約束
+
++ 多對一
+  + storescups(storeid) -> stores(storeid)
 ### 店家提供服務功能外鍵約束
 
 + 多對一
