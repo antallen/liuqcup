@@ -23,8 +23,14 @@ HOST: https://liuqapi.tdhome.tw/api
 # Group 站台經營者帳號密碼管理
 
 ## 管理者帳號密碼驗證 [/manager/accounts/v1/auths{?account,authword}]
+
 + 用於管理者登入系統時使用！
 + 登入正確後，取得 token ，做為操作其它功能項目的依據
++ 需查驗是管理處的人員，還是一般店家人員
+  + 回吐的資料，包含一些特徵值：
+    + level: 管理處人員的等級之分
+    + storeid: 表示其為店家的管理人員
+    + storename: 帶出店家名稱
 ### 管理者帳號密碼驗證 [POST]
 
 + Parameters
@@ -40,7 +46,10 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "token":"abcdefghi"
+                    "token":"abcdefghi",
+                    "level": 2
+                    "storeid": "100101234",
+                    "storename": "戀戀琉島"
                 }
             ]
 
@@ -644,7 +653,6 @@ HOST: https://liuqapi.tdhome.tw/api
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
-+ 收送杯時，同步更新最新的店家杯量庫存表
 + 店家管理員打開 QRCode 網頁->總管理處人員掃瞄->總管理處人員輸入資料->送出完成
 + 店家可向總管理處預約杯量、要求收杯！
 ### 店家收送杯記錄 [PATCH]
@@ -673,6 +681,52 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 店家收送杯記錄列表 [/rent/v1/stores/rent/list{?token,action}]
++ action 功能項說明
+  - C03: 收杯(總管理處向店家收杯 pullcup)
+  - D04: 送杯(總管理處向店家送杯 pushcup)
+### 店家收送杯記錄 [PUT]
+
++ Parameters
+
+    + token: ABC123 (required, string)
+      - 店家管理人員 key
+    + action: C03 (required, string)
+      - C03: 收杯
+      - D04: 送杯
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
+
+## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/check{?token}]
+
+### 店家借還杯收送記錄確認功能 [POST]
+
++ Parameters
+
+    + token: ABC123 (required, string)
+      - 店家管理人員 key
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
 
 # Group 遊客資料與記錄管理
 + 遊客基本資料管理

@@ -40,52 +40,52 @@ class storesRent extends Model
     //向店家收杯
     public function withdraw($source,$storeid){
         $nums = trim($source['nums']);
+        $adminid = trim($source['adminid']);
         $storekey = trim($storeid[0]['storeid']);
+        //寫入記錄
+        //必須處理庫存問題
         $stores = DB::table('storescups')->where('storeid',$storekey)->get();
         if ($stores == "[]"){
                 $msg = array(["error" => "無店家資料，不能收杯！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
-            try{
-                $cups = DB::table('storescups')->where('storeid',$storekey)->get('pullcup');
+            $cups = DB::table('storescups')->where('storeid',$storekey)->get('pullcup');
                 if ($cups[0]->pullcup < $nums){
                     $msg = array(["error" => "操作資料有誤!請洽管理人員！"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);
                 } else {
-                    $total = $cups[0]->pullcup - $nums;
-                    DB::table('storescups')->where('storeid',$storekey)->update(['pullcup' => $total]);
+                    try {
+                        DB::table('storescupsrecords')
+                            ->insert(['storeid' => $storekey,
+                                    'pullcup' => $nums,
+                                    'adminid' => $adminid]);
+                    } catch (QueryException $e) {
+                        $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    }
+                    $msg = array(["result" => "success!"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
                 }
-
-            } catch (QueryException $e) {
-                $msg = array(["error" => "操作資料有誤!請洽管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
             }
-        }
-        $msg = array(["result" => "success"]);
-        return json_encode($msg,JSON_PRETTY_PRINT);
     }
 
     //向店家送杯
     public function deposit($source,$storeid){
         $nums = trim($source['nums']);
+        $adminid = trim($source['adminid']);
         $storekey = trim($storeid[0]['storeid']);
-        $stores = DB::table('storescups')->where('storeid',$storekey)->get();
-        if ($stores == "[]"){
-            try{
-                DB::table('storescups')->insert(['storeid' => $storekey,'pushcup' => $nums]);
-            } catch (QueryException $e){
-                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            }
-        } else {
-            try{
-                DB::table('storescups')->where('storeid',$storekey)->increment('pushcup',$nums);
-            } catch (QueryException $e) {
-                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            }
+        //寫入記錄表 storescupsrecords
+        try {
+            DB::table('storescupsrecords')
+                ->insert(['storeid' => $storekey,
+                          'pushcup' => $nums,
+                          'adminid' => $adminid]);
+        } catch (QueryException $e) {
+            $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
+            //return json_encode($msg,JSON_PRETTY_PRINT);
+            return $e;
         }
-        $msg = array(["result" => "success"]);
+        $msg = array(["result" => "success!"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
 }
