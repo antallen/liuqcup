@@ -472,7 +472,7 @@ CREATE TABLE `storesagentids` (
 
 LOCK TABLES `storesagentids` WRITE;
 /*!40000 ALTER TABLE `storesagentids` DISABLE KEYS */;
-INSERT INTO `storesagentids` VALUES (5,'peter@hello.com',NULL,NULL,'13354477','SgN3O*u8?e','$2y$10$TyYEEN95.aNeWc2rWOeSGO/Ci3J5ugOCB/GZJnpmXtHfFnPc1ClYa','ABC123','N','2021-05-15 04:42:50','2021-05-16 20:53:16'),(7,'james',NULL,NULL,'13354477','5Go4rx7&H!','$2y$10$h.Gzb1Gyu2VcTZEe.TFdEev8//Nq.fGB8jjXMrHLY82csriVY64P6','ABC1234','N','2021-05-15 05:08:14','2021-05-15 05:08:14');
+INSERT INTO `storesagentids` VALUES (5,'peter@hello.com',NULL,NULL,'13354477','mGD:RSa,JO','$2y$10$jafs8bbK2Kkq4DNY67vHB.IlYy94bO/Q4f19smT8KHpJMouT5v.Ce','ABC123','N','2021-05-15 04:42:50','2021-05-24 00:55:44'),(7,'james',NULL,NULL,'13354477','5Go4rx7&H!','$2y$10$h.Gzb1Gyu2VcTZEe.TFdEev8//Nq.fGB8jjXMrHLY82csriVY64P6','ABC1234','N','2021-05-15 05:08:14','2021-05-15 05:08:14');
 /*!40000 ALTER TABLE `storesagentids` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,6 +508,36 @@ INSERT INTO `storesclass` VALUES (2,'2021-05-13 02:16:47','2021-05-13 02:16:47',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `storescups`
+--
+
+DROP TABLE IF EXISTS `storescups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `storescups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pullcup` int(11) NOT NULL DEFAULT 0,
+  `pushcup` int(11) NOT NULL DEFAULT 0,
+  `comment` varchar(255) DEFAULT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `storescups_storeid_stores` (`storeid`),
+  CONSTRAINT `storescups_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storescups`
+--
+
+LOCK TABLES `storescups` WRITE;
+/*!40000 ALTER TABLE `storescups` DISABLE KEYS */;
+INSERT INTO `storescups` VALUES (1,'13354477',0,20,NULL,'2021-05-24 20:41:44');
+/*!40000 ALTER TABLE `storescups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `storescupsrecords`
 --
 
@@ -523,8 +553,6 @@ CREATE TABLE `storescupsrecords` (
   `adminid` char(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的帳號',
   `check` enum('Y','N') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '確認章簽',
   `comment` char(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '備註',
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`date`,`id`),
   KEY `storescupsrecords_storeid_adminid_index` (`storeid`,`adminid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
@@ -728,7 +756,7 @@ CREATE TABLE `storesfunctions` (
   KEY `storesfunctions_storeid_stores` (`storeid`),
   CONSTRAINT `storesfunctions_funcid_functions` FOREIGN KEY (`funcid`) REFERENCES `functions` (`funcid`),
   CONSTRAINT `storesfunctions_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -737,7 +765,7 @@ CREATE TABLE `storesfunctions` (
 
 LOCK TABLES `storesfunctions` WRITE;
 /*!40000 ALTER TABLE `storesfunctions` DISABLE KEYS */;
-INSERT INTO `storesfunctions` VALUES (4,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','1'),(5,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','2'),(6,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','1'),(7,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','2'),(8,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','1'),(9,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','2');
+INSERT INTO `storesfunctions` VALUES (4,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','1'),(5,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','2'),(6,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','1'),(7,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','2'),(8,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','1'),(9,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','2'),(23,'13354477',NULL,NULL,'1');
 /*!40000 ALTER TABLE `storesfunctions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -750,4 +778,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-23 23:18:40
+-- Dump completed on 2021-05-24 21:08:46
