@@ -49,10 +49,28 @@ class rentController extends Controller
 
     }
 
-    //PUTCH function 給店家收送杯用
+    //PUTCH function 給店家收送杯用 deposit/withdraw
     public function update(Request $request){
         $auth = new storesRent();
         $result = $auth->token($request);
-        return $result;
+        $nums = trim($request['nums']);
+        if ($nums <= 0){
+            $msg = array(["error" => "Action is failed! Hacker is not here!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+        switch ($request['action']) {
+            case "C03":
+                $results = $auth->withdraw($request,$result);
+                return $results;
+                break;
+            case "D04":
+                $results = $auth->deposit($request,$result);
+                return $results;
+                break;
+            default:
+                $msg = array(["error" => "Action is failed! Hacker is not here!"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+                break;
+        }
     }
 }

@@ -640,7 +640,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄 [/rent/v1/stores/rent/rent{?token,action,nums}]
+## 店家收送杯記錄 [/rent/v1/stores/rent/rent{?token,action,nums,adminid}]
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
@@ -652,12 +652,14 @@ HOST: https://liuqapi.tdhome.tw/api
 + Parameters
 
     + token: ABC123 (required, string)
-      - 管理處人員 key
+      - 店家管理人員 key
     + action: C03 (required, string)
       - C03: 收杯
       - D04: 送杯
     + nums: 3 (required, integer)
       - 收送杯數量
+    + adminid: peter (required, string)
+      - 總管理人員帳號
 
 + Response 200 (application/json)
 
