@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Doctrine\DBAL\FetchMode;
 use LengthException;
 
+//針對店家收送杯使用
 class storesRent extends Model
 {
     use HasFactory;

@@ -568,14 +568,15 @@ HOST: https://liuqapi.tdhome.tw/api
                     "storeid": "100333222",
                     "storename": "ALoHa",
                     "token": "ABCD123",
-                    "function": "A01,B02"
-                    "class": "1"
+                    "function": 1,2
+                    "class": 1
                 }
             ]
 
 ## 店家取得QRcode資料  [/rent/v1/stores/qrcode{?token,action}]
-+ <font color="red">注意事項</red>
++ <font color="red">注意事項</font>
   - 不是每個店家都有借還杯的功能項目
+  - QRcode 網址要帶上店家專屬 qrcodeid 資料(稍晚再補上)
 ### 店家取得QRcode資料 [POST]
 
 + Parameters
@@ -595,15 +596,16 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "qrcode" : "http://liuqcup.antallen.info/#/rent
+                    "qrcode" : "http://liuqcup.antallen.info/#/borrow_cup?qrcode=13354477
                 }
             ]
 
-## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,nums,cusphone,password,action}]
+## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,qrcode,nums,cusphone,password,action}]
 + action 功能項說明
   - A01: 借杯(店家借杯給遊客)
   - B02: 還杯(遊客還杯給店家)
 + 若無遊客手機號碼，立即建立新的遊客帳號、密碼
++ 店家管理人打開 QRCode -> 遊客掃瞄 QRCode -> 遊客輸入資料 -> 遊客送出資料 -> 店家確認 -> 完成
 + 借還時，同步更新最新的店家杯量庫存表
 ### 遊客借還杯記錄 [POST]
 
@@ -613,6 +615,8 @@ HOST: https://liuqapi.tdhome.tw/api
       - 店家管理員 key 或是管理處人員 key
     + storeid: 100345654 (required, string)
       - 借還杯店家 ID
+    + qrcode: 100345654 (optional, string)
+      - 借還杯店家 Qrcode
     + nums: 3 (required, integer)
       - 出借杯數
     + cusphone: 0912345678 (required, integer)
@@ -641,7 +645,7 @@ HOST: https://liuqapi.tdhome.tw/api
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
 + 收送杯時，同步更新最新的店家杯量庫存表
-+ 以總管理處的觀點進行設計
++ 店家管理員打開 QRCode 網頁->總管理處人員掃瞄->總管理處人員輸入資料->送出完成
 + 店家可向總管理處預約杯量、要求收杯！
 ### 店家收送杯記錄 [PATCH]
 

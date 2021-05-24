@@ -22,7 +22,7 @@ class rentController extends Controller
         }
 
     }
-    //這個控制器用的 function
+    //這個控制器用的 function－用於遊客借還杯用的！
     private function actions($source,$rent){
         if (isset($source['action'])){
             $action = trim($source['action']);

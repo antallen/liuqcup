@@ -26,12 +26,15 @@ class qrcode extends Model
     }
     public function getqrcode($source){
         $action = trim($source['action']);
+        $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
+        $storeQrcode = DB::table('stores')->where('storeid',$storeid[0]->storeid)->get('qrcodeid');
+
         switch ($action) {
             case "A01":
                 // 借杯的 qrcode
                 $borrowcup = "#/borrow_cup";
                 $url = \Config::get('qrcode', 'qrcode');
-                $hosturl = $url['qrcode'].$borrowcup;
+                $hosturl = $url['qrcode'].$borrowcup."?qrcode=".$storeQrcode[0]->qrcodeid;
                 $msg = array(["qrcode" => $hosturl]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
                 break;
@@ -39,7 +42,7 @@ class qrcode extends Model
                 // 還杯的 qrcode
                 $returncup = "#/return_cup";
                 $url = \Config::get('qrcode', 'qrcode');
-                $hosturl = $url['qrcode'].$returncup;
+                $hosturl = $url['qrcode'].$returncup."?qrcode=".$storeQrcode[0]->qrcodeid;
                 $msg = array(["qrcode" => $hosturl]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
                 break;
@@ -47,7 +50,7 @@ class qrcode extends Model
                 // 收杯的 qrcode
                 $receivecup = "#/receive_cup";
                 $url = \Config::get('qrcode', 'qrcode');
-                $hosturl = $url['qrcode'].$receivecup;
+                $hosturl = $url['qrcode'].$receivecup."?qrcode=".$storeQrcode[0]->qrcodeid;
                 $msg = array(["qrcode" => $hosturl]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
                 break;
@@ -55,7 +58,7 @@ class qrcode extends Model
                 // 還杯的 qrcode
                 $handselcup = "#/handsel_cup";
                 $url = \Config::get('qrcode', 'qrcode');
-                $hosturl = $url['qrcode'].$handselcup;
+                $hosturl = $url['qrcode'].$handselcup."?qrcode=".$storeQrcode[0]->qrcodeid;
                 $msg = array(["qrcode" => $hosturl]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
                 break;
