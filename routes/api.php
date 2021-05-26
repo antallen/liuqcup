@@ -38,6 +38,7 @@ Route::apiResource('rent/v1/stores/login',storesloginController::class)->only('i
 Route::apiResource('rent/v1/stores/checks',cupsController::class)->only('update');
 Route::apiResource('rent/v1/stores/rent/list',cupsController::class)->only('store');
 Route::apiResource('rent/v1/customers/rent/list',cusrentController::class)->only('store');
+Route::apiResource('rent/v1/customers/rent/checks',cusrentController::class)->only('update');
 /*
 |--------------------------------------------------------------------------
 | API Routes

@@ -651,9 +651,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 ## 店家借還杯確認記錄列表 [/rent/v1/customers/rent/list{?token,action}]
 + 店家列出遊客借還杯記錄，用於確認與否
-+ 店家可刪除誤按的遊客記錄
-+ 店家查詢功能
-  + token & action
+
 ### 店家借還杯確認記錄列表 [POST]
 
 + Parameter
@@ -673,13 +671,24 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "result" : "success"
+                    "id": 9,
+                    "cusid": "CUS20210517153534265",
+                    "storeid": "13354477",
+                    "rentid": "R",
+                    "nums": 6,
+                    "comments": null,
+                    "eventtimes": "2021-05-26 21:20:22",
+                    "checks": "N",
+                    "cusphone": "0123456789",
+                    "backtimes": null,
+                    "backstoreid": null
                 }
             ]
 
-## 店家借還杯記錄確認功能 [/rent/v1/customers/rent/check{?token,action}]
+## 店家借還杯記錄確認功能 [/rent/v1/customers/rent/checks/check{?token,action,cusid,id,checks}]
 + 店家確認遊客借還杯記錄用
-+ 店家可刪除誤按的遊客記錄
++ 店家可刪除誤按的遊客未確認之借杯記錄
++ 己確認的借杯記錄不可以刪除！
 ### 店家借還杯記錄確認功能 [PATCH]
 
 + Parameter
@@ -690,6 +699,13 @@ HOST: https://liuqapi.tdhome.tw/api
       - 借還杯功能代號
         - A01: 借杯
         - B02: 還杯
+    + cusid: CUS20210517153534265 (required, string)
+      - 客戶編號
+    + id: 9 (required,string)
+      - 記錄資料的流水編號
+    + checks: Y (required, string)
+      - Y: 確認
+      - N: 刪除
 
 + Response 200 (application/json)
 

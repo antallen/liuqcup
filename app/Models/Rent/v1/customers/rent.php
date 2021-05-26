@@ -56,10 +56,10 @@ class rent extends Model
             DB::table('rentlogs')->insert([
                 'cusid' => $cusid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $cusphone
             ]);
-            $msg = array(["result" => "success"]);
+            $msg = array(["result" => "遊客 ".$cusphone." 借杯，等待店家確認！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }catch(QueryException $e){
-            $msg = array(["error" => "failed"]);
+            $msg = array(["error" => "借杯失敗！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
         return $cusid;
@@ -153,7 +153,7 @@ class rent extends Model
                         'backtimes' => $timestamp,
                         'backstoreid' => $storeid]);
             }
-            $msg = array(["result" => "success"]);
+            $msg = array(["result" => "還杯成功，等待店家確認"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
 
         } elseif ($nums > $cus2_count) {

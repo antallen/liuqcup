@@ -11,9 +11,26 @@ class cusrentController extends Controller
 {
     //遊客借還杯記錄列表
     public function store(Request $request){
+        if (!(isset($request['token'])) or !(isset($request['action']))){
+            $msg = array(["error" => "資料有誤，無法查詢！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
         $listrents = new checkrents();
         $result = $listrents->lists($request->all());
-        return $request;
+        return $result;
+    }
+
+    //遊客借還杯記錄確認
+    public function update(Request $request){
+        if (!(isset($request['token'])) or !(isset($request['action']))
+                 or !(isset($request['id'])) or !(isset($request['cusid']))
+                 or !(isset($request['checks']))){
+            $msg = array(["error" => "資料有誤，無法查詢！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+        $checkrents = new checkrents();
+        $result = $checkrents->checkrents($request->all());
+        return $result;
     }
 
 }
