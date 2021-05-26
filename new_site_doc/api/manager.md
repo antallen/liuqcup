@@ -609,14 +609,14 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 遊客借還杯記錄 [/rent/v1/customers/rent{?token,storeid,qrcode,nums,cusphone,password,action}]
+## 店家借還杯功能 [/rent/v1/customers/rent{?token,storeid,qrcode,nums,cusphone,password,action}]
 + action 功能項說明
   - A01: 借杯(店家借杯給遊客)
   - B02: 還杯(遊客還杯給店家)
 + 若無遊客手機號碼，立即建立新的遊客帳號、密碼
 + 店家管理人打開 QRCode -> 遊客掃瞄 QRCode -> 遊客輸入資料 -> 遊客送出資料 -> 店家確認 -> 完成
 + 借還時，同步更新最新的店家杯量庫存表
-### 遊客借還杯記錄 [POST]
+### 店家借還杯功能 [POST]
 
 + Parameters
 
@@ -649,13 +649,67 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄 [/rent/v1/stores/rent/rent{?token,action,nums,adminid}]
+## 店家借還杯確認記錄列表 [/rent/v1/customers/rent/list{?token,action}]
++ 店家列出遊客借還杯記錄，用於確認與否
++ 店家可刪除誤按的遊客記錄
++ 店家查詢功能
+  + token & action
+### 店家借還杯確認記錄列表 [POST]
+
++ Parameter
+
+    + token: ABC123 (optional, string)
+      - 店家管理員 key 或是管理處人員 key
+    + action: A01 (optional, string)
+      - 借還杯功能代號
+        - A01: 借杯
+        - B02: 還杯
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
+
+## 店家借還杯記錄確認功能 [/rent/v1/customers/rent/check{?token,action}]
++ 店家確認遊客借還杯記錄用
++ 店家可刪除誤按的遊客記錄
+### 店家借還杯記錄確認功能 [PATCH]
+
++ Parameter
+
+    + token: ABC123 (required, string)
+      - 店家管理員 key 或是管理處人員 key
+    + action: A01 (required, string)
+      - 借還杯功能代號
+        - A01: 借杯
+        - B02: 還杯
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
+
+## 店家收送杯功能 [/rent/v1/stores/rent/rent{?token,action,nums,adminid}]
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
 + 店家管理員打開 QRCode 網頁->總管理處人員掃瞄->總管理處人員輸入資料->送出完成
 + 店家可向總管理處預約杯量、要求收杯！
-### 店家收送杯記錄 [PATCH]
+### 店家收送杯功能 [PATCH]
 
 + Parameters
 
@@ -714,9 +768,9 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/checks/check{?token,action,storeid,id,check}]
+## 店家收送杯記錄確認功能 [/rent/v1/stores/rent/checks/check{?token,action,storeid,id,check}]
 
-### 店家借還杯收送記錄確認功能 [PATCH]
+### 店家收送杯記錄確認功能 [PATCH]
 
 + Parameters
 

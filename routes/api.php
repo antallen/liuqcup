@@ -14,6 +14,7 @@ use App\Http\Controllers\Manager\customersController;
 use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
 use App\Http\Controllers\Rent\cupsController;
+use App\Http\Controllers\Rent\cusrentController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -36,6 +37,7 @@ Route::apiResource('rent/v1/stores/qrcode',storesloginController::class)->only('
 Route::apiResource('rent/v1/stores/login',storesloginController::class)->only('index');
 Route::apiResource('rent/v1/stores/checks',cupsController::class)->only('update');
 Route::apiResource('rent/v1/stores/rent/list',cupsController::class)->only('store');
+Route::apiResource('rent/v1/customers/rent/list',cusrentController::class)->only('store');
 /*
 |--------------------------------------------------------------------------
 | API Routes

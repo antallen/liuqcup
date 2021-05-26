@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Rent;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rent\v1\stores\checkcups;
+use App\Models\Rent\v1\stores\checkrents;
 use Illuminate\Http\Request;
 //use App\Models\Manager\v1\stores\lists;
 
 class cupsController extends Controller
 {
-//確認借還杯記錄
+//店家收送杯記錄確認
+
     public function update(Request $request){
         $checkcups = new checkcups();
         $results = $checkcups->checkpushcups($request->all());
