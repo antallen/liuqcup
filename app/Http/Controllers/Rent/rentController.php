@@ -58,13 +58,25 @@ class rentController extends Controller
             $msg = array(["error" => "Action is failed! Hacker is not here!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
+
+        //C03 收杯   D04 送杯
         switch ($request['action']) {
             case "C03":
-                $results = $auth->withdraw($request,$result);
+                if (array_search('2',$result)){
+                    $results = $auth->withdraw($request,$result);
+                } else {
+                    $msg = array(["error" => "此店家沒有還杯功能，所以不能收杯!"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
                 return $results;
                 break;
             case "D04":
-                $results = $auth->deposit($request,$result);
+                if (array_search('1',$result)){
+                    $results = $auth->deposit($request,$result);
+                } else {
+                    $msg = array(["error" => "此店家沒有借杯功能，所以不能送杯!"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
                 return $results;
                 break;
             default:

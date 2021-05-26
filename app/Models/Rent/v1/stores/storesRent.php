@@ -15,7 +15,8 @@ class storesRent extends Model
 
     public function token($source){
         //先判斷一下，是否有重要的兩把 key
-        if ((!isset($source['token'])) xor (!isset($source['adminid']))){
+        if ((!isset($source['token'])) xor (!isset($source['adminid'])) or
+            ((!isset($source['token'])) and (!isset($source['adminid'])))){
             $msg = array(["error" => "Action is failed! Hacker is not here!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
@@ -30,6 +31,11 @@ class storesRent extends Model
         }
         if ((strlen($mantokens) > 10) and (strlen($storeids) > 6)){
             $storeid = array(['storeid' => $storeids]);
+            $func = DB::table('storesfunctions')->where('storeid',$storeids)->get('funcid');
+            foreach ($func as $value) {
+                $temp = $value->funcid;
+                array_push($storeid,$temp);
+            }
             return $storeid;
         } else {
             $msg = array(["error" => "Action is failed! Hacker is not here!"]);
@@ -42,6 +48,12 @@ class storesRent extends Model
         $nums = trim($source['nums']);
         $adminid = trim($source['adminid']);
         $storekey = trim($storeid[0]['storeid']);
+        //確認店家之前的記錄是否己經確認
+        $checks = DB::table('storescupsrecords')->where('storeid',$storekey)->where('check',"N")->count();
+        if ($checks > 0){
+            $msg = array(["error" => "店家有紀錄未確認，不得收杯!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
         //寫入記錄
         //必須處理庫存問題
         $stores = DB::table('storescups')->where('storeid',$storekey)->get();
@@ -51,7 +63,7 @@ class storesRent extends Model
         } else {
             $cups = DB::table('storescups')->where('storeid',$storekey)->get('pullcup');
                 if ($cups[0]->pullcup < $nums){
-                    $msg = array(["error" => "操作資料有誤!請洽管理人員！"]);
+                    $msg = array(["error" => "無庫存杯量!請洽管理人員！"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);
                 } else {
                     try {
@@ -74,6 +86,12 @@ class storesRent extends Model
         $nums = trim($source['nums']);
         $adminid = trim($source['adminid']);
         $storekey = trim($storeid[0]['storeid']);
+        //確認店家之前的記錄是否己經確認
+        $checks = DB::table('storescupsrecords')->where('storeid',$storekey)->where('check',"N")->count();
+        if ($checks > 0){
+            $msg = array(["error" => "店家有紀錄未確認，不得送杯!"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
         //寫入記錄表 storescupsrecords
         try {
             DB::table('storescupsrecords')
