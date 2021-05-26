@@ -685,7 +685,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
-### 店家收送杯記錄列表 [PUT]
+### 店家收送杯記錄列表 [POST]
 
 + Parameters
 
@@ -707,9 +707,9 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/check{?token}]
+## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/checks/check{?token}]
 
-### 店家借還杯收送記錄確認功能 [POST]
+### 店家借還杯收送記錄確認功能 [PATCH]
 
 + Parameters
 
