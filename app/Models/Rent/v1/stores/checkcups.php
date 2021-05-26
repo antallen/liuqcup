@@ -44,29 +44,73 @@ class checkcups extends Model
                 break;
         }
     }
-    public function checkpushcups(){
-//更新庫存
-        $stores = DB::table('storescups')->where('storeid',$storekey)->get();
-        if ($stores == "[]"){
-            try{
-                DB::table('storescups')->insert(['storeid' => $storekey,'pushcup' => $nums]);
-            } catch (QueryException $e){
-                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            }
-        } else {
-            try{
-                DB::table('storescups')->where('storeid',$storekey)->increment('pushcup',$nums);
-            } catch (QueryException $e) {
-                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            }
+    public function checkpushcups($source){
+        //進行身份確認
+        $auth = new AuthChecks();
+        $result = $auth->storeagentid($source);
+        $timestamp = date('Y-m-d H:i:s');
+        if (!(trim($source['storeid']) == $result[0]->storeid)){
+            $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
         }
-        $msg = array(["result" => "success"]);
-        return json_encode($msg,JSON_PRETTY_PRINT);
+        //進行資料確認
+        $id = intval($source['id']);
+        $action = strval(trim($source['action']));
+        if (trim($source['check'] == "Y")){
+            switch($action){
+                case "C03":
+                    $pushcup = 0;
+                    $updateresults = DB::table('storescupsrecords')
+                        ->where('id',$id)
+                        ->where('storeid',$result[0]->storeid)
+                        ->where('pushcup',$pushcup)
+                        ->update(['check' => trim($source['check']),'date' => $timestamp]);
+                    if ($updateresults == 0){
+                        $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    }
+                    $nums = DB::table('storescupsrecords')
+                        ->where('id',$id)->where('check',"Y")
+                        ->get();
+                    $result = $this->deletePullCups($nums);
+                    return $result;
+                    break;
+                case "D04":
+                    $pullcup = 0;
+                    $updateresults = DB::table('storescupsrecords')
+                        ->where('id',$id)
+                        ->where('storeid',$result[0]->storeid)
+                        ->where('pullcup',$pullcup)
+                        ->update(['check' => trim($source['check']),'date' => $timestamp]);
+                    if ($updateresults == 0){
+                        $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    }
+                    $nums = DB::table('storescupsrecords')
+                        ->where('id',$id)->where('check',"Y")
+                        ->get();
+                    $result = $this->addPushCups($nums);
+                    return $result;
+                    break;
+                default:
+                    $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                    break;
+            }
+
+        } else{
+            //刪除記錄
+        }
 
 
-        //更新庫存
+    }
+
+    private function deletePullCups($nums){
+        //更新 pullcup 庫存
+        $storekey = $nums[0]->storeid;
+        $pullcup = $nums[0]->pullcup;
+        $timestamp = date('Y-m-d H:i:s');
+        //return $nums;
         $stores = DB::table('storescups')->where('storeid',$storekey)->get();
         if ($stores == "[]"){
                 $msg = array(["error" => "無店家資料，不能收杯！"]);
@@ -74,12 +118,12 @@ class checkcups extends Model
         } else {
             try{
                 $cups = DB::table('storescups')->where('storeid',$storekey)->get('pullcup');
-                if ($cups[0]->pullcup < $nums){
+                if ($cups[0]->pullcup < $pullcup){
                     $msg = array(["error" => "操作資料有誤!請洽管理人員！"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);
                 } else {
-                    $total = $cups[0]->pullcup - $nums;
-                    DB::table('storescups')->where('storeid',$storekey)->update(['pullcup' => $total]);
+                    $total = $cups[0]->pullcup - $pullcup;
+                    DB::table('storescups')->where('storeid',$storekey)->update(['pullcup' => $total,'date' => $timestamp]);
                 }
 
             } catch (QueryException $e) {
@@ -91,4 +135,32 @@ class checkcups extends Model
         return json_encode($msg,JSON_PRETTY_PRINT);
 
     }
+    private function addPushCups($nums){
+        //return $nums;
+        $storekey = $nums[0]->storeid;
+        $pushcup = $nums[0]->pushcup;
+        $timestamp = date('Y-m-d H:i:s');
+        //更新 pushcup 庫存
+        $stores = DB::table('storescups')->where('storeid',$storekey)->get();
+        if ($stores == "[]"){
+            try{
+                DB::table('storescups')->insert(['storeid' => $storekey,'pushcup' => $pushcup,'date' => $timestamp]);
+            } catch (QueryException $e){
+                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+        } else {
+            try{
+                DB::table('storescups')->where('storeid',$storekey)->increment('pushcup',$pushcup);
+                DB::table('storescups')->where('storeid',$storekey)->update(['date' => $timestamp]);
+            } catch (QueryException $e) {
+                $msg = array(["error" => "新增資料有誤!請洽管理人員！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+        }
+        $msg = array(["result" => "success"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
+
+    }
+
 }

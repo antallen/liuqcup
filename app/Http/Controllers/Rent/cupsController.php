@@ -12,7 +12,7 @@ class cupsController extends Controller
 //確認借還杯記錄
     public function update(Request $request){
         $checkcups = new checkcups();
-        $results = $checkcups->token($request->all());
+        $results = $checkcups->checkpushcups($request->all());
         return $results;
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class AuthChecks{
     public function accounttokenid($source){
-
+        //以後再補
     }
     public function storeagentid($source){
         $result = $this->tokencheck($source);

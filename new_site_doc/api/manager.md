@@ -703,11 +703,18 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "result" : "success"
+                    "id": 1,
+                    "storeid": "13354477",
+                    "pullcup": 0,
+                    "pushcup": 5,
+                    "date": "2021-05-24 22:19:44",
+                    "adminid": "peter",
+                    "check": "N",
+                    "comment": null
                 }
             ]
 
-## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/checks/check{?token}]
+## 店家借還杯收送記錄確認功能 [/rent/v1/stores/rent/checks/check{?token,action,storeid,id,check}]
 
 ### 店家借還杯收送記錄確認功能 [PATCH]
 
@@ -715,6 +722,16 @@ HOST: https://liuqapi.tdhome.tw/api
 
     + token: ABC123 (required, string)
       - 店家管理人員 key
+    + action: C03 (required, string)
+      - C03: 收杯
+      - D04: 送杯
+    + storeid: 10033445 (required, string)
+      - 店家代號
+    + id: 1 (required, string)
+      - 流水序號，請參考列表程式結果值
+    + check: Y (required, string)
+      - Y: 確認
+      - N: 刪除記錄
 
 + Response 200 (application/json)
 
