@@ -64,6 +64,7 @@ class checkcups extends Model
                         ->where('id',$id)
                         ->where('storeid',$result[0]->storeid)
                         ->where('pushcup',$pushcup)
+                        ->where('check',"N")
                         ->update(['check' => trim($source['check']),'date' => $timestamp]);
                     if ($updateresults == 0){
                         $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
@@ -81,6 +82,7 @@ class checkcups extends Model
                         ->where('id',$id)
                         ->where('storeid',$result[0]->storeid)
                         ->where('pullcup',$pullcup)
+                        ->where('check',"N")
                         ->update(['check' => trim($source['check']),'date' => $timestamp]);
                     if ($updateresults == 0){
                         $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
@@ -98,11 +100,39 @@ class checkcups extends Model
                     break;
             }
 
-        } else{
+        } elseif (trim($source['check'] == "N")){
             //刪除記錄
+            $pre_del = DB::table('storescupsrecords')->where('id',$id)->where('check',"N")->where('storeid',$result[0]->storeid)->get();
+            if ($pre_del == "[]"){
+                $msg = array(["error" => "無記錄可刪除！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } else {
+                switch ($action) {
+                    case "C03":
+                        if ($pre_del[0]->pushcup == 0){
+                            DB::table('storescupsrecords')->where('id',$id)->delete();
+                        } else {
+                            $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                            return json_encode($msg,JSON_PRETTY_PRINT);
+                        }
+                        break;
+                    case "D04":
+                        if ($pre_del[0]->pullcup == 0){
+                            DB::table('storescupsrecords')->where('id',$id)->delete();
+                        } else {
+                            $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                            return json_encode($msg,JSON_PRETTY_PRINT);
+                        }
+                        break;
+                    default:
+                        $msg = array(["error" => "要求的資料有誤!請洽管理人員！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                        break;
+                }
+                $msg = array(["sucess" => "記錄刪除成功！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
         }
-
-
     }
 
     private function deletePullCups($nums){
