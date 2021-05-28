@@ -873,8 +873,12 @@ HOST: https://liuqapi.tdhome.tw/api
 # Group 遊客資料與記錄管理
 
 + 遊客註冊成會員功能
+  + 目前只開放管理人員可新增遊客
+  + 遊客可借由借杯時，註冊成會員
+  + 目前不開放遊客由網頁上註冊成會員
 + 遊客登入功能
 + 遊客基本資料列表
++ 遊客基本資料凍結（列黑名單）
 + 遊客基本資料修改
 + 遊客借還杯資料查詢
 + 遊客預約借杯功能
@@ -910,12 +914,19 @@ HOST: https://liuqapi.tdhome.tw/api
           - 管理人員 (必要欄位：token,cusphone)
             - <font color="blue">遊客借杯時，新增資料由此寫入</font>
           - 遊客註冊 (必要欄位：cusphone, cuspassword)<font color="red">(暫時不開放)</font>(先寫好一支暫時產生臨時 token 的程式，再開放)
-        - B02: 修改
+        - B02: 修改更新資料
           - 遊客手機號碼修改時，會直接新增，變成多支手機
           - 遊客的ID不會修改
           - 遊客可修改項目：cusname,cusphone,cuspassword,email
-        - C03: 凍結<font color="green">(稍晚)</font>
+          - 只有總管理處人員與遊客自己才可以修改遊客資料！店家不能修改遊客資料！
+        - C03: 凍結/解凍
+          - 總管理處人員以及店家管理員可凍結遊客！(將遊客列黑名單！)
+          - Y：凍結
+          - N：解凍
         - D04: 查詢<font color="green">(稍晚)</font>
+          - 遊客可以查自己
+          - 總管理人員可以列出所有遊客資料
+          - 店家管理人員只可查特定遊客資料
 
 + Response 200 (application/json)
 

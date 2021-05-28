@@ -49,14 +49,18 @@ class customers extends Model
                 break;
             case "B02":
                 //更新遊客資料
-                if (($auths == "Manager") or ($auths == "Agent") or ($auths == "Customer")){
+                if (($auths == "Manager") or ($auths == "Customer")){
                     $result = $this->updateData($source);
                     return $result;
                 }
                 return $source;
                 break;
             case "C03":
-
+                //凍結遊客，使其無法登入使用系統
+                if (($auths == "Manager") or ($auths == "Agent")){
+                    $result = $this->lockData($source);
+                    return $result;
+                }
                 return $source;
                 break;
             case "D04":
@@ -154,7 +158,32 @@ class customers extends Model
             }
             $updata['cusphone']=$new_cusphone;
         }
-        DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
-        return $updata;
+        try {
+            DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
+            $msg = array(["result" => "更新成功！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } catch (QueryException $e){
+            $msg = array(["error" => "更新失敗！請查看內容"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
     }
+
+    //凍結遊客，將遊客列黑名單
+    public function lockData($source){
+        $timestamp = date('Y-m-d H:i:s');
+        $updata['updated_at'] = $timestamp;
+        if (isset($source['lock'])){
+            $updata['lock'] = trim($source['lock']);
+        }
+        try {
+            DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
+            $msg = array(["result" => "更新成功！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } catch (QueryException $e){
+            $msg = array(["error" => "更新失敗！請查看內容"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+
+    //查詢遊客資料
 }
