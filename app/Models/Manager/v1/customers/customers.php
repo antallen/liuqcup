@@ -48,7 +48,19 @@ class customers extends Model
                 //遊客自行註冊資料 -- Customer（使用暫時性的 token 進行新增）
                 break;
             case "B02":
-                
+                //更新遊客資料
+                if (($auths == "Manager") or ($auths == "Agent") or ($auths == "Customer")){
+                    $result = $this->updateData($source);
+                    return $result;
+                }
+                return $source;
+                break;
+            case "C03":
+
+                return $source;
+                break;
+            case "D04":
+
                 return $source;
                 break;
             default:
@@ -108,4 +120,41 @@ class customers extends Model
 
     //遊客自行註冊資料 --> Customer
 
+    //遊客資料更新
+    public function updateData($source){
+        $timestamp = date('Y-m-d H:i:s');
+        $updata['updated_at'] = $timestamp;
+        if (isset($source['cusname'])){
+            $updata['cusname'] = trim($source['cusname']);
+        }
+        if (isset($source['email'])){
+            $update['email'] = trim($source['email']);
+        }
+        if (isset($source['cuspassword'])){
+            $password = trim($source['cuspassword']);
+            $salt = strval(SecretClass::generateSalt());
+            $custoken = strval(SecretClass::generateToken($salt,$password));
+            $updata['salt'] = $salt;
+            $updata['token'] = $custoken;
+            $update['password'] = $password;
+        }
+        if (isset($source['cusphone'])){
+            $result = DB::table('customers')->where('cusphone','like','%'.trim($source['cusphone']).'%')->get();
+
+            if ($result != "[]"){
+                $msg = array(["result" => "該手機號碼己有人持用！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+            $old_cusphone = DB::table('customers')->where('id',intval(trim($source['id'])))->get('cusphone');
+            if ($old_cusphone[0]->cusphone == trim($source['cusphone']))
+            {
+                $new_cusphone = $old_cusphone[0]->cusphone;
+            } else {
+                $new_cusphone = $old_cusphone[0]->cusphone.",".trim($source['cusphone']);
+            }
+            $updata['cusphone']=$new_cusphone;
+        }
+        DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
+        return $updata;
+    }
 }

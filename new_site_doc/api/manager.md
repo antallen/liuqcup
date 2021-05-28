@@ -320,11 +320,12 @@ HOST: https://liuqapi.tdhome.tw/api
 
     + token: Ab123456 (optional, string) 
       + 管理人員的 Key，由管理帳號的 Hash code 編碼而成的 
-    + classes: 1 (required, integer)
+    + classes: 1 (optional, integer)
       + 店家型態分類值！
       + 1：專賣店
       + 2：民宿
       + 3：商店
+      + 沒有附上 classes 值，會列出全部店家的資料
 
 + Response 200 (application/json)
 
@@ -909,9 +910,10 @@ HOST: https://liuqapi.tdhome.tw/api
           - 管理人員 (必要欄位：token,cusphone)
             - <font color="blue">遊客借杯時，新增資料由此寫入</font>
           - 遊客註冊 (必要欄位：cusphone, cuspassword)<font color="red">(暫時不開放)</font>(先寫好一支暫時產生臨時 token 的程式，再開放)
-        - B02: 修改<font color="green">(稍晚)</font>
-          - 遊客手機號碼修改時，會直接新增
-          - 遊客的ID不得修改
+        - B02: 修改
+          - 遊客手機號碼修改時，會直接新增，變成多支手機
+          - 遊客的ID不會修改
+          - 遊客可修改項目：cusname,cusphone,cuspassword,email
         - C03: 凍結<font color="green">(稍晚)</font>
         - D04: 查詢<font color="green">(稍晚)</font>
 
