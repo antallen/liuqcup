@@ -13,16 +13,24 @@ class storesController extends Controller
     //店家資料列表
     public function index(Request $request){
       $lists = new lists();
+      /*
       if (!isset($_GET['classes'])) {
+          $classes = "ALL";
         $msg = array(["error" => "Something is wrong"]);
         return json_encode($msg,JSON_PRETTY_PRINT,403);
       }
+      */
       //有 token 表示是管理者
       if (isset($_REQUEST['token'])){
         $auths = $lists->token($request->all());
         //return $auths;
         if ($auths == "Good"){
-            $results = $lists->mgetStores(strval(trim($_GET['classes'])));
+            if (!isset($_GET['classes'])) {
+                $classes = "ALL";
+            } else {
+                $classes = strval(trim($_GET['classes']));
+            }
+            $results = $lists->mgetStores($classes);
             foreach ($results as $result){
                 $funcs = $lists->getStoresFuncs($result->storeid);
                 $idname = "funid";

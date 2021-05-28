@@ -31,7 +31,7 @@ class AuthChecks{
             return "Next";
         }
     }
-    //客戶身份確認
+    //客戶身份確認－－在己經登入狀況
     public function customersid($source){
         if (!isset($source['cusid'])){
             $msg = array(["error" => "Auth Failure!"]);
@@ -45,5 +45,17 @@ class AuthChecks{
         } else {
             return $result;
         }
+    }
+
+    //遊客如果有提供 token，表示己經過了帳密認證
+    public function cusTokenCheck($source){
+        $token_result = $this->tokencheck($source);
+        if ($token_result == "Next"){
+            $result = DB::table('customers')->where('token',trim($source['token']))->get();
+            return $result;
+        } else {
+            return $token_result;
+        }
+
     }
 }

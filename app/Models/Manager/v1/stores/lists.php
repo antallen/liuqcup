@@ -38,14 +38,19 @@ class lists extends Model
     }
     //店家列表_for 管理者
     public function mgetStores($classes){
-
-        $stores = DB::table('stores')
-                    ->join('storesclass','stores.storeid','=','storesclass.storeid')
-                    ->join('classes','storesclass.classid','=','classes.classid')
-                    ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname','stores.lock')
-                    ->where('storesclass.classid',strval(trim($classes)))->get();
-        return $stores;
-
+        if ($classes == "ALL"){
+            $stores = DB::table('stores')
+                        ->select('storeid','storename','phoneno','address','lock')
+                        ->get();
+            return $stores;
+        } else {
+            $stores = DB::table('stores')
+                        ->join('storesclass','stores.storeid','=','storesclass.storeid')
+                        ->join('classes','storesclass.classid','=','classes.classid')
+                        ->select('stores.storeid','stores.storename','stores.phoneno','stores.address','classes.classname','stores.lock')
+                        ->where('storesclass.classid',strval(trim($classes)))->get();
+            return $stores;
+        }
     }
 
     //店家功能列表

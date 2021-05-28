@@ -13,7 +13,7 @@ class customersController extends Controller
 
         $cus = new customers();
         $auths = $cus->token($request->all());
-        //針對來新增的資料，進行分類
+        //針對送來的資料，進行分類
         if ($auths == "Manager"){
             $results = $cus->cusManager($request->all(),$auths);
             return $results;
