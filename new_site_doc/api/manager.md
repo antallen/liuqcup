@@ -877,11 +877,39 @@ HOST: https://liuqapi.tdhome.tw/api
   + 遊客可借由借杯時，註冊成會員
   + 目前不開放遊客由網頁上註冊成會員
 + 遊客登入功能
-+ 遊客基本資料列表
-+ 遊客基本資料凍結（列黑名單）
-+ 遊客基本資料修改
+  + 對遊客進行身份驗證使用
++ 遊客基本資料管理
+  + 遊客基本資料列表（管理者才可以全部列表，其它為查詢功能）
+  + 遊客基本資料凍結（列黑名單）
+  + 遊客基本資料修改
 + 遊客借還杯資料查詢
 + 遊客預約借杯功能
+
+## 遊客登入驗證 [/manager/v1/customers/login/login{?cusphone,cusauth}]
+
+### 遊客登入驗證 [PUT]
+
++ Parameters
+
+    + cusphone: 0912345678 (required, string)
+      - 遊客手機：任何有註冊的手機號碼即可
+    + cusauth: ABC123 (required, string)
+      - 遊客註冊時，所設定的密碼
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "cusid": "CDE123",
+                    "cusphone": "0912345678,0987654321",
+                    "token": "ABC123"
+                }
+            ]
+
 ## 遊客基本資料管理  [/manager/v1/customers/config{?token,cusname,cusphone,cuspassword,cusid,email,lock,action,pages}]
 + 新增時，帶入管理人員的 token 值，進行新增！
 + 修改時，可由遊客自行登入，進行修改！
@@ -926,7 +954,7 @@ HOST: https://liuqapi.tdhome.tw/api
           - 總管理處人員以及店家管理員可凍結遊客！(將遊客列黑名單！)
           - Y：凍結
           - N：解凍
-        - D04: 查詢<font color="green">(稍晚)</font>
+        - D04: 查詢
           - 遊客可以查自己
           - 總管理人員可以列出所有遊客資料
           - 店家管理人員只可查特定遊客資料

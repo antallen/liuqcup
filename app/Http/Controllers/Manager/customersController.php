@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manager;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Manager\v1\customers\customers;
+use App\Models\Manager\v1\customers\logins;
 
 class customersController extends Controller
 {
@@ -32,5 +33,11 @@ class customersController extends Controller
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
+    }
+    //遊客登入後的資料
+    public function update(Request $request){
+        $auths = new logins();
+        $result = $auths->checkToken($request->all());
+        return $result;
     }
 }
