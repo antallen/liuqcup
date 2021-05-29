@@ -882,7 +882,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 遊客基本資料修改
 + 遊客借還杯資料查詢
 + 遊客預約借杯功能
-## 遊客基本資料管理  [/manager/v1/customers/config{?token,cusname,cusphone,cuspassword,cusid,email,lock,action}]
+## 遊客基本資料管理  [/manager/v1/customers/config{?token,cusname,cusphone,cuspassword,cusid,email,lock,action,pages}]
 + 新增時，帶入管理人員的 token 值，進行新增！
 + 修改時，可由遊客自行登入，進行修改！
 + 預留功能：
@@ -908,6 +908,9 @@ HOST: https://liuqapi.tdhome.tw/api
       - 遊客 Email
     + lock: Y (optional, string)
       - 遊客與否列黑名單，預設值為 N
+    + pages: 1 (optional, integer)
+      - 要求頁數，一頁以50筆資料為上限！
+      - 只有管理人員才可以使用！
     + action: A01 (required, string)
       - 設定功能：
         - A01: 新增

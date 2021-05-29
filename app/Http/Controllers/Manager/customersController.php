@@ -14,6 +14,8 @@ class customersController extends Controller
         $cus = new customers();
         $auths = $cus->token($request->all());
         //針對送來的資料，進行分類
+
+
         if ($auths == "Manager"){
             $results = $cus->cusManager($request->all(),$auths);
             return $results;
@@ -25,9 +27,10 @@ class customersController extends Controller
         if ($auths == "Customer"){
             $results = $cus->cusManager($request->all(),$auths);
             return $results;
-        }else {
-            $msg = array(["error" => "Have Not Token"]);
+        } else {
+            $msg = array(["error" => "帳號己鎖定！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
+
     }
 }

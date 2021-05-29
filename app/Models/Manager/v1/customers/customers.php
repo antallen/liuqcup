@@ -64,8 +64,9 @@ class customers extends Model
                 return $source;
                 break;
             case "D04":
-
-                return $source;
+                //查詢遊客資料
+                $result = $this->queryData($source,$auths);
+                return $result;
                 break;
             default:
                 $msg = array(["error" => "資料處理有誤！"]);
@@ -186,4 +187,58 @@ class customers extends Model
     }
 
     //查詢遊客資料
+    public function queryData($source,$auths){
+        switch ($auths) {
+            case "Manager":
+                if (!isset($source['pages']) or (intval($source['pages']) <= 0)){
+                    $page = 0;
+                } else {
+                    $page = ((intval($source['pages']))-1)*50;
+                }
+                if (isset($source['cusphone'])){
+                    $cusphone = strval(trim($source['cusphone']));
+                    $result = DB::table('customers')->Where('cusphone','like','%'.$cusphone.'%')->orderByDesc('id')->skip($page)->take(50)->get();
+                    return $result;
+                }
+                if (isset($source['email'])){
+                    $email = strval(trim($source['email']));
+                    $result = DB::table('customers')->Where('email','like','%'.$email.'%')->orderByDesc('id')->skip($page)->take(50)->get();
+                    return $result;
+                }
+                if (isset($source['lock'])){
+                    $lock = strval(trim($source['lock']));
+                    $result = DB::table('customers')->Where('lock','like','%'.$lock.'%')->orderByDesc('id')->skip($page)->take(50)->get();
+                    return $result;
+                }
+                $result = DB::table('customers')->orderByDesc('id')->skip($page)->take(50)->get();
+                return $result;
+                break;
+            case "Agent":
+                if (!isset($source['pages']) or (intval($source['pages']) <= 0)){
+                    $page = 0;
+                } else {
+                    $page = ((intval($source['pages']))-1)*50;
+                }
+                if (isset($source['cusphone'])){
+                    $cusphone = strval(trim($source['cusphone']));
+                    $result = DB::table('customers')->select('cusphone','lock')->Where('cusphone','like','%'.$cusphone.'%')->orderByDesc('id')->skip($page)->take(50)->get();
+                    return $result;
+                }
+                if (isset($source['email'])){
+                    $email = strval(trim($source['email']));
+                    $result = DB::table('customers')->select('cusphone','lock')->Where('email','like','%'.$email.'%')->orderByDesc('id')->skip($page)->take(50)->get();
+                    return $result;
+                }
+                break;
+            case "Customer":
+                $token = trim($source['token']);
+                $result = DB::table('customers')->where('token',$token)->get();
+                return $result;
+                break;
+            default:
+                $msg = array(["error" => "無法查詢！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+                break;
+        }
+    }
 }
