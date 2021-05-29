@@ -886,7 +886,7 @@ HOST: https://liuqapi.tdhome.tw/api
   + 遊客查自己
   + 店家查自己借還記錄
   + 總管理處可以查所有店家
-+ 遊客預約借杯功能
++ 遊客預約借杯功能<font color="green">(稍晚)</font>
 
 ## 遊客登入驗證 [/manager/v1/customers/login/login{?cusphone,cusauth}]
 
@@ -1028,3 +1028,27 @@ HOST: https://liuqapi.tdhome.tw/api
 + 收送杯統計數量與列表
   + 依 全部 / 各店家顯示統計數量
   + 依時間長短顯示(每日/每周/每月)
+
+## 目前借還杯數量 [/records/v1/stores/rentcup/rentcup{?token}]
++ 總管理處看到全部的統計數字
++ 店家看到自己的統計數字
++ 時間以今日為主
+### 目前借還杯數量 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+      - 店家管理人員的 key
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
