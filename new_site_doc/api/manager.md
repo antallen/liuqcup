@@ -605,7 +605,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 店家借還杯記錄確認功能
 + 店家收送杯功能
   + 不是每個店家都可以收送杯功能
-+ 店家收送杯記錄列表
++ 店家收送杯確認記錄列表
 + 店家收送杯記錄確認功能
 
 
@@ -883,6 +883,9 @@ HOST: https://liuqapi.tdhome.tw/api
   + 遊客基本資料凍結（列黑名單）
   + 遊客基本資料修改
 + 遊客借還杯資料查詢
+  + 遊客查自己
+  + 店家查自己借還記錄
+  + 總管理處可以查所有店家
 + 遊客預約借杯功能
 
 ## 遊客登入驗證 [/manager/v1/customers/login/login{?cusphone,cusauth}]
@@ -958,6 +961,45 @@ HOST: https://liuqapi.tdhome.tw/api
           - 遊客可以查自己
           - 總管理人員可以列出所有遊客資料
           - 店家管理人員只可查特定遊客資料
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : "success"
+                }
+            ]
+
+## 遊客借還杯資料查詢 [/records/v1/customers/logs/log{?token,cusphone,cusid,storeid,post,pages}]
++ 遊客借還杯資料查詢
+  + 遊客查自己
+  + 店家查自己借還記錄
+  + 總管理處可以查所有店家
+### 遊客借還杯資料查詢 [GET]
+
++ Parameters
+
+    + token: Ab123456 (required, string)
+      - 管理處人員的 Key
+      - 店家人員的 Key
+      - 遊客的 key
+    + cusphone: 0912345678 (optional, string)
+      - 遊客的手機號碼
+    + cusid: ABC123 (optional, string)
+      - 遊客的ID號碼
+    + storeid: ABC123 (optional, string)
+      - 店家編號
+    + post: A01 (optional, string)
+      - 店家用辨別資料
+      - A01: 本家借還
+      - B02: 本家借，非本家還
+      - C03: 非本家借，但本家還
+    + pages: 1 (optional, integer)
+      - 頁數：每頁 50 筆！
 
 + Response 200 (application/json)
 
