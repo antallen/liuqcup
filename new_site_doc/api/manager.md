@@ -203,7 +203,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 凍結/解凍管理者帳號  [/manager/accounts/v1/frozens/{frozen}{?token,adminid,lock}]
+## 凍結/解凍管理者帳號  [/manager/accounts/v1/frozens/frozen{?token,adminid,lock}]
 + token 為最高管理者的 token
 + 只有 level 值為 0 的管理者才可以凍結其他管理者帳號
 + Y : 凍結，N : 解凍
