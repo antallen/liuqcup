@@ -1108,3 +1108,31 @@ HOST: https://liuqapi.tdhome.tw/api
                     }
                 }
             ]
+
+## 庫存顯示功能 [/records/v1/stores/stocklist{?token,storeid}]
++ 顯示全部的庫存
++ 顯示目前店家的厙存
+### 庫存顯示功能 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+      - 店家管理人員的 key
+    + storeid: 123456 (optional, string)
+      - 店家編號
+      - 沒有設定店家ID，表示要看所有統計！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "可借杯數": 0,
+                    "待收杯數": 0
+                }
+            ]
+

@@ -17,6 +17,7 @@ use App\Http\Controllers\Rent\cupsController;
 use App\Http\Controllers\Rent\cusrentController;
 use App\Http\Controllers\Record\rentlogsController;
 use App\Http\Controllers\Record\rentcupController;
+use App\Http\Controllers\Stock\stocksController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -45,6 +46,7 @@ Route::apiResource('manager/v1/customers/login',customersController::class)->onl
 Route::apiResource('records/v1/customers/logs',rentlogsController::class)->only('show');
 Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('show');
 Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
+Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only('index');
 /*
 |--------------------------------------------------------------------------
 | API Routes
