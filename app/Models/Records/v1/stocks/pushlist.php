@@ -116,6 +116,7 @@ class  pushlist extends Model
                       ->select(['storeid','pullcup','date','adminid','check','comment'])
                       ->where('pushcup','=',0)
                       ->whereBetween('date',[$timestamp,$nowtime])
+                      ->orderByDesc('date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
@@ -124,6 +125,7 @@ class  pushlist extends Model
                       ->select(['storeid','pushcup','date','adminid','check','comment'])
                       ->where('pullcup','=',0)
                       ->whereBetween('date',[$timestamp,$nowtime])
+                      ->orderByDesc('date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
@@ -145,6 +147,7 @@ class  pushlist extends Model
                       ->where('storeid',$storeid)
                       ->where('pushcup','=',0)
                       ->whereBetween('date',[$timestamp,$nowtime])
+                      ->orderByDesc('date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
@@ -154,6 +157,7 @@ class  pushlist extends Model
                       ->where('storeid',$storeid)
                       ->where('pullcup','=',0)
                       ->whereBetween('date',[$timestamp,$nowtime])
+                      ->orderByDesc('date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
