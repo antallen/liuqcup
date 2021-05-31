@@ -47,6 +47,7 @@ Route::apiResource('records/v1/customers/logs',rentlogsController::class)->only(
 Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('show');
 Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
 Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only('index');
+Route::apiResource('records/v1/stores/pushlist',stocksController::class)->only('show');
 /*
 |--------------------------------------------------------------------------
 | API Routes

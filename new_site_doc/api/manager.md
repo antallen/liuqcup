@@ -1023,11 +1023,11 @@ HOST: https://liuqapi.tdhome.tw/api
 + 借還杯統計數量與列表
   + 依 全部 / 各店家顯示統計數量
   + 依時間長短顯示(每日/每周/每月)
-+ 預約收送杯功能 (總管理處/店家預約功能)
++ 預約收送杯功能 (總管理處/店家預約功能)<font color="green">(稍晚)</font>
   + 列表
   + 新增
-+ 收送杯統計數量與列表
-  + 依 全部 / 各店家顯示統計數量
++ 收送杯記錄列表
+  + 依 全部 / 各店家顯示記錄
   + 依時間長短顯示(每日/每周/每月)
 
 ## 即時顯示目前借還杯數量狀況 [/records/v1/stores/rentcuplist{?token,storeid}]
@@ -1136,3 +1136,40 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 收送杯記錄列表 [/records/v1/stores/pushlist/pushlist{?token,storeid,pages,times,action}]
++ 顯示收送杯記錄
++ 店家可顯示自家的收送杯記錄
+### 收送杯記錄列表 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+      - 店家管理人員的 key
+    + storeid: 123456 (optional, string)
+      - 店家編號
+      - 沒有設定店家ID，表示要看所有統計！
+    + action: A01 (required, string)
+      - 收送杯代號
+        - 收杯：A01 => pullcup
+        - 送杯：B02 => pushcup
+    + times: 1 (optional, string)
+      - 1: 一天
+      - 7: 一周
+      - 30: 一個月
+    + pages: 1 (optional, integer)
+      - 分頁取得資料
+      - 每頁 50 筆資料
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "可借杯數": 0,
+                    "待收杯數": 0
+                }
+            ]
