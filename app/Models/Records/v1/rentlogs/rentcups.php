@@ -23,6 +23,13 @@ class  rentcups extends Model
         }
 
         //店家管理人員
+        $agentaccount = $check->storeagentid($source);
+        $hello = json_decode($agentaccount);
+        if (isset($hello[0]->error)){
+            return $agentaccount;
+        }elseif ($agentaccount != "[]"){
+            return "Agent";
+        }
 
         $msg = array(["error" => "無法查詢"]);
         return json_encode($msg,JSON_PRETTY_PRINT);

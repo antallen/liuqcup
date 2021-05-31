@@ -44,6 +44,7 @@ Route::apiResource('rent/v1/customers/rent/checks',cusrentController::class)->on
 Route::apiResource('manager/v1/customers/login',customersController::class)->only('update');
 Route::apiResource('records/v1/customers/logs',rentlogsController::class)->only('show');
 Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('show');
+Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
 /*
 |--------------------------------------------------------------------------
 | API Routes

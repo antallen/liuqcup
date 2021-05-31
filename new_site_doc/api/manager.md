@@ -1015,6 +1015,8 @@ HOST: https://liuqapi.tdhome.tw/api
 
 # Group 借還杯資料統計與查詢
 
++ 即時顯示目前借還杯數量狀況
+  + 顯示今日所有店家的借還杯的總和
 + 庫存顯示功能
   + 總管理處
   + 每家店內的庫存統計 (店內待借杯數量/店內待收杯數量)
@@ -1028,8 +1030,41 @@ HOST: https://liuqapi.tdhome.tw/api
   + 依 全部 / 各店家顯示統計數量
   + 依時間長短顯示(每日/每周/每月)
 
+## 即時顯示目前借還杯數量狀況 [/records/v1/stores/rentcuplist{?token,storeid}]
++ 即時顯示目前借還杯數狀況
++ 總管理處人員查詢全部總和
++ 店家管理人員查詢自家店家總和
+
+### 即時顯示目前借還杯數量狀況 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+      - 店家管理人員的 key
+    + storeid: 123456 (optional, string)
+      - 店家編號
+      - 沒有設定店家ID，表示要看所有統計！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "今日借杯數": 0,
+                    "今日還杯數": 0,
+                    "今日異常筆數": 0
+                }
+            ]
+
+
 ## 借還杯統計數量與列表 [/records/v1/stores/rentcup/rentcup{?token,storeid,times}]
 + 總管理處看到全部的統計數字
+  + 依店家分類
+  + 依日期分類
 + 店家看到自己的統計數字
 + 目前的記錄，使用「今日」為主要項目
 + 即時統計，非過去歷史資料統計
