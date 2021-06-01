@@ -154,6 +154,7 @@ class agents extends Model
                 $msg = array(["result" => "Update Success"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             } catch(QueryException $e){
+                return $e;
                 $msg = array(["result" => "Update Fails"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
