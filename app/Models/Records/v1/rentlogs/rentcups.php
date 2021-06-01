@@ -95,25 +95,25 @@ class  rentcups extends Model
                 while ($a <= $days) {
                     //每日借杯資料
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
-                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)+1).' days'));
-                    foreach ($hello as $value) {
-                        $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
+                    foreach ($hello as $value) { //->select(DB::raw('sum(nums) as nums'))
+                        $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
                                     ->where('rentid',"R")
                                     ->where('checks',"Y")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                    ->get();
-                        $tatols['借杯數量'][$dateTimes][strval($value->storeid)] = $nums[0]->nums;
+                                    ->sum('nums');
+                        $tatols['借杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
                     }
                     //己還杯資料
                     foreach ($hello as $value) {
-                        $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
+                        $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
                                     ->where('rentid',"B")
                                     ->where('checks',"B")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                    ->get();
-                        $tatols['還杯數量'][$dateTimes][strval($value->storeid)] = $nums[0]->nums;
+                                    ->sum('nums');
+                        $tatols['還杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
                     }
                     //異常資料
                     foreach ($hello as $value) {
@@ -123,7 +123,7 @@ class  rentcups extends Model
                                     ->where('comments',"異常")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->count();
-                        $tatols['異常筆數'][$dateTimes][strval($value->storeid)] = $nums;
+                        $tatols['異常筆數'][$dateTimes][strval($value->storeid)] = intval($nums);
                     }
                     $a += 1;
                 }
@@ -135,24 +135,24 @@ class  rentcups extends Model
                 //$starttime = date('2021-05-20 00:00:00');
                 while ($a <= $days) {
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
-                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)+1).' days'));
-                    $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
+                    $nums = DB::table('rentlogs')
                                 ->where('storeid',strval($storeid))
                                 ->where('rentid',"R")
                                 ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                ->get();
+                                ->sum('nums');
 
-                    $tatols['借杯數量'][$dateTimes][$storeid] = $nums[0]->nums;
+                    $tatols['借杯數量'][$dateTimes][$storeid] = intval($nums);
 
                     //己還杯資料
-                    $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
+                    $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($storeid))
                                     ->where('rentid',"B")
                                     ->where('checks',"B")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                    ->get();
-                    $tatols['還杯數量'][$dateTimes][$storeid] = $nums[0]->nums;
+                                    ->sum('nums');
+                    $tatols['還杯數量'][$dateTimes][$storeid] = intval($nums);
 
                     //異常資料
                     $nums = DB::table('rentlogs')
@@ -161,7 +161,7 @@ class  rentcups extends Model
                                 ->where('comments',"異常")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->count();
-                    $tatols['異常筆數'][$dateTimes][$storeid] = $nums;
+                    $tatols['異常筆數'][$dateTimes][$storeid] = intval($nums);
                     $a+=1;
                 }
                 return $tatols;
