@@ -45,9 +45,10 @@ class agents extends Model
                 $result = $this->queryData($source,"Agent");
                 return $result;
             }
-
+            /*
             $msg = array(["result" => "查詢資料有誤"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
+            */
         }
 
         if (isset($source['storeid']) and isset($source['action'])){

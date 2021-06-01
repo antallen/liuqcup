@@ -220,6 +220,22 @@
 <HR>
 <BR>
 
+### 最新消息表格 newslogs
+
++ 存放最新消息內容資料表格
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|PRI|流水序號|
+|newsid|VARCHAR(100)|NOT NULL,INDEX|最新消息編號|
+|newscontent|TEXT|NULL|最新消息內容|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
+
+### 存放圖檔檔名表格 imglogs
+
+<HR>
+<BR>
 ## Group 關連資料清單
 
 ### 店家管理者外鍵約束

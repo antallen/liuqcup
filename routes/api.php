@@ -11,6 +11,7 @@ use App\Http\Controllers\Manager\funcsController;
 use App\Http\Controllers\Manager\classesController;
 use App\Http\Controllers\Manager\agentsController;
 use App\Http\Controllers\Manager\customersController;
+use App\Http\Controllers\News\newsController;
 use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
 use App\Http\Controllers\Rent\cupsController;
@@ -48,6 +49,7 @@ Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('
 Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
 Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only('index');
 Route::apiResource('records/v1/stores/pushlist',stocksController::class)->only('show');
+Route::apiResource('news/v1/news',newsController::class);
 /*
 |--------------------------------------------------------------------------
 | API Routes
