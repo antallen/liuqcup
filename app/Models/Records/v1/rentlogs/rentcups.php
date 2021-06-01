@@ -54,19 +54,19 @@ class  rentcups extends Model
     private function caculateTime($times,$storeid){
         switch ($times) {
             case 1:
-                $starttime = date('Y-m-d 00:00:00');
+                $starttime = date('Y-m-d');
                 $nowtime = date('Y-m-d H:i:s');
                 $result = $this->caculateCups($starttime,$nowtime,$storeid);
                 return $result;
                 break;
             case 7:
-                $starttime = date('Y-m-d 00:00:00',strtotime('-7 days'));
+                $starttime = date('Y-m-d',strtotime('-7 days'));
                 $nowtime = date('Y-m-d H:i:s');
                 $result = $this->caculateCups($starttime,$nowtime,$storeid);
                 return $result;
                 break;
             case 30:
-                $starttime = date('Y-m-d 00:00:00',strtotime('-30 days'));
+                $starttime = date('Y-m-d',strtotime('-30 days'));
                 $nowtime = date('Y-m-d H:i:s');
                 $result = $this->caculateCups($starttime,$nowtime,$storeid);
                 return $result;
@@ -95,12 +95,13 @@ class  rentcups extends Model
                 while ($a <= $days) {
                     //每日借杯資料
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)+1).' days'));
                     foreach ($hello as $value) {
                         $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
                                     ->where('storeid',strval($value->storeid))
                                     ->where('rentid',"R")
                                     ->where('checks',"Y")
-                                    ->where('eventtimes','like','%'.$dateTimes.'%')
+                                    ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->get();
                         $tatols['借杯數量'][$dateTimes][strval($value->storeid)] = $nums[0]->nums;
                     }
@@ -110,7 +111,7 @@ class  rentcups extends Model
                                     ->where('storeid',strval($value->storeid))
                                     ->where('rentid',"B")
                                     ->where('checks',"B")
-                                    ->where('eventtimes','like','%'.$dateTimes.'%')
+                                    ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->get();
                         $tatols['還杯數量'][$dateTimes][strval($value->storeid)] = $nums[0]->nums;
                     }
@@ -120,7 +121,7 @@ class  rentcups extends Model
                                     ->where('storeid',strval($value->storeid))
                                     ->where('rentid',"B")
                                     ->where('comments',"異常")
-                                    ->where('eventtimes','like','%'.$dateTimes.'%')
+                                    ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->count();
                         $tatols['異常筆數'][$dateTimes][strval($value->storeid)] = $nums;
                     }
@@ -134,11 +135,12 @@ class  rentcups extends Model
                 //$starttime = date('2021-05-20 00:00:00');
                 while ($a <= $days) {
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)+1).' days'));
                     $nums = DB::table('rentlogs')->select(DB::raw('sum(nums) as nums'))
                                 ->where('storeid',strval($storeid))
                                 ->where('rentid',"R")
                                 ->where('checks',"Y")
-                                ->where('eventtimes','like','%'.$dateTimes.'%')
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->get();
 
                     $tatols['借杯數量'][$dateTimes][$storeid] = $nums[0]->nums;
@@ -148,7 +150,7 @@ class  rentcups extends Model
                                     ->where('storeid',strval($storeid))
                                     ->where('rentid',"B")
                                     ->where('checks',"B")
-                                    ->where('eventtimes','like','%'.$dateTimes.'%')
+                                    ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->get();
                     $tatols['還杯數量'][$dateTimes][$storeid] = $nums[0]->nums;
 
@@ -157,7 +159,7 @@ class  rentcups extends Model
                                 ->where('storeid',strval($storeid))
                                 ->where('rentid',"B")
                                 ->where('comments',"異常")
-                                ->where('eventtimes','like','%'.$dateTimes.'%')
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->count();
                     $tatols['異常筆數'][$dateTimes][$storeid] = $nums;
                     $a+=1;
