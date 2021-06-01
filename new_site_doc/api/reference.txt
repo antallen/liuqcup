@@ -272,3 +272,7 @@ https://segmentfault.com/a/1190000038672615
 https://codertw.com/%E5%89%8D%E7%AB%AF%E9%96%8B%E7%99%BC/55227/#outline__4
 https://zhuanlan.zhihu.com/p/337533899
 https://matthiashoys.wordpress.com/2020/01/15/how-to-upgrade-node-js-from-v6-to-v12-on-centos-linux-7/
+
+
+上傳檔案的方式
+https://ithelp.ithome.com.tw/articles/10232804

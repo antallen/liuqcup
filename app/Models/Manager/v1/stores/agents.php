@@ -35,6 +35,21 @@ class agents extends Model
     //設定店家管理員資料 -- Manager: 管理處人員  Agent:店家管理人員
     public function agentManager($source,$auths){
 
+        //查詢資料 -- Manager
+        if (($auths == "Manager") and ($source['action']=="D04")){
+            $result = $this->queryData($source,"Manager");
+            return $result;
+        } else {
+            //查詢資料 -- Agent
+            if (($auths == "Agent") and ($source['action']=="D04") and (isset($source['storeid']))){
+                $result = $this->queryData($source,"Agent");
+                return $result;
+            }
+
+            $msg = array(["result" => "查詢資料有誤"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
         if (isset($source['storeid']) and isset($source['action'])){
             //新增資料--Manager
             if (($auths == "Manager") and ($source['action']=="A01")){
@@ -67,11 +82,7 @@ class agents extends Model
                 return $result;
             }
 
-            //查詢資料 -- Manager
-            if (($auths == "Manager") and ($source['action']=="D04")){
-                $result = $this->queryData($source,"Manager");
-                return $result;
-            }
+
 
             //修改資料 -- Agent
             if (($auths == "Agent") and ($source['action']=="B02")){
@@ -79,11 +90,6 @@ class agents extends Model
                 return $result;
             }
 
-            //查詢資料 -- Agent
-            if (($auths == "Agent") and ($source['action']=="D04")){
-                $result = $this->queryData($source,"Agent");
-                return $result;
-            }
 
         } else {
             $msg = array(["result" => "Invalidated data"]);
@@ -200,30 +206,28 @@ class agents extends Model
 
     //查詢店家管理人員資料
     public function queryData($source,$level){
-        if (isset($source['storeid']) and isset($source['agentid'])){
-            if ($level == "Manager"){
-                //使用 Manager 觀點查詢
-                try {
-                    $result = DB::select('select agentid,agentname,agentphone,password,`lock` from storesagentids where (storeid = ? and agentid = ?)',[strval(trim($source['storeid'])),strval(trim($source['agentid']))]);
-                    return $result;
-                }catch(QueryException $e) {
-                    $msg = array(["error" => "Query Fails"]);
-                    return json_encode($msg,JSON_PRETTY_PRINT);
+        switch ($level) {
+            case "Manager":
+                if (isset($source['storeid'])){
+                    $result = DB::table('storesagentids')
+                                ->where('storeid',trim($source['storeid']))
+                                ->orderBy('storeid')->get();
+                }else{
+                    $result = DB::table('storesagentids')->orderBy('storeid')->get();
                 }
-            }
-            if ($level == "Agent"){
-                //使用 Agent 觀點查詢
-                try {
-                    $result = DB::select('select agentid,agentname,agentphone,password,`lock` from storesagentids where (storeid = ? and agentid = ? and token = ?)',[strval(trim($source['storeid'])),strval(trim($source['agentid'])),strval(trim($source['token']))]);
-                    return $result;
-                }catch(QueryException $e) {
-                    $msg = array(["error" => "Query Fails"]);
-                    return json_encode($msg,JSON_PRETTY_PRINT);
-                }
-            }
-        } else {
-            $msg = array(["error" => "Data is not correct!"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
+                return $result;
+                break;
+            case "Agent":
+                $result = DB::table('storesagentids')
+                        ->where('storeid',trim($source['storeid']))
+                        ->where('token',trim($source['token']))
+                        ->orderBy('id')->get();
+                return $result;
+                break;
+            default:
+                $msg = array(["error" => "Data is not correct!"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+                break;
         }
 
     }

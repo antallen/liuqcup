@@ -3,3 +3,12 @@ QRCODE_URL="http://127.0.0.1:8000/"
 
 $url = \Config::get('qrcode', 'qrcode');
         $hosturl = $url['qrcode'];
+
+
+
+總後台最高權限： admin / AB123456
+      最低權限： peter / ABCD123456 --> 可用於收杯人員
+
+店家管理人員： peter@hello.com / ABC123
+
+遊客：  0912345678,0987654321 / ABC123

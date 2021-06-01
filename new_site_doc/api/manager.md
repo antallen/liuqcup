@@ -242,7 +242,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 管理者帳號資料修改  [/manager/accounts/v1/renews/{renews}{?token,adminid,adminname,password,phoneno,email,level,usertoken}]
+## 管理者帳號資料修改  [/manager/accounts/v1/renews/renews{?token,adminid,adminname,password,phoneno,email,level,usertoken}]
 + token 為管理者的 token
 + 先利用 lists API 取出資料後，再修正更新內容！
 + 只有 level 值為 0 的管理者，可以修改自己以及別人的 level 值！
@@ -1173,3 +1173,13 @@ HOST: https://liuqapi.tdhome.tw/api
                     "待收杯數": 0
                 }
             ]
+
+
+# Group 開發用帳密
++ 總後台最高權限： admin / AB123456
++ 總後台最低權限： peter / ABCD123456 --> 可用於收杯人員
+
++ 店家管理人員： peter@hello.com / ABC123
+
++ 遊客：  0912345678,0987654321 / ABC123
+
