@@ -228,6 +228,7 @@
 |:-------|:-----------|:-------|:---|
 |id|INT|PRI|流水序號|
 |newsid|VARCHAR(100)|NOT NULL,INDEX|最新消息編號|
+|newstitle|VARCHAR(255)|NULL|最新消息標頭|
 |newscontent|TEXT|NULL|最新消息內容|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|

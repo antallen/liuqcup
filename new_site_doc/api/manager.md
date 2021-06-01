@@ -1179,13 +1179,86 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 # Group 最新消息管理
-
++ 最新消息列表
 + 新增最新消息
 + 修改最新消息
 + 刪除最新消息
 + 查詢最新消息
 
-## 新增最新消息 []
+## 最新消息列表 [/news/v1/news/list{?pages}]
++ 前台專用
+### 最新消息列表 [GET]
+
++ Parameters
+
+    + pages: 1 (optional, integer)
+      - 要求資料頁數，每頁50筆！
+      - 未加時，取第一頁！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "newsid": ABC123,
+                    "newstitle": "今日無頭家",
+                    "newscontent": "今日無事"
+                }
+            ]
+
+## 最新消息列表 [/news/v1/news/news{?token,pages}]
++ 後台專用
+### 最新消息列表 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+    + pages: 1 (optional, integer)
+      - 要求資料頁數，每頁50筆！
+      - 未加時，取第一頁！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "newsid": ABC123,
+                    "newstitle": "今日無頭家",
+                    "newscontent": "今日無事"
+                }
+            ]
+
+## 新增最新消息 [/news/v1/news/create{?token,newstitle,newscontent}]
++ 總管理處人員才可以新增消息
+### 新增最新消息 [GET]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+    + newstitle: Hello (required, string)
+      - 最新消息標題
+    + newscontent: 今日無事 (required, string)
+      - 最新消息內容
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
+                }
+            ]
 
 # Group 開發用帳密
 + 總後台最高權限： admin / AB123456

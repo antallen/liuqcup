@@ -8,7 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 
-class config extends Model
+class newslist extends Model
 {
     use HasFactory;
+    //顯示最新消息內容
+    public function lists($source){
+        if (isset($source['pages'])){
+            $pages = intval(trim($source['pages']));
+            if ($pages >= 1){
+                $counts = ($pages-1)*50;
+            } else {
+                $counts = 0;
+            }
+        } else {
+            $counts = 0;
+        }
+        $result = DB::table('newslogs')
+                      ->select(['newsid','newstitle','newscontent','updated_at'])
+                      ->skip($counts)->take(50)->get();
+        return $result;
+    }
 }

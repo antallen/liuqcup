@@ -49,7 +49,9 @@ Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('
 Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
 Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only('index');
 Route::apiResource('records/v1/stores/pushlist',stocksController::class)->only('show');
-Route::apiResource('news/v1/news',newsController::class);
+Route::apiResource('news/v1/news/list',newsController::class)->only('index');
+Route::apiResource('news/v1/news',newsController::class)->only('create');
+Route::apiResource('news/v1/news',newsController::class)->only('show');
 /*
 |--------------------------------------------------------------------------
 | API Routes
