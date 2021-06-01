@@ -39,6 +39,7 @@ class  rentcupslist extends Model
     // 顯示目前的情況
     public function checkcupslist($source){
         $timestamp = date('Y-m-d');
+        $nexttime = date('Y-m-d',strtotime("+1 days"));
         if (isset($source['storeid'])){
             $storeid = trim($source['storeid']);
         } else {
@@ -47,12 +48,12 @@ class  rentcupslist extends Model
         switch ($storeid){
             case "A001":
                 //查詢總計
-                $result = $this->accountlist($timestamp);
+                $result = $this->accountlist($timestamp,$nexttime);
                 return $result;
                 break;
             default:
                 //各店家查詢
-                $result = $this->storeslist($storeid,$timestamp);
+                $result = $this->storeslist($storeid,$timestamp,$nexttime);
                 return $result;
                 break;
 
@@ -60,13 +61,13 @@ class  rentcupslist extends Model
 
     }
     //查詢總計
-    private function accountlist($timestamp){
+    private function accountlist($timestamp,$nexttime){
         $totals = array();
         //目前借杯總數
         $rentcups = DB::table('rentlogs')
                         ->where('rentid',"R")
                         ->where('checks',"Y")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日總借杯數'] = intval($rentcups);
 
@@ -75,7 +76,7 @@ class  rentcupslist extends Model
         $backcups = DB::table('rentlogs')
                         ->where('rentid',"B")
                         ->where('checks',"B")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日總還杯數'] = intval($backcups);
 
@@ -84,7 +85,7 @@ class  rentcupslist extends Model
                         ->where('rentid',"B")
                         ->where('checks',"Y")
                         ->where('comments',"異常")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->count();
         $totals['今日總異常筆數'] = intval($abcups);
 
@@ -92,7 +93,7 @@ class  rentcupslist extends Model
 
     }
     //各店家查詢
-    private function storeslist($storeid,$timestamp){
+    private function storeslist($storeid,$timestamp,$nexttime){
         $totals = array();
         //目前借杯總數
 
@@ -100,7 +101,7 @@ class  rentcupslist extends Model
                         ->where('storeid',$storeid)
                         ->where('rentid',"R")
                         ->where('checks',"Y")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日借杯數'] = intval($rentcups);
 
@@ -110,7 +111,7 @@ class  rentcupslist extends Model
                         ->where('storeid',$storeid)
                         ->where('rentid',"B")
                         ->where('checks',"B")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日還杯數'] = intval($backcups);
 
@@ -120,7 +121,7 @@ class  rentcupslist extends Model
                         ->where('rentid',"B")
                         ->where('checks',"Y")
                         ->where('comments',"異常")
-                        ->where('eventtimes','like','%'.$timestamp.'%')
+                        ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->count();
         $totals['今日異常筆數'] = intval($abcups);
 
