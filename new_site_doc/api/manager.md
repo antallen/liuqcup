@@ -611,7 +611,7 @@ HOST: https://liuqapi.tdhome.tw/api
   + 不是每個店家都可以收送杯功能
 + 店家收送杯確認記錄列表
 + 店家收送杯記錄確認功能
-
++ 店家借還杯記錄列表
 
 ## 店家登入功能 [/rent/v1/stores/login{?agentid,agentauth}]
 + 店家管理人員登入
@@ -874,6 +874,14 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 店家借還杯記錄列表 [/rent/v1/stores/rentlist{?token,pages,times}
+
+### 店家借還杯記錄列表 [POST]
+
+
+
+
+
 # Group 遊客資料與記錄管理
 
 + 遊客註冊成會員功能
@@ -891,6 +899,7 @@ HOST: https://liuqapi.tdhome.tw/api
   + 店家查自己借還記錄
   + 總管理處可以查所有店家
 + 遊客預約借杯功能<font color="green">(稍晚)</font>
++ 遊客未還杯記錄表
 
 ## 遊客登入驗證 [/manager/v1/customers/login/login{?cusphone,cusauth}]
 
