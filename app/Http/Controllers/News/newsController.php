@@ -10,6 +10,7 @@ use App\Models\Manager\v1\news\addnews;
 use App\Models\Manager\v1\news\newshow;
 use App\Models\Manager\v1\news\querynews;
 use App\Models\Manager\v1\news\updatenews;
+use App\Models\Manager\v1\news\delnews;
 
 class newsController extends Controller
 {
@@ -44,6 +45,13 @@ class newsController extends Controller
     public function store(Request $request){
         $querynews = new querynews();
         $result = $querynews->querynews($request->all());
+        return $result;
+    }
+
+    //刪除最新消息
+    public function destroy(Request $request){
+        $removenews = new delnews();
+        $result = $removenews->deletenews($request->all());
         return $result;
     }
 }

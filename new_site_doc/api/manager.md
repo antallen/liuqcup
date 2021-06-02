@@ -1318,9 +1318,9 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 刪除最新消息 [/news/v1/news/update/update{?token,newsid}]
+## 刪除最新消息 [/news/v1/news/news{?token,newsid}]
 + 刪除最新消息
-### 刪除最新消息 [PATCH]
+### 刪除最新消息 [DELETE]
 
 + Parameters
 
