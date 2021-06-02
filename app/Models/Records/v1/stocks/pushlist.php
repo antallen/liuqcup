@@ -42,6 +42,7 @@ class  pushlist extends Model
         } else {
             $storeid = "A001";
         }
+        //return $storeid;
         if (isset($source['pages'])){
             if (intval(trim($source['pages'])) >= 1){
                 $pages = (intval(trim($source['pages']))-1)*50;
@@ -51,6 +52,7 @@ class  pushlist extends Model
         } else {
             $pages = 0;
         }
+        //return $pages;
         if (isset($source['action'])){
             $action = strval(trim($source['action']));
             switch($action){
@@ -70,6 +72,7 @@ class  pushlist extends Model
         } else {
             $action = "pullcup";
         }
+        //return $action;
         if (isset($source['times'])){
             $times = intval(trim($source['times']));
             switch ($times) {
@@ -77,10 +80,10 @@ class  pushlist extends Model
                     $timestamp = date('Y-m-d');
                     break;
                 case 7:
-                    $timestamp = date('Y-m-d',strtotime('-7 days'));
+                    $timestamp = date('Y-m-d',strtotime('-6 days'));
                     break;
                 case 30:
-                    $timestamp = date('Y-m-d',strtotime('-30 days'));
+                    $timestamp = date('Y-m-d',strtotime('-29 days'));
                     break;
                 default:
                     $msg = array(["error" => "無法查詢"]);
@@ -90,6 +93,7 @@ class  pushlist extends Model
         } else {
             $timestamp = date('Y-m-d');
         }
+        //return $timestamp;
         switch ($storeid){
             case "A001":
                 //查詢總計
@@ -109,8 +113,9 @@ class  pushlist extends Model
     }
     //總管理處的查詢
     private function accountlist($pages,$action,$timestamp){
-        $nowtime = date('Y-m-d');
-        switch ($action) {
+        $nowtime = date('Y-m-d',strtotime('+1 days'));
+        //return $timestamp;
+        switch ($action) {//
             case "pullcup":
                 $result = DB::table('storescupsrecords')
                       ->select(['storeid','pullcup','date','adminid','check','comment'])
