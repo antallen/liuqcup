@@ -1263,7 +1263,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 ## 查詢最新消息 [/news/v1/news/query{?token,keyword,newsid,pages}]
 + 總管理處人員才可以新增消息
-### 新增最新消息 [POST]
+### 查詢最新消息 [POST]
 
 + Parameters
 
@@ -1293,7 +1293,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 ## 更新/修改最新消息 [/news/v1/news/update/update{?token,newstitle,newscontent,newsid}]
 + 總管理處人員才可以新增消息
-### 新增最新消息 [PUT]
+### 更新/修改最新消息 [PUT]
 
 + Parameters
 
@@ -1303,7 +1303,30 @@ HOST: https://liuqapi.tdhome.tw/api
       - 更新最新消息標題
     + newscontent: 半價 (optional, string)
       - 更新最新消息內容
-    + newsid: NEWS123 (optional, string)
+    + newsid: NEWS123 (required, string)
+      - 最新消息編號
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
+                }
+            ]
+
+## 刪除最新消息 [/news/v1/news/update/update{?token,newsid}]
++ 刪除最新消息
+### 刪除最新消息 [PATCH]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+    + newsid: NEWS123 (required, string)
       - 最新消息編號
 
 + Response 200 (application/json)

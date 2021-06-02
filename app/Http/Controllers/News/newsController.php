@@ -9,6 +9,7 @@ use App\Models\Manager\v1\news\newslist;
 use App\Models\Manager\v1\news\addnews;
 use App\Models\Manager\v1\news\newshow;
 use App\Models\Manager\v1\news\querynews;
+use App\Models\Manager\v1\news\updatenews;
 
 class newsController extends Controller
 {
@@ -34,7 +35,9 @@ class newsController extends Controller
 
     //修改最新消息
     public function update(Request $request){
-
+        $updatenews = new updatenews();
+        $result = $updatenews->updateNews($request->all());
+        return $result;
     }
 
     //查詢最新消息
