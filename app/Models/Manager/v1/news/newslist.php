@@ -25,7 +25,7 @@ class newslist extends Model
         }
         $result = DB::table('newslogs')
                       ->select(['newsid','newstitle','newscontent','updated_at'])
-                      ->skip($counts)->take(50)->get();
+                      ->orderByDesc('updated_at')->skip($counts)->take(50)->get();
         return $result;
     }
 }

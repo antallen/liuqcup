@@ -1209,9 +1209,10 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 最新消息列表 [/news/v1/news/news{?token,pages}]
+## 後台最新消息列表 [/news/v1/news/news{?token,pages}]
 + 後台專用
-### 最新消息列表 [GET]
++ 只列出編號、時間、以及標題
+### 後台最新消息列表 [GET]
 
 + Parameters
 
@@ -1231,7 +1232,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "newsid": ABC123,
                     "newstitle": "今日無頭家",
-                    "newscontent": "今日無事"
+                    "updated_at": 2021-06-02
                 }
             ]
 
@@ -1247,6 +1248,63 @@ HOST: https://liuqapi.tdhome.tw/api
       - 最新消息標題
     + newscontent: 今日無事 (required, string)
       - 最新消息內容
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
+                }
+            ]
+
+## 查詢最新消息 [/news/v1/news/query{?token,keyword,newsid,pages}]
++ 總管理處人員才可以新增消息
+### 新增最新消息 [POST]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+    + keyword: 半價 (optional, string)
+      - 最新消息標題或內容的關鍵字
+    + newsid: NEWS123 (optional, string)
+      - 最新消息編號
+    + pages: 1 (optional, integer)
+      - 要求資料頁數，每頁50筆！
+      - 未加時，取第一頁！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "newsid": ABC123,
+                    "newstitle": "今日半價",
+                    "updated_at": 2021-06-02
+                }
+            ]
+
+## 更新/修改最新消息 [/news/v1/news/update/update{?token,newstitle,newscontent,newsid}]
++ 總管理處人員才可以新增消息
+### 新增最新消息 [PUT]
+
++ Parameters
+
+    + token: ABC123 (required,string)
+      - 總管理處人員的 key
+    + newstitle: 半價 (optional, string)
+      - 更新最新消息標題
+    + newscontent: 半價 (optional, string)
+      - 更新最新消息內容
+    + newsid: NEWS123 (optional, string)
+      - 最新消息編號
 
 + Response 200 (application/json)
 

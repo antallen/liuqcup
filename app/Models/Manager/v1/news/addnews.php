@@ -14,10 +14,33 @@ class addnews extends Model
     public function createNews($source){
         $auths = $this->checkTokens($source);
         if ($auths == "[]"){
-            $msg = array(["result" => "Have Not Token"]);
+            $msg = array(["error" => "Have Not Token"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
+            if (isset($source['newstitle']) and isset($source['newscontent'])){
+                $timestamp = date('Y-m-d H:i:s');
+                $newsid = "NEWS".strval(strtotime("now")).strval(rand(1,1000));
+                $newstitle = trim($source['newstitle']);
+                $newscontent = trim($source['newscontent']);
+                $result = DB::table('newslogs')->insert([
+                                'newsid' => $newsid,
+                                'newstitle' => $newstitle,
+                                'newscontent' => $newscontent,
+                                'created_at'=> $timestamp,
+                                'updated_at'=> $timestamp ]);
+                if ($result == 1){
+                    $msg = array(["result" => "success"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                } else {
+                    $msg = array(["error" => "新增失敗！"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                }
+            } else {
+                $msg = array(["error" => "資料不齊全！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
 
+            return $auths;
         }
     }
 

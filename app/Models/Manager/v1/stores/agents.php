@@ -105,7 +105,16 @@ class agents extends Model
             $msg = array(["error" => "Invalidated data"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
-
+        if (isset($source['agentname'])){
+            $agentname = strval(trim($source['agentname']));
+        } else {
+            $agentname = "暫時沒寫";
+        }
+        if (isset($source['agentphone'])){
+            $agentphone = strval(trim($source['agentphone']));
+        } else {
+            $agentphone = NULL;
+        }
         $storeid = strval(trim($source['storeid']));
         $agentid = strval(trim($source['agentid']));
         $password = strval(trim($source['password']));
@@ -113,12 +122,12 @@ class agents extends Model
         $token = strval(SecretClass::generateToken($salt,$password));
         $timestamp = date('Y-m-d H:i:s');
         try {
-            DB::insert('insert into storesagentids (storeid, agentid, password, salt, token, created_at, updated_at)
-            values (?,?,?,?,?,?,?)', [$storeid,$agentid,$password,$salt,$token,$timestamp,$timestamp]);
+            DB::insert('insert into storesagentids (storeid, agentid,agentname,agentphone, password, salt, token, created_at, updated_at)
+            values (?,?,?,?,?,?,?,?,?)', [$storeid,$agentid,$agentname, $agentphone, $password,$salt,$token,$timestamp,$timestamp]);
             $msg = array(["result" => "Add account Success"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch(QueryException $e){
-
+            return $e;
             $msg = array(["result" => "Data is not good !!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }

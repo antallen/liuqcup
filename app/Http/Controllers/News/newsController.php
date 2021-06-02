@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Manager\v1\news\newslist;
 use App\Models\Manager\v1\news\addnews;
+use App\Models\Manager\v1\news\newshow;
+use App\Models\Manager\v1\news\querynews;
 
 class newsController extends Controller
 {
@@ -18,7 +20,9 @@ class newsController extends Controller
     }
     //後台專用的最新消息列表
     public function show(Request $request){
-
+        $newshow = new newshow();
+        $result = $newshow->shownews($request->all());
+        return $result;
     }
 
     //後台專用最新消息新增
@@ -28,4 +32,15 @@ class newsController extends Controller
         return $result;
     }
 
+    //修改最新消息
+    public function update(Request $request){
+
+    }
+
+    //查詢最新消息
+    public function store(Request $request){
+        $querynews = new querynews();
+        $result = $querynews->querynews($request->all());
+        return $result;
+    }
 }
