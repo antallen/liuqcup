@@ -54,4 +54,5 @@ class cupsController extends Controller
         $msg = array(["error" => "無法查詢"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
+
 }

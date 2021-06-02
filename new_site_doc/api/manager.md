@@ -1052,6 +1052,34 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 遊客未還杯/異常記錄表 [/records/v1/stores/aberrantlist{?token,pages}]
++ 總管理處查詢全部未還杯或還杯異常的記錄
++ 店家管理員查詢自家店借出未還杯或還杯異常的記錄
+### 遊客未還杯/異常記錄表 [GET]
+
++ Parameters
+
+    + token: Ab123456 (required, string)
+      - 管理處人員的 Key
+      - 店家人員的 Key
+    + pages: 1 (optional, integer)
+      - 頁數：每頁 50 筆！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "cusphone": "0123456789",
+                    "nums": 0,
+                    "eventtimes": "2021-05-23 15:09:52",
+                    "comments": "欠杯"
+                }
+            ]
+
 # Group 借還杯資料統計與查詢
 
 + 即時顯示目前借還杯數量狀況

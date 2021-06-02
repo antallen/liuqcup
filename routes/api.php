@@ -16,6 +16,7 @@ use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
 use App\Http\Controllers\Rent\cupsController;
 use App\Http\Controllers\Rent\cusrentController;
+use App\Http\Controllers\Rent\aberrantController;
 use App\Http\Controllers\Record\rentlogsController;
 use App\Http\Controllers\Record\rentcupController;
 use App\Http\Controllers\Stock\stocksController;
@@ -50,12 +51,14 @@ Route::apiResource('records/v1/stores/rentcup',rentcupController::class)->only('
 Route::apiResource('records/v1/stores/rentcuplist',rentcupController::class)->only('index');
 Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only('index');
 Route::apiResource('records/v1/stores/pushlist',stocksController::class)->only('show');
+Route::apiResource('records/v1/stores/aberrantlist',aberrantController::class)->only('index');
 Route::apiResource('news/v1/news/list',newsController::class)->only('index');
 Route::apiResource('news/v1/news',newsController::class)->only('create');
 Route::apiResource('news/v1/news',newsController::class)->only('show');
 Route::apiResource('news/v1/news/query',newsController::class)->only('store');
 Route::apiResource('news/v1/news/update',newsController::class)->only('update');
 Route::apiResource('news/v1/news',newsController::class)->only('destroy');
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
