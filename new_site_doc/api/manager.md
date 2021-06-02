@@ -611,7 +611,7 @@ HOST: https://liuqapi.tdhome.tw/api
   + 不是每個店家都可以收送杯功能
 + 店家收送杯確認記錄列表
 + 店家收送杯記錄確認功能
-+ 店家借還杯記錄列表
++ 店家收送杯記錄列表
 
 ## 店家登入功能 [/rent/v1/stores/login{?agentid,agentauth}]
 + 店家管理人員登入
@@ -810,11 +810,11 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄列表 [/rent/v1/stores/rent/list{?token,action}]
+## 店家收送杯確認記錄列表 [/rent/v1/stores/rent/list{?token,action}]
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
-### 店家收送杯記錄列表 [POST]
+### 店家收送杯確認記錄列表 [POST]
 
 + Parameters
 
@@ -874,12 +874,38 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家借還杯記錄列表 [/rent/v1/stores/rentlist{?token,pages,times}
+## 店家收送杯記錄列表 [/rent/v1/stores/rent/show{?token,storeid,pages,action}]
++ 管理處可以列出完整收送杯記錄
+### 店家收送杯記錄列表 [GET]
 
-### 店家借還杯記錄列表 [POST]
++ Parameters
 
+    + token: ABC123 (required, string)
+      - 總管理處人員 key
+      - 店家管理人員 key
+    + pages: 1 (optional, integer)
+      - 分頁筆數，每頁50筆記錄
+    + storeid: ABC123 (optional, string)
+      - 方便總管理處人員查看單一店家資料
+      - 店家管理員查看時，不用送出此一參數！
+    + action: A01 (required, string)
+      - A01: 收杯
+      - B02: 送杯
 
++ Response 200 (application/json)
 
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "date": "2021-05-26 09:40:07",
+                    "pullcup": 6,
+                    "adminid": "peter",
+                    "check": "Y"
+                }
+            ]
 
 
 # Group 遊客資料與記錄管理
