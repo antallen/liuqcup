@@ -71,8 +71,10 @@ HOST: https://liuqapi.tdhome.tw/api
 + 修改最新消息
 + 刪除最新消息
 + 查詢最新消息
-#### 中獎名單查詢
+#### 中獎名單
 
++ 中獎名單檔案列表
++ 上傳中獎名單
 # Group 站台經營者帳號密碼管理
 
 ## 管理者帳號密碼驗證 [/manager/accounts/v1/auths{?account,authword}]
@@ -1403,6 +1405,13 @@ HOST: https://liuqapi.tdhome.tw/api
                     "result": "success"
                 }
             ]
+
+# Group 中獎名單
++ 中獎名單檔案列表
++ 上傳中獎名單
+
+## 中獎名單檔案列表
+
 
 # Group 開發用帳密
 + 總後台最高權限： admin / AB123456
