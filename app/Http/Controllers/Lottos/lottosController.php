@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Lottos\v1\lottos\filelist;
-
+use App\Models\Lottos\v1\lottos\uploadfile;
 
 class lottosController extends Controller
 {
@@ -18,7 +18,14 @@ class lottosController extends Controller
 
     //上傳中獎檔案
     public function store(Request $request){
-        $storagePath = Storage::put('/public',$request['file']);
-        $fileName = basename($storagePath);
+        $uploadfile = new uploadfile();
+        $auths = $uploadfile->checkToken($request->all());
+
+        if ($auths == "Manager"){
+
+            $result = $uploadfile->uploadFile($request);
+            return $result;
+        }
+        return $auths;
     }
 }

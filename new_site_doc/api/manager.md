@@ -1410,14 +1410,18 @@ HOST: https://liuqapi.tdhome.tw/api
 + 中獎名單檔案列表
 + 上傳中獎名單
 
-## 上傳中獎名單 [/lottos/v1/news{?token}]
+## 上傳中獎名單 [/lottos/v1/news{?token,filename,file}]
 
 ### 上傳中獎名單 [POST]
 
 + Parameters
 
     + token: 1 (required, string)
-      - 上傳中獎的檔案
+      - 總管理處人員的 key
+    + filename: 12月份中獎名單 (required, string)
+      - 檔案格式為 pdf 檔案
+    + file: hello.pdf (required, file)
+      - 要上傳的檔案
 
 + Response 200 (application/json)
 

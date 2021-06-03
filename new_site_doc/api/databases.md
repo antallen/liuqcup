@@ -241,7 +241,8 @@
 |:-------|:-----------|:-------|:---|
 |id|INT|PRI|流水序號|
 |fileid|VARCHAR(100)|NOT NULL,INDEX|檔案編號|
-|filename|VARCHAR(255)|NULL|檔案名稱標頭|
+|filename|VARCHAR(255)|NULL|存放在路徑上的檔案名稱|
+|disname|VARCHAR(255)| NOT NULL|顯示在網頁上的檔案名稱|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
 

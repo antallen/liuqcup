@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\SecretClass;
 use App\Models\AuthChecks;
 
-class lottos extends Model
+class filelist extends Model
 {
     use HasFactory;
 }
