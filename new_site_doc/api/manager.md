@@ -1410,7 +1410,48 @@ HOST: https://liuqapi.tdhome.tw/api
 + 中獎名單檔案列表
 + 上傳中獎名單
 
-## 中獎名單檔案列表 
+## 上傳中獎名單 [/lottos/v1/news{?token}]
+
+### 上傳中獎名單 [POST]
+
++ Parameters
+
+    + token: 1 (required, string)
+      - 上傳中獎的檔案
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "filename": "success"
+                }
+            ]
+
+
+## 中獎名單檔案列表 [/lottos/v1/news{?month}]
+
+### 中獎名單檔案列表 [GET]
+
++ Parameters
+
+    + month: 1 (optional, integer)
+      - 查詢月份中獎的檔案
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "filename": "success"
+                }
+            ]
 
 
 # Group 開發用帳密

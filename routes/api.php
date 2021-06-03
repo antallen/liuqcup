@@ -20,6 +20,7 @@ use App\Http\Controllers\Rent\aberrantController;
 use App\Http\Controllers\Record\rentlogsController;
 use App\Http\Controllers\Record\rentcupController;
 use App\Http\Controllers\Stock\stocksController;
+use App\Http\Controllers\Lottos\lottosController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -58,7 +59,7 @@ Route::apiResource('news/v1/news',newsController::class)->only('show');
 Route::apiResource('news/v1/news/query',newsController::class)->only('store');
 Route::apiResource('news/v1/news/update',newsController::class)->only('update');
 Route::apiResource('news/v1/news',newsController::class)->only('destroy');
-
+Route::apiResource('lottos/v1/news',lottosController::class);
 /*
 |--------------------------------------------------------------------------
 | API Routes
