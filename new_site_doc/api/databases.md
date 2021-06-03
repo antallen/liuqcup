@@ -235,6 +235,16 @@
 
 ### 存放圖檔檔名表格 imglogs
 
+### 中獎名單檔案表格 lottofiles
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|PRI|流水序號|
+|fileid|VARCHAR(100)|NOT NULL,INDEX|檔案編號|
+|filename|VARCHAR(255)|NULL|檔案名稱標頭|
+|created_at|timestamp|NULL|建立帳號的時間戳記|
+|updated_at|timestamp|NULL|更新帳號的時間戳記|
+
 <HR>
 <BR>
 ## Group 關連資料清單
