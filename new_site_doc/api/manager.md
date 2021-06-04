@@ -1458,8 +1458,32 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
+                    "fileid": "FILE1234",
                     "filename": "12.pdf",
                     "link": "http://127.0.0.1:8000/storage/1lASE3MFCgSgH7lxmBvOMeP0LZRvd4RLgafvoUyW.pdf"
+                }
+            ]
+
+## 中獎名單檔案刪除 [/lottos/v1/news/news{?token,fileid}]
++ 刪除己過期的名單檔案，或是錯誤的檔案
+### 中獎名單檔案刪除 [DELETE]
+
++ Parameters
+
+    + token: 1 (required, string)
+      - 總管理處人員的 key
+    + fileid: FILE1234 (required, string)
+      - 檔案編號
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
                 }
             ]
 

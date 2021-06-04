@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Lottos\v1\lottos\filelist;
 use App\Models\Lottos\v1\lottos\uploadfile;
+use App\Models\Lottos\v1\lottos\delefile;
 
 class lottosController extends Controller
 {
@@ -27,7 +28,25 @@ class lottosController extends Controller
 
             $result = $uploadfile->uploadFile($request);
             return $result;
+        } else {
+            $msg = array(["error" => "無法上傳"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
         }
-        return $auths;
+
+    }
+
+    //刪除檔案
+    public function destroy(Request $request){
+        $auth = new delefile();
+        $result = $auth->checkToken($request->all());
+
+        if ($result == "Manager"){
+
+            $result = $auth->deleteFile($request->all());
+            return $result;
+        } else {
+            $msg = array(["error" => "無法刪除"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
     }
 }

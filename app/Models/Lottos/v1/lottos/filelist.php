@@ -19,10 +19,11 @@ class filelist extends Model
             $month = strval(trim($source['month']));
             $result = DB::table('lottofiles')->where('month',$month)->orderByDesc('updated_at')->get();
             foreach ($result as $value){
+                $fileid = $value->fileid;
                 $disname = $value->disname;
                 $filename = $value->filename;
                 $fileurl = $url['qrcode']."storage/".$filename;
-            $msg = array(["filename" => $disname,'link' => $fileurl]);
+            $msg = array(['fileid' => $fileid,'filename' => $disname,'link' => $fileurl]);
             return json_encode($msg,JSON_PRETTY_PRINT);
             }
         } else {
