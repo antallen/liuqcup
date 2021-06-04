@@ -12,6 +12,7 @@ use App\Http\Controllers\Manager\classesController;
 use App\Http\Controllers\Manager\agentsController;
 use App\Http\Controllers\Manager\customersController;
 use App\Http\Controllers\Manager\registerController;
+use App\Http\Controllers\Manager\socialController;
 use App\Http\Controllers\News\newsController;
 use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
@@ -62,6 +63,7 @@ Route::apiResource('news/v1/news/query',newsController::class)->only('store');
 Route::apiResource('news/v1/news/update',newsController::class)->only('update');
 Route::apiResource('news/v1/news',newsController::class)->only('destroy');
 Route::apiResource('lottos/v1/news',lottosController::class);
+Route::apiResource('manager/v1/stores/social',socialController::class);
 /*
 |--------------------------------------------------------------------------
 | API Routes

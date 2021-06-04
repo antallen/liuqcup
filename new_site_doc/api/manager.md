@@ -540,6 +540,11 @@ HOST: https://liuqapi.tdhome.tw/api
 + 店家功能設定與修改
 + 店家分類設定與修改
 + 店家 QRcode 資料設定與修改<font color="green">(稍晚)</font>
++ 店家社交軟體管理功能
+  + 店家社交軟體列表
+  + 店家新增社交軟體連結
+  + 店家編修社交軟體連結
+  + 店家刪除社交軟體連結
 
 ## 店家功能設定與修改 [/manager/v1/funcs/config{?token,storeid,funcs}]
 + 只有有管理處的人才可以修改
@@ -571,6 +576,7 @@ HOST: https://liuqapi.tdhome.tw/api
 
 ## 店家分類設定與修改 [/manager/v1/classes/config{?token,storeid,classes}]
 + 只有管理處的人才可以修改
+
 ### 店家分類設定與修改 [POST]
 
 + Parameters
@@ -594,6 +600,134 @@ HOST: https://liuqapi.tdhome.tw/api
             [
                 {
                     "result" : success
+                }
+            ]
+
+## 店家社交軟體列表 [/manager/v1/stores/social{?storeid,pages,classes}]
++ 列出店家的社群連結
++ 可列出指定的店家社群連結
++ 可列出全部的店家社群連結
++ 注意：有設定 storeid 時, classes 無作用，兩者均無，則列出全部！ 
+### 店家社交軟體列表 [GET]
+
++ Parameters
+
+    + storeid: 10034532 (optional, string)
+      + 店家代號
+    + pages: 1 (optional, integer)
+      + 頁數，每頁50筆記錄
+    + classes: A01 (optional, string)
+      + 功能項目：
+        + A01：專賣
+        + B02：民宿
+        + C03：商店
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "13354477": [
+                        {
+                        "id": 1,
+                        "storeid": "13354477",
+                        "ssname": "facebook",
+                        "sslink": "https://www.facebook.com/琉行杯-104228064446226/"
+                        }
+                }
+            ]
+
+## 店家新增社交軟體連結 [/manager/v1/stores/social{?token,storeid,action,data}]
++ 由店家自行管理自家的社交軟體連結
+### 店家新增社交軟體連結 [POST]
+
++ Parameters
+
+    + token: 2!qwe@asd#zxf$ (required, string)
+      + 店家管理人員的 Key
+    + storeid: 10034532 (required, string)
+      + 店家代號
+    + action: A01 (required, string)
+      + 社交軟體代號
+      + A01: facebook
+      + B02: line
+      + C03: instagram
+      + D04: offical (店家官網)
+      + E05: telegram
+    + data: http://123/123/123 (required, string)
+      + 連結資料
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "facebook": "http://www.facebook.com",
+                    "line": "http://line",
+                    "IG": "http://......"
+                }
+            ]
+
+## 店家編修社交軟體連結 [/manager/v1/stores/social/social{?token,storeid,action,data,id}]
+
+### 店家編修社交軟體連結 [PATCH]
+
++ Parameters
+
+    + token: 2!qwe@asd#zxf$ (required, string)
+      + 店家管理人員的 Key
+    + storeid: 10034532 (required, string)
+      + 店家代號
+    + action: A01 (required, string)
+      + 社交軟體代號
+      + A01: facebook
+      + B02: line
+      + C03: instagram
+      + D04: offical (店家官網)
+      + E05: telegram
+    + data: http://123/123/123 (required, string)
+      + 連結資料
+    + id: 1 (required, integer) 
+      + 社交軟體記錄的編號
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
+                }
+            ]
+
+## 店家刪除社交軟體連結 [/manager/v1/stores/social/social{?token,id}]
+
+### 店家刪除社交軟體連結 [DELETE]
+
++ Parameters
+
+    + token: 2!qwe@asd#zxf$ (required, string)
+      + 店家管理人員的 Key
+    + id: 1 (required, integer) 
+      + 社交軟體記錄的編號
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
                 }
             ]
 

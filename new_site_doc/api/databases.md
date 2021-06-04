@@ -154,6 +154,19 @@
 |date|dateTime|NOT NULL,now,PRI|收送時間戳記|
 |comment|varchar(255)|NULL|備註|
 
+
+### 店家社群軟體表 sociallogs
+
++ 記錄店家使用的社群軟體連結
+  
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|NOT NULL,auto_increment, PRI|流水序號|
+|storeid|char(100)|NOT NULL|店家編號|
+|ssname|char(100)|NOT NULL|社群軟體名稱|
+|sslink|char(255)|NOT NULL|社群軟體連結|
+
+
 <HR>
 <BR>
 
