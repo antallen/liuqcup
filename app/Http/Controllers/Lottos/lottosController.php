@@ -12,8 +12,10 @@ use App\Models\Lottos\v1\lottos\uploadfile;
 class lottosController extends Controller
 {
     //中獎檔案列表
-    public function index(){
-
+    public function index(Request $request){
+        $showfiles = new filelist();
+        $results = $showfiles->filelist($request->all());
+        return $results;
     }
 
     //上傳中獎檔案

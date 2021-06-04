@@ -46,13 +46,14 @@ class uploadfile extends Model
         $disname = trim($source['filename']);
         $storagePath = Storage::put('/public',$source['file']);
         $fileName = basename($storagePath);
-
+        $month = strval(trim($source['month']));
         DB::table('lottofiles')
              ->insert(['fileid' => $fileid,
                        'filename' => $fileName,
                        'disname' => $disname,
                        'created_at' => $timestamp,
-                       'updated_at' => $timestamp]);
+                       'updated_at' => $timestamp,
+                       'month' => $month]);
 
         $msg = array(["result" => "success"]);
         return json_encode($msg,JSON_PRETTY_PRINT);

@@ -1410,7 +1410,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 中獎名單檔案列表
 + 上傳中獎名單
 
-## 上傳中獎名單 [/lottos/v1/news{?token,filename,file}]
+## 上傳中獎名單 [/lottos/v1/news{?token,filename,file,month}]
 
 ### 上傳中獎名單 [POST]
 
@@ -1422,6 +1422,9 @@ HOST: https://liuqapi.tdhome.tw/api
       - 檔案格式為 pdf 檔案
     + file: hello.pdf (required, file)
       - 要上傳的檔案
+    + month: 12 (optional, integer)
+      - 設定月份資料
+      - 月份： 1,2,3,4,5,6,7,8,9,10,11,12
 
 + Response 200 (application/json)
 
@@ -1431,19 +1434,21 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "filename": "success"
+                    "result": "success"
                 }
             ]
 
 
 ## 中獎名單檔案列表 [/lottos/v1/news{?month}]
-
++ 可按時間順序列出全部檔案，也可以只顯示某個月份的檔案
++ 不分任何權限
 ### 中獎名單檔案列表 [GET]
 
 + Parameters
 
     + month: 1 (optional, integer)
       - 查詢月份中獎的檔案
+      - 月份：1,2,3,4,5,6,7,8,9,10,11,12
 
 + Response 200 (application/json)
 
@@ -1453,7 +1458,8 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "filename": "success"
+                    "filename": "12.pdf",
+                    "link": "http://127.0.0.1:8000/storage/1lASE3MFCgSgH7lxmBvOMeP0LZRvd4RLgafvoUyW.pdf"
                 }
             ]
 
