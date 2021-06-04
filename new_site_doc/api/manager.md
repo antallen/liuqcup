@@ -988,7 +988,7 @@ HOST: https://liuqapi.tdhome.tw/api
         - A01: 新增
           - 管理人員 (必要欄位：token,cusphone)
             - <font color="blue">遊客借杯時，新增資料由此寫入</font>
-          - 遊客註冊 (必要欄位：cusphone, cuspassword)<font color="red">(暫時不開放)</font>(先寫好一支暫時產生臨時 token 的程式，再開放)
+          - 遊客註冊 (必要欄位：cusphone, cuspassword)，先取得臨時 token ，再進行新增！)
         - B02: 修改更新資料
           - 遊客手機號碼修改時，會直接新增，變成多支手機
           - 遊客的ID不會修改
@@ -1081,6 +1081,29 @@ HOST: https://liuqapi.tdhome.tw/api
                     "comments": "欠杯"
                 }
             ]
+
+## 遊客註冊用亂數產生功能 [/manager/v1/customers/register{?auth}]
++ 送入一組 6 位英數值，取出一個 token 值，供註冊用！
+
+### 遊客註冊用亂數產生功能 [GET]
+
++ Parameters
+
+    + auth: ABC123 (required, string)
+      - 字數：共 6 個字元！
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "token": "ABC123"
+                }
+            ]
+
 
 # Group 借還杯資料統計與查詢
 

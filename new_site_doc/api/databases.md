@@ -248,6 +248,19 @@
 
 <HR>
 <BR>
+
+### 遊客註冊用暫存表格 registerlogs
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|PRI|流水序號|
+|salt|char(20)|NOT NULL, UNIQUE|加密用的 Hash Key|
+|token|char(255)|NOT NULL, UNIQUE|由亂數產生密碼的 Hash code 編碼而成的|
+|password|varchar(100)|NOT NULL|亂數產生的密碼|
+
+<HR>
+<BR>
+
 ## Group 關連資料清單
 
 ### 店家管理者外鍵約束

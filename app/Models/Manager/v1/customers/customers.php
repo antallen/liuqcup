@@ -23,6 +23,7 @@ class customers extends Model
         $manager = DB::table('accounts')->where('lock','N')->where('token',$token)->get('level');
         $agent = DB::table('storesagentids')->where('lock','N')->where('token',$token)->get('agentid');
         $cus = DB::table('customers')->where('lock','N')->where('token',$token)->get('cusid');
+        $newcus = DB::table('registerlogs')->where('token',$token)->get('password');
         if (!empty($manager[0])){
             return "Manager";
         }
@@ -31,7 +32,10 @@ class customers extends Model
         }
         if (!empty($cus[0])){
             return "Customer";
-        }else {
+        }
+        if (!empty($newcus[0]) and (strlen($newcus[0]->password) >= 6)){
+            return "NewCustomer";
+        } else {
             return "NOT";
         }
     }
@@ -46,6 +50,10 @@ class customers extends Model
                     return $result;
                 }
                 //遊客自行註冊資料 -- Customer（使用暫時性的 token 進行新增）
+                if (($auths == "NewCustomer")){
+                    $result = $this->newCustomers($source);
+                    return $result;
+                }
                 break;
             case "B02":
                 //更新遊客資料

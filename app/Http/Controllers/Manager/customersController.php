@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Manager\v1\customers\customers;
 use App\Models\Manager\v1\customers\logins;
+use Illuminate\Support\Facades\DB;
 
 class customersController extends Controller
 {
@@ -27,6 +28,11 @@ class customersController extends Controller
         }
         if ($auths == "Customer"){
             $results = $cus->cusManager($request->all(),$auths);
+            return $results;
+        }
+        if ($auths == "NewCustomer"){
+            $results = $cus->cusManager($request->all(),$auths);
+            DB::table('registerlogs')->where('token',trim($request['token']))->delete();
             return $results;
         } else {
             $msg = array(["error" => "帳號己鎖定！"]);

@@ -11,6 +11,7 @@ use App\Http\Controllers\Manager\funcsController;
 use App\Http\Controllers\Manager\classesController;
 use App\Http\Controllers\Manager\agentsController;
 use App\Http\Controllers\Manager\customersController;
+use App\Http\Controllers\Manager\registerController;
 use App\Http\Controllers\News\newsController;
 use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
@@ -37,6 +38,7 @@ Route::apiResource('manager/v1/stores/agent',agentsController::class)->only('sto
 Route::apiResource('manager/v1/funcs/config',funcsController::class)->only('store');
 Route::apiResource('manager/v1/classes/config',classesController::class)->only('store');
 Route::apiResource('manager/v1/customers/config',customersController::class)->only('store');
+Route::apiResource('manager/v1/customers/register',registerController::class);
 Route::apiResource('rent/v1/customers/rent',rentController::class)->only('store');
 Route::apiResource('rent/v1/stores/rent',rentController::class)->only('update');
 Route::apiResource('rent/v1/stores/qrcode',storesloginController::class)->only('store');
