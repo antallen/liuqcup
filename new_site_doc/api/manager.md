@@ -1431,15 +1431,18 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "newsid": ABC123,
-                    "newstitle": "今日無頭家",
-                    "newscontent": "今日無事"
+                    "newsid": "NEWS1622869777814",
+                    "newstitle": "Hello",
+                    "newscontent": "今日無事",
+                    "newsdate": "2021-06-05 05:09:37",
+                    "filename": "hello.jpg",
+                    "url": "http://127.0.0.1:8000/storage/news/NF73rakwlOZZstiGqHS1JSSHWKKiJFBwHW6iX6dD.gif"
                 }
             ]
 
 ## 後台最新消息列表 [/news/v1/news/news{?token,pages}]
 + 後台專用
-+ 只列出編號、時間、以及標題
++ 只列出編號、時間、標題、以及檔案名稱
 ### 後台最新消息列表 [GET]
 
 + Parameters
@@ -1460,7 +1463,8 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "newsid": ABC123,
                     "newstitle": "今日無頭家",
-                    "updated_at": 2021-06-02
+                    "updated_at": 2021-06-02,
+                    "filename": hello.jpg
                 }
             ]
 
