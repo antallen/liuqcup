@@ -607,7 +607,9 @@ HOST: https://liuqapi.tdhome.tw/api
 + 列出店家的社群連結
 + 可列出指定的店家社群連結
 + 可列出全部的店家社群連結
-+ 注意：有設定 storeid 時, classes 無作用，兩者均無，則列出全部！ 
++ 注意：
+  + 有設定 storeid 時, classes 無作用，兩者均無，則列出全部！ 
+  + 一個店家最多只顯示六筆資料
 ### 店家社交軟體列表 [GET]
 
 + Parameters
@@ -657,6 +659,7 @@ HOST: https://liuqapi.tdhome.tw/api
       + C03: instagram
       + D04: offical (店家官網)
       + E05: telegram
+      + F06: youtube
     + data: http://123/123/123 (required, string)
       + 連結資料
 
@@ -675,7 +678,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 ## 店家編修社交軟體連結 [/manager/v1/stores/social/social{?token,storeid,action,data,id}]
-
++ 一次只可編修一種社交軟體連結資料
 ### 店家編修社交軟體連結 [PATCH]
 
 + Parameters
@@ -691,6 +694,7 @@ HOST: https://liuqapi.tdhome.tw/api
       + C03: instagram
       + D04: offical (店家官網)
       + E05: telegram
+      + F06: youtube
     + data: http://123/123/123 (required, string)
       + 連結資料
     + id: 1 (required, integer) 
@@ -708,7 +712,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家刪除社交軟體連結 [/manager/v1/stores/social/social{?token,id}]
+## 店家刪除社交軟體連結 [/manager/v1/stores/social/social{?token,id,storeid}]
 
 ### 店家刪除社交軟體連結 [DELETE]
 
@@ -718,6 +722,8 @@ HOST: https://liuqapi.tdhome.tw/api
       + 店家管理人員的 Key
     + id: 1 (required, integer) 
       + 社交軟體記錄的編號
+    + storeid: 10034532 (required, string)
+      + 店家代號
 
 + Response 200 (application/json)
 

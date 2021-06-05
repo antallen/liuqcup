@@ -27,4 +27,30 @@ class socialController extends Controller
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
     }
+
+    //店家編修社交軟體連結
+    public function update(Request $request){
+        $editor = new socials();
+        $result = $editor->checkToken($request->all());
+        if ($result == "Agent"){
+            $result = $editor->editSocials($request);
+            return $result;
+        } else {
+            $msg = array(["error" => "編修失敗"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+
+    //刪除店家社交軟體連結
+    public function destroy(Request $request){
+        $editor = new socials();
+        $result = $editor->checkToken($request->all());
+        if ($result == "Agent"){
+            $result = $editor->delSocials($request);
+            return $result;
+        } else {
+            $msg = array(["error" => "刪除失敗"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
 }

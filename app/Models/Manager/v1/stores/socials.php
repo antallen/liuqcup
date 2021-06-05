@@ -57,6 +57,9 @@ class socials extends Model
                 case "E05":
                     $ssname = "telegram";
                     break;
+                case "F06":
+                    $ssname = "youtube";
+                    break;
                 default:
                     $msg = array(["error" => "資料不完整，無法新增"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);
@@ -119,7 +122,7 @@ class socials extends Model
                             ->where('storesclass.classid',$classes)
                             ->select('stores.storeid')->skip($pages)->take(50)->get();
             foreach ($storeids as $value) {
-                $result2 = DB::table('sociallogs')->where('storeid',$value->storeid)->get();
+                $result2 = DB::table('sociallogs')->where('storeid',$value->storeid)->take(6)->get();
                 $result[$value->storeid]= $result2;
             }
             return $result;
@@ -135,4 +138,70 @@ class socials extends Model
         }
 
     }
+    //店家編修社交軟體連結
+    public function editSocials($source){
+        if ((isset($source['storeid'])) and (isset($source['action'])) and (isset($source['data'])) and (isset($source['id']))){
+            $id = intval(trim($source['id']));
+            $storeid = strval(trim($source['storeid']));
+            $data = strval(trim($source['data']));
+            $action = strval(trim($source['action']));
+            switch ($action) {
+                case "A01":
+                    $ssname = "facebook";
+                    break;
+                case "B02":
+                    $ssname = "line";
+                    break;
+                case "C03":
+                    $ssname = "instagram";
+                    break;
+                case "D04":
+                    $ssname = "offical";
+                    break;
+                case "E05":
+                    $ssname = "telegram";
+                    break;
+                case "F06":
+                    $ssname = "youtube";
+                    break;
+                default:
+                    $msg = array(["error" => "資料不完整，無法新增"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                    break;
+            }
+            try {
+                DB::table('sociallogs')->where('id',$id)->where('storeid',$storeid)
+                        ->update(['sslink' => $data]);
+                $msg = array(["result" => "success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } catch (QueryException $e) {
+                $msg = array(["error" => "編修失敗"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
+        } else {
+            $msg = array(["error" => "資料不完整，無法新增"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+    }
+    //刪除店家社交軟體連結
+    public function delSocials($source){
+        $token = trim($source['token']);
+        $id = intval(trim($source['id']));
+        $new_storeid = DB::table('storesagentids')->where('token',$token)->get('storeid');
+
+        if (trim($source['storeid']) == strval($new_storeid[0]->storeid)){
+            try {
+                DB::table('sociallogs')->where('id',$id)->delete();
+                $msg = array(["result" => "success"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            } catch (\Throwable $th) {
+                $msg = array(["error" => "刪除失敗"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+        }
+        $msg = array(["error" => "資料不完整，無法刪除"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
+    }
+
 }
