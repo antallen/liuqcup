@@ -23,9 +23,35 @@ class newslist extends Model
         } else {
             $counts = 0;
         }
-        $result = DB::table('newslogs')
-                      ->select(['newsid','newstitle','newscontent','updated_at'])
-                      ->orderByDesc('updated_at')->skip($counts)->take(50)->get();
-        return $result;
+        $url = \Config::get('qrcode', 'qrcode'); //->select(['newsid','newstitle','newscontent','updated_at',])
+        $result = DB::table('newslogs')->orderByDesc('updated_at')->skip($counts)->take(50)->get();
+        //return $result;
+        $msg = array();
+        foreach ($result as $value) {
+            $newsid = $value->newsid;
+            $newstitle = $value->newstitle;
+            $newscontent = $value->newscontent;
+            $updated_at = $value->updated_at;
+            //return $value->disname;
+            if (!empty($value->disname)){
+                $filename = $value->disname;
+            } else {
+                $filename = "NoPicture";
+            }
+            if (!empty($value->filename)){
+                $urllink = $url['qrcode']."storage/news/".$value->filename;
+            } else {
+                $urllink = "NoPicture";
+            }
+            array_push($msg,['newsid' => $newsid,
+                          'newstitle' => $newstitle,
+                          'newscontent' => $newscontent,
+                          'newsdate' => $updated_at,
+                          'filename' => $filename,
+                          'url' => $urllink]);
+
+        }
+        return json_encode($msg,JSON_PRETTY_PRINT);
+
     }
 }

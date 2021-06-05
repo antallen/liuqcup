@@ -27,7 +27,18 @@ class filelist extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
             }
         } else {
-
+            $result = DB::table('lottofiles')->orderByDesc('updated_at')->get();
+            foreach ($result as $value){
+                $fileid = $value->fileid;
+                $month = $value->month;
+                $disname = $value->disname;
+                $filename = $value->filename;
+                $fileurl = $url['qrcode']."storage/".$filename;
+            $msg = array(['fileid' => $fileid,'month' => $month,'filename' => $disname,'link' => $fileurl]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+            }
         }
+        $msg = array(['error' => "Unknow error"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
     }
 }
