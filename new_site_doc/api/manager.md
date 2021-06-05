@@ -312,9 +312,6 @@ HOST: https://liuqapi.tdhome.tw/api
   + password (string): 店家管理員密碼
   + lock (string): 店家管理員凍結與否
 
-+ 店家缺項目：
-  + 社群網址欄位，如：FB 網址
-
 ## 店家資料列表 [/manager/v1/stores/lists{?token,classes}]
 + 店家資料列表
   + 有帶入 token，表示是管理人員要管理店家資料
@@ -380,6 +377,27 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 己凍結店家列表 [/manager/v1/stores/listfrozens{?token}]
++ 總管理處的人員才可以列表
+### 己凍結店家列表 [GET]
+
++ Parameters
+
+    + token: Ab123456 (required, string)
+      - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result" : success
+                }
+            ]
+
 ## 凍結店家使用 [/manager/v1/stores/frozens{?token,storeid,lock}]
 
 ### 凍結店家使用 [PATCH]
@@ -387,11 +405,11 @@ HOST: https://liuqapi.tdhome.tw/api
 + Parameters
 
     + token: Ab123456 (required, string)
-     - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
+      - 管理人員的 Key，由管理帳號的 Hash code 編碼而成的
     + storeid: 100341234 (required, integer)
-     - 店家編號
+      - 店家編號
     + lock: Y (required, string)
-     - 代表需要凍結
+      - 代表需要凍結
 
 + Response 200 (application/json)
 
