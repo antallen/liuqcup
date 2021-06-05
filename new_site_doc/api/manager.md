@@ -1498,7 +1498,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 ## 查詢最新消息 [/news/v1/news/query{?token,keyword,newsid,pages}]
-+ 總管理處人員才可以新增消息
++ 總管理處人員才可以查詢最新消息
 ### 查詢最新消息 [POST]
 
 + Parameters
@@ -1521,15 +1521,17 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "newsid": ABC123,
-                    "newstitle": "今日半價",
-                    "updated_at": 2021-06-02
+                    "newsid": "NEWS1622869777814",
+                    "newstitle": "Hello",
+                    "newscontent": "今日無事",
+                    "newsdate": "2021-06-05 05:09:37",
+                    "filename": "hello.jpg"
                 }
             ]
 
-## 更新/修改最新消息 [/news/v1/news/update/update{?token,newstitle,newscontent,newsid}]
-+ 總管理處人員才可以新增消息
-### 更新/修改最新消息 [PUT]
+## 更新/修改最新消息 [/news/v1/news/update{?token,newstitle,newscontent,newsid,filename,file}]
++ 總管理處人員才可以更新最新消息
+### 更新/修改最新消息 [POST]
 
 + Parameters
 
@@ -1541,6 +1543,10 @@ HOST: https://liuqapi.tdhome.tw/api
       - 更新最新消息內容
     + newsid: NEWS123 (required, string)
       - 最新消息編號
+    + filename: hello.jpg (optional, string)
+      - 上傳檔案的名稱
+    + file: hello.jpg (optional, string)
+      - 上傳的檔案
 
 + Response 200 (application/json)
 

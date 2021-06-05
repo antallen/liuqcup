@@ -2,6 +2,7 @@
 
 namespace App\Models\Manager\v1\news;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,12 @@ class delnews extends Model
         }
         if (isset($source['newsid'])){
             $newsid = strval(trim($source['newsid']));
+            $old_file = DB::table('newslogs')->where('newsid',$newsid)->get();
+                //return $old_file;
+                if (!is_null($old_file[0]->filename)){
+                    Storage::delete('/public/news/'.$old_file[0]->filename);
+                    //return "Hello";
+                }
             $result = DB::table('newslogs')->where('newsid',$newsid)->delete();
             if ($result == 1){
                 $msg = array(["result" => "Delete Completed"]);

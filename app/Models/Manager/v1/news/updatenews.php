@@ -7,27 +7,48 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\AuthChecks;
+use Illuminate\Support\Facades\Storage;
 
 class updatenews extends Model
 {
     use HasFactory;
     public function updateNews($source){
         $auths = $this->checkTokens($source);
+        $timestamp = date('Y-m-d H:i:s');
         if ($auths == "[]"){
             $msg = array(["error" => "Have Not Token"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
         if (isset($source['newsid'])){
             $newsid = strval(trim($source['newsid']));
+            //更新新聞標題
             if (isset($source['newstitle'])){
                 $newstitle = strval(trim($source['newstitle']));
                 DB::table('newslogs')->where('newsid',$newsid)
-                        ->update(['newstitle' => $newstitle]);
+                        ->update(['newstitle' => $newstitle,'updated_at' => $timestamp]);
             }
+            //更新新聞內容
             if (isset($source['newscontent'])){
                 $newscontent = strval(trim($source['newscontent']));
                 DB::table('newslogs')->where('newsid',$newsid)
-                        ->update(['newscontent' => $newscontent]);
+                        ->update(['newscontent' => $newscontent,'updated_at' => $timestamp]);
+            }
+            //更新檔案名稱與內容
+            if (isset($source['filename']) and isset($source['file'])){
+                $old_file = DB::table('newslogs')->where('newsid',$newsid)->get();
+                //return $old_file;
+                if (!is_null($old_file[0]->filename)){
+                    Storage::delete('/public/news/'.$old_file[0]->filename);
+                    //return "Hello";
+                }
+
+                $storagePath = Storage::put('/public/news',$source['file']);
+                $fileName = basename($storagePath);
+                $disname = trim($source['filename']);
+                DB::table('newslogs')->where('newsid',$newsid)
+                        ->update(['disname' => $disname,'filename' => $fileName,'updated_at' => $timestamp]);
+            } else {
+                return "failed";
             }
 
             $msg = array(["result" => "Update Completed"]);

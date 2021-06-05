@@ -37,14 +37,50 @@ class querynews extends Model
                             ->where('newscontent','like','%'.$keywork.'%')
                             ->union($first)->orderByDesc('updated_at')
                             ->skip($counts)->take(50)->get();
-                return $result;
+                $msg = array();
+                foreach ($result as $value) {
+                    $newsid = $value->newsid;
+                    $newstitle = $value->newstitle;
+                    $newscontent = $value->newscontent;
+                    $updated_at = $value->updated_at;
+                    //return $value->disname;
+                    if (!empty($value->disname)){
+                        $filename = $value->disname;
+                    } else {
+                        $filename = "NoPicture";
+                    }
+                    array_push($msg,['newsid' => $newsid,
+                                'newstitle' => $newstitle,
+                                'newscontent' => $newscontent,
+                                'newsdate' => $updated_at,
+                                'filename' => $filename]);
+                }
+                return json_encode($msg,JSON_PRETTY_PRINT);
             }
             if (isset($source['newsid'])){
                 $newsid = strval(trim($source['newsid']));
                 $result = DB::table('newslogs')
                             ->where('newsid',$newsid)
                             ->get();
-                return $result;
+                $msg = array();
+                foreach ($result as $value) {
+                    $newsid = $value->newsid;
+                    $newstitle = $value->newstitle;
+                    $newscontent = $value->newscontent;
+                    $updated_at = $value->updated_at;
+                    //return $value->disname;
+                    if (!empty($value->disname)){
+                        $filename = $value->disname;
+                    } else {
+                        $filename = "NoPicture";
+                    }
+                    array_push($msg,['newsid' => $newsid,
+                                'newstitle' => $newstitle,
+                                'newscontent' => $newscontent,
+                                'newsdate' => $updated_at,
+                                'filename' => $filename]);
+                }
+                return json_encode($msg,JSON_PRETTY_PRINT);
             }
         }
         $msg = array(["error" => "資料列出失敗"]);
