@@ -2,6 +2,7 @@
 
 namespace App\Models\Manager\v1\news;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,12 +23,19 @@ class addnews extends Model
                 $newsid = "NEWS".strval(strtotime("now")).strval(rand(1,1000));
                 $newstitle = trim($source['newstitle']);
                 $newscontent = trim($source['newscontent']);
+                if (isset($source['filename']) and isset($source['file'])){
+                    $storagePath = Storage::put('/public/news',$source['file']);
+                    $fileName = basename($storagePath);
+                    $disname = trim($source['filename']);
+                }
                 $result = DB::table('newslogs')->insert([
                                 'newsid' => $newsid,
                                 'newstitle' => $newstitle,
                                 'newscontent' => $newscontent,
                                 'created_at'=> $timestamp,
-                                'updated_at'=> $timestamp ]);
+                                'updated_at'=> $timestamp,
+                                'disname' => $disname,
+                                'filename' => $fileName ]);
                 if ($result == 1){
                     $msg = array(["result" => "success"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);

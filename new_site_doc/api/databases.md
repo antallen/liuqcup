@@ -245,8 +245,9 @@
 |newscontent|TEXT|NULL|最新消息內容|
 |created_at|timestamp|NULL|建立帳號的時間戳記|
 |updated_at|timestamp|NULL|更新帳號的時間戳記|
+|disname|VARCHAR(255)|NULL|顯示檔名|
+|filename|VARCHAR(255)|NULL|真正檔名|
 
-### 存放圖檔檔名表格 imglogs
 
 ### 中獎名單檔案表格 lottofiles
 

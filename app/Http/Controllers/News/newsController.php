@@ -26,14 +26,14 @@ class newsController extends Controller
         $result = $newshow->shownews($request->all());
         return $result;
     }
-
+    /*
     //後台專用最新消息新增
     public function create(Request $request){
         $addnew = new addnews();
         $result = $addnew->createNews($request->all());
         return $result;
     }
-
+    */
     //修改最新消息
     public function update(Request $request){
         $updatenews = new updatenews();

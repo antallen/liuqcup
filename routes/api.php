@@ -14,6 +14,7 @@ use App\Http\Controllers\Manager\customersController;
 use App\Http\Controllers\Manager\registerController;
 use App\Http\Controllers\Manager\socialController;
 use App\Http\Controllers\News\newsController;
+use App\Http\Controllers\News\addnewsController;
 use App\Http\Controllers\Rent\rentController;
 use App\Http\Controllers\Rent\storesloginController;
 use App\Http\Controllers\Rent\cupsController;
@@ -57,11 +58,12 @@ Route::apiResource('records/v1/stores/stocklist',stocksController::class)->only(
 Route::apiResource('records/v1/stores/pushlist',stocksController::class)->only('show');
 Route::apiResource('records/v1/stores/aberrantlist',aberrantController::class)->only('index');
 Route::apiResource('news/v1/news/list',newsController::class)->only('index');
-Route::apiResource('news/v1/news',newsController::class)->only('create');
+//Route::apiResource('news/v1/news',newsController::class)->only('create');
 Route::apiResource('news/v1/news',newsController::class)->only('show');
 Route::apiResource('news/v1/news/query',newsController::class)->only('store');
 Route::apiResource('news/v1/news/update',newsController::class)->only('update');
 Route::apiResource('news/v1/news',newsController::class)->only('destroy');
+Route::apiResource('news/v1/news/create',addnewsController::class)->only('store');
 Route::apiResource('lottos/v1/news',lottosController::class);
 Route::apiResource('manager/v1/stores/social',socialController::class);
 /*

@@ -1464,9 +1464,9 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 新增最新消息 [/news/v1/news/create{?token,newstitle,newscontent}]
+## 新增最新消息 [/news/v1/news/create{?token,newstitle,newscontent,filename,file}]
 + 總管理處人員才可以新增消息
-### 新增最新消息 [GET]
+### 新增最新消息 [POST]
 
 + Parameters
 
@@ -1476,6 +1476,10 @@ HOST: https://liuqapi.tdhome.tw/api
       - 最新消息標題
     + newscontent: 今日無事 (required, string)
       - 最新消息內容
+    + filename: hello.jpg (optional, string)
+      - 上傳的檔案名稱
+    + file: hello.jpg (optional, string)
+      - 上傳的檔案
 
 + Response 200 (application/json)
 
