@@ -33,13 +33,17 @@ class storesController extends Controller
             $results = $lists->mgetStores($classes);
             foreach ($results as $result){
                 $funcs = $lists->getStoresFuncs($result->storeid);
-                $idname = "funid";
-                $id = 1;
+                $result->funid1 = null;
+                $result->funid2 = null;
                 foreach ($funcs as $func){
-                    $idname = $idname.strval($id);
-                    $result->$idname = $func->funcname;
-                    $idname = "funid";
-                    $id = intval($id) + 1;
+                    switch ($func->funcname){
+                        case "還杯":
+                            $result->funid2= $func->funcname;
+                            break;
+                        case "借杯":
+                            $result->funid1= $func->funcname;
+                            break;
+                    }
                 }
             }
             return $results;
@@ -53,13 +57,17 @@ class storesController extends Controller
         $results = $lists->getStores(strval(trim($_GET['classes'])));
         foreach ($results as $result){
             $funcs = $lists->getStoresFuncs($result->storeid);
-            $idname = "funid";
-            $id = 1;
+            $result->funid1 = null;
+            $result->funid2 = null;
             foreach ($funcs as $func){
-                $idname = $idname.strval($id);
-                $result->$idname = $func->funcname;
-                $idname = "funid";
-                $id = intval($id) + 1;
+                switch ($func->funcname){
+                    case "還杯":
+                        $result->funid2= $func->funcname;
+                        break;
+                    case "借杯":
+                        $result->funid1= $func->funcname;
+                        break;
+                }
             }
         }
         return $results;

@@ -1,0 +1,894 @@
+-- MySQL dump 10.13  Distrib 8.0.16, for Linux (x86_64)
+--
+-- Host: localhost    Database: liuqcup
+-- ------------------------------------------------------
+-- Server version	8.0.16
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8mb4 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `aberrantlogs`
+--
+
+DROP TABLE IF EXISTS `aberrantlogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `aberrantlogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cusid` varchar(20) NOT NULL,
+  `storeid` char(100) NOT NULL,
+  `nums` int(11) NOT NULL DEFAULT '0',
+  `comments` varchar(255) DEFAULT NULL,
+  `eventtimes` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cusphone` varchar(20) NOT NULL,
+  `checks` enum('Y','N','B') NOT NULL DEFAULT 'N',
+  `rentlogid` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `aberrantlogs`
+--
+
+LOCK TABLES `aberrantlogs` WRITE;
+/*!40000 ALTER TABLE `aberrantlogs` DISABLE KEYS */;
+INSERT INTO `aberrantlogs` VALUES (1,'CUS20210517153534265','13354477',0,'欠杯','2021-05-23 15:09:52','0123456789','N','H7H6H5H');
+/*!40000 ALTER TABLE `aberrantlogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `accounts`
+--
+
+DROP TABLE IF EXISTS `accounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `accounts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `adminid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的帳號',
+  `adminname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的真實姓名',
+  `password` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的密碼',
+  `salt` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '加密用的 Hash Key',
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的 Key',
+  `level` enum('0','1','2') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '2' COMMENT '管理人員等級碼',
+  `phoneno` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員連絡電話',
+  `email` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員連絡用Email',
+  `lock` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Y' COMMENT '凍結帳號與否',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `accounts_adminid_unique` (`adminid`),
+  UNIQUE KEY `accounts_salt_unique` (`salt`),
+  UNIQUE KEY `accounts_token_unique` (`token`),
+  UNIQUE KEY `accounts_phoneno_unique` (`phoneno`),
+  UNIQUE KEY `accounts_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `accounts`
+--
+
+LOCK TABLES `accounts` WRITE;
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` VALUES (1,'peter','LuLupeter','ABCD123456','z,jCLsHS,c','$2y$10$ReDAQxWK9gDN.BemjAn.Bur.Jxg1kndoadve3sQ7EiVLKMrxmcFl2','0','0912345678','hello@test.com','N',NULL,'2021-06-05 19:03:35'),(3,'admin','admin','AB123456','Owbihs+4?M','$2y$10$mDoagM2fyDUi/SUK7rZvxe3DUUn0n2xLVoagDw4RiZNFf5uwYYk.6','0','0123456789','test@hello.com','N','2021-04-29 17:15:41','2021-06-05 11:04:15'),(5,'Hello001','Peter2','Ab123456789','lyKZ2/CB1$','$2y$10$qAjW8rY41IdDsDbI76zwQujAd2GID5n.73snLH.LMX.1H8EZWaOtm','2','0987654321','test@example.com','N','2021-05-28 08:13:07','2021-05-28 08:13:07'),(8,'AmyLin','aa','aaaa','5JIhYjH*w&','$2y$10$uxNPo6KD7AiNBODDeOmGFO3EQZrI1DOSkhyrFCsPt/ZnHSYldtsIS','2','09123454','123@yahoo.com','N','2021-05-28 08:28:30','2021-06-01 04:33:18'),(20,'Hello002','Peter3','Ab223456789','iYlCt;R$H7','$2y$10$hkuBjDV.LXOLxGLR93PD6umySljO6d1aowWgVpcYORJgz5XFKoP4a','2','0987654121','test2@example.com','N','2021-05-28 17:57:20','2021-05-28 17:57:20'),(21,'Hellow3','petter4','Ab56789','zCTwdki;:q','$2y$10$VnBjdb1ywyTccz5BTgQNRu5DwrmbfZA7wKVeBaYDt0PrlONn6Rwxy','2','0937654121','test3@example.com','N','2021-05-28 17:58:53','2021-05-28 17:58:53'),(22,'Hellow4','petter5','a12','K*thA1f+DL','$2y$10$wIryp/FrDX8nfDZv8wfxHuHKj6j2xM.oxnGbx7VfeNUUK4YM4cKO2','2','0931245678','ioskf@yahoo.com','N','2021-05-28 18:01:08','2021-05-28 18:01:08'),(24,'Hellow5','Peter','a1232134','vb@siu0-X6','$2y$10$wf6Uy92QRDC/b5MP5sSWfOclEfZatQcam.QPF40ey5.Y29DwgQREq','2','0923462746','374562@yahoo.com','N','2021-05-28 18:28:36','2021-05-28 18:28:36'),(25,'Hellow6','testshouan','a123456','0r:1AST?NL','$2y$10$Cjol1agUQDG0qr8MUDU.YuwkwGrQUpMOxqVO0kxkX8hFrpOOCCKuK','2','0912352631','6572dw@yahoo.com','N','2021-05-28 18:45:36','2021-05-28 18:45:36'),(26,'Hellow7','shouanuu','a123456','JAPYTv:&16','$2y$10$Jz0b.LfuracY1laCMyAzP.84pLgYBlM1wuy4HBBWDGeF/9FyZ6uEe','2','0912837137','xjwo23@yahoo.com','N','2021-05-28 18:47:26','2021-05-28 18:47:26'),(27,'Hellow8','testadd','a123456','kNK@ylH+fY','$2y$10$F9A9nvZAaaKPqZ7ZCSD/X.POi.Ic5T/cfAcwVCsF30Rdhbka/ynVi','2','091283613','testnewdata@yahoo.com','N','2021-05-28 18:49:23','2021-05-28 18:49:23'),(28,'Hellow9','drt','a1234','TvtoU.Ns;2','$2y$10$Ab2ht3eWvn7o41xG3BPv6OilVSwosMsPZ/sj54C0MYjXA8sNIDUnS','2','01929383845','sjkecj@yahoo.com','N','2021-05-28 18:53:56','2021-05-28 18:53:56'),(29,'Hellow10','testpuahnewfata','a123','!zSY?gKfcX','$2y$10$RavG1ETQ2VRvGX.Vl52gVO2KCkJCliaxOUvF8YuwgASFSVdhAuwOS','2','0193724813','testnews@yahoo.com','N','2021-05-28 19:06:13','2021-05-28 19:06:13'),(30,'Hellow11','testupnews','a123456','eb/vygs1,K','$2y$10$9G7CK99x5/QlctGNauooT.neZj6eYcQezgA5.aeUo17KvJFdENBRe','2','0192838475','testnewdateup@yahoo.com','N','2021-05-28 19:07:41','2021-05-28 19:07:41'),(31,'Hellow12','testupdatanewtablw','a12345','YEh/j*OsTF','$2y$10$J9NizT/EbJ7/vOsuaBmBouQHJwusf5wOxn4XmOGsLHOHDCnCGT8hC','2','0183744639','testdemothis@yahoo.com','N','2021-05-28 19:17:37','2021-05-28 19:17:37'),(32,'Hellow13','djiejixdd','a12345','cs:VLCH+MG','$2y$10$Q1tylU1V2yDP9NU7sD3U.up46BGuoiwsbWE.b91272Xf9EOqyItcW','2','0912738271','rido@yahoo.com','Y','2021-05-28 19:21:26','2021-05-31 06:41:33'),(33,'shiuan','shiuanlin','AB123456','zETBu4Y$6?','$2y$10$5doro7ybbcsA.4KFAqaJWuvOl72CCrpQUvwtDvJ1rGLy5Uu36EGaa','2','0912836143','testwq@yahoo.com','N','2021-05-28 20:38:16','2021-06-01 18:47:12');
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classes`
+--
+
+DROP TABLE IF EXISTS `classes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `classes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `classid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '類別編號',
+  `classname` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '類別名稱',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `classes_classid_unique` (`classid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classes`
+--
+
+LOCK TABLES `classes` WRITE;
+/*!40000 ALTER TABLE `classes` DISABLE KEYS */;
+INSERT INTO `classes` VALUES (1,'1','專賣'),(2,'2','民宿'),(3,'3','商店');
+/*!40000 ALTER TABLE `classes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `customers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cusid` varchar(20) NOT NULL,
+  `cusname` varchar(100) DEFAULT NULL,
+  `salt` char(20) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `password` varchar(100) NOT NULL DEFAULT 'ABC123',
+  `cusphone` varchar(150) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `lock` enum('Y','N') NOT NULL DEFAULT 'Y',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cusid` (`cusid`),
+  UNIQUE KEY `salt` (`salt`),
+  UNIQUE KEY `token` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'CUS20210516043825341',NULL,'feT.0IH89$','$2y$10$QRStr9bhdulZFqO.Lyf91.1qbu5U/L9sr/Qcw/B.KKERryPq7Cbte','ABC123','0912345678,0987654321',NULL,'Y','2021-05-15 20:38:25','2021-06-02 19:23:17'),(2,'CUS20210516043830302',NULL,'8;Wglirw&F','$2y$10$ZWJMIrx7crTGWlcmx88CPOKo9JnQzBzZJfhM33KPRIwBYoLbHfa8q','ABC123','0912345677',NULL,'Y','2021-05-15 20:38:30','2021-05-15 20:38:30'),(3,'CUS20210516043910420',NULL,'iC.sP1&FNt','$2y$10$mRyKvahDh50SeM83inhzTOSg7iShJ7lEKc4JO.9MZB12fD8ovBiE.','CDE12345','0912345676',NULL,'Y','2021-05-15 20:39:10','2021-05-15 20:39:10'),(4,'CUS20210517153534265',NULL,'li_dpFjw&X','$2y$10$5sDSA0Tb8CFgUDEj/GqtDe5J5SG0EagDCs0Y3GB2bJLfLj7NeggZO','ABC123','0123456789',NULL,'Y','2021-05-17 07:35:34','2021-05-17 07:35:34'),(5,'CUS20210530143230377',NULL,'-*936VSAmr','$2y$10$yJSo2m4QQPrFuW/hGZWm.O9wvEAxWGw6Y.2Al7cBh67qvQ2Snw9Eq','ABC123','1234567890',NULL,'Y','2021-05-30 06:32:30','2021-05-30 06:32:30');
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `functions`
+--
+
+DROP TABLE IF EXISTS `functions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `functions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `funcid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '功能編號',
+  `funcname` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '功能名稱',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `functions_funcid_unique` (`funcid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `functions`
+--
+
+LOCK TABLES `functions` WRITE;
+/*!40000 ALTER TABLE `functions` DISABLE KEYS */;
+INSERT INTO `functions` VALUES (1,'1','還杯'),(2,'2','借杯'),(3,'3','使用琉行杯消費');
+/*!40000 ALTER TABLE `functions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lottofiles`
+--
+
+DROP TABLE IF EXISTS `lottofiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `lottofiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fileid` varchar(100) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `disname` varchar(255) NOT NULL,
+  `month` varchar(5) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `newsid` (`fileid`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lottofiles`
+--
+
+LOCK TABLES `lottofiles` WRITE;
+/*!40000 ALTER TABLE `lottofiles` DISABLE KEYS */;
+INSERT INTO `lottofiles` VALUES (7,'FILE1622859455957','6x70nRyZfzKIm0WdUOogx0c9IkglBK0S0ew1bbRK.pdf','2021-06-04 18:17:35','2021-06-04 18:17:35','12.pdf','12'),(8,'FILE1622876145468','d5xL87UUsE7ZZanL33TI2ppEf1bPZ15W2DTjJtL5.pdf','2021-06-04 22:55:45','2021-06-04 22:55:45','6月份中獎名單','6'),(9,'FILE1622879975230','f86HpN4l7G8fYCwnANPhmzU5RUlZWfoPMFef3KDd.pdf','2021-06-04 23:59:35','2021-06-04 23:59:35','6月份中獎名單','6'),(10,'FILE1622880029513','A8kRKV9eyusA2i3AfTKvdGHApQJezKsJEjNiCNv8.pdf','2021-06-05 00:00:29','2021-06-05 00:00:29','6月份中獎名單','6'),(11,'FILE1622883694524','EikHpp4Xse6XlPzX7KmQ718AKBift8diyzjPWSy3.pdf','2021-06-05 01:01:34','2021-06-05 01:01:34','6月份中獎名單','6'),(12,'FILE1622883781213','kQEgqgqvIzwHElj35HbETyDwkSVqCMHscDB7nnCO.pdf','2021-06-05 01:03:01','2021-06-05 01:03:01','6月份中獎名單','6'),(13,'FILE1622883839188','xjdLrvdrEO7Z1pxj6BgPVNaS3xqWPtFaIguMuLLf.pdf','2021-06-05 01:03:59','2021-06-05 01:03:59','6月份中獎名單','6'),(14,'FILE1622883919226','Nffq99QjQg3RDL1wYeZhVw5TPGJWQ0ck4bq3B4jC.pdf','2021-06-05 01:05:19','2021-06-05 01:05:19','6月份中獎名單','6'),(15,'FILE162288394445','BnnKT4MUv460v9SYs8VieYfEa1cBjCg8avPsRn97.pdf','2021-06-05 01:05:44','2021-06-05 01:05:44','6月份中獎名單','6'),(16,'FILE1622884068165','e2TyKt06R0ZVCobeOIUnEYxLKkY2Sn0LANKinKZZ.pdf','2021-06-05 01:07:48','2021-06-05 01:07:48','6月份中獎名單','6'),(17,'FILE162288409236','Xlpm2mSkScartqIOhj6W1mhI1w2g8y1czcqsx0OY.pdf','2021-06-05 01:08:12','2021-06-05 01:08:12','6月份中獎名單','6'),(23,'FILE1622885371512','wRekUXBzFiV0OlDPcr00o1LzBErk0C3Yp3wZytbI.pdf','2021-06-05 01:29:31','2021-06-05 01:29:31','12份中獎名單','12'),(24,'FILE1622908493788','5jayNT4eVbBbchI2f36g7DQvP9vrflB82CrhW570.jpg','2021-06-05 07:54:53','2021-06-05 07:54:53','6月份中獎名單','6'),(25,'FILE1622908578719','2RKIL78TnWfgHESRxIzLkY44XbMzxRGgXo5SPUc3.jpg','2021-06-05 07:56:18','2021-06-05 07:56:18','6月份中獎名單','6');
+/*!40000 ALTER TABLE `lottofiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2021_04_13_012724_create_manager_accounts_table',1),(2,'2021_04_19_071505_create_stores_table',1),(3,'2021_04_19_072911_create_storesclass_table',1),(4,'2021_04_19_073023_create_storesfunctions_table',1),(5,'2021_04_19_073339_create_storescupsrecords_table',1),(6,'2021_04_20_024951_create_class_table',1),(7,'2021_04_20_025001_create_functions_table',1),(8,'2021_04_20_035303_add__f_k_to_storesclass_table',1),(9,'2021_04_20_035327_add__f_k_to_storesfunctions_table',1),(10,'2021_04_20_035352_add__f_k_to_storescupsrecords_table',1),(11,'2021_04_25_142502_create_storesagentids_table',1),(12,'2021_04_25_145801_add__f_k_to_storesagentids_table',1),(19,'2021_05_01_121846_modify_stores_table',2),(20,'2021_05_01_125734_modify_stores_table_2',2),(23,'2021_05_01_131345_modify_stores_table_3',3),(27,'2021_05_01_141545_modify_storesclass_table',4),(28,'2021_05_01_142126_modify_storesclass_table_2',4),(29,'2021_05_01_143428_add__f_k_storesclass_table',5);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `newslogs`
+--
+
+DROP TABLE IF EXISTS `newslogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `newslogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `newsid` varchar(100) NOT NULL,
+  `newstitle` varchar(255) NOT NULL,
+  `newscontent` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `disname` varchar(255) DEFAULT NULL,
+  `filename` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `newsid` (`newsid`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `newslogs`
+--
+
+LOCK TABLES `newslogs` WRITE;
+/*!40000 ALTER TABLE `newslogs` DISABLE KEYS */;
+INSERT INTO `newslogs` VALUES (5,'NEWS1622620187438','海是藍色的','測試內容','2021-06-01 23:49:47','2021-06-01 23:49:47',NULL,NULL),(6,'NEWS1622620218720','天天開心','測試內容','2021-06-01 23:50:18','2021-06-01 23:50:18',NULL,NULL),(7,'NEWS1622620420390','今天是星期幾？','測試內容','2021-06-01 23:53:40','2021-06-01 23:53:40',NULL,NULL),(8,'NEWS1622620866310','新增到10個','測試內容','2021-06-02 00:01:06','2021-06-02 00:01:06',NULL,NULL),(9,'NEWS1622621021793','這太神了！你一定得看看到賺到的不傳秘方尤其是第7個！','測試內容','2021-06-02 00:03:41','2021-06-02 00:03:41',NULL,NULL),(10,'NEWS1622621032294','每個人都忽略這看到賺到的不傳秘方我的下巴掉了！','測試內容','2021-06-02 00:03:52','2021-06-02 00:03:52',NULL,NULL),(11,'NEWS1622621044238','整整流傳兩世紀可愛到爆表的小動物全場的觀眾都崩潰了！','測試內容','2021-06-02 00:04:04','2021-06-02 00:04:04',NULL,NULL),(12,'NEWS1622621059985','杜拉克教我的勁爆的驚險畫面我忍不住一直看下去...','測試內容','2021-06-02 00:04:19','2021-06-02 00:04:19',NULL,NULL),(13,'NEWS1622621074241','每個人都忽略這讓人傻眼的畫面這不分享還是人嗎？','測試內容','2021-06-02 00:04:34','2021-06-02 00:04:34',NULL,NULL),(14,'NEWS1622621085702','21個殘酷的人生領悟我不敢相信我的眼睛！','測試內容','2021-06-02 00:04:45','2021-06-02 00:04:45',NULL,NULL),(15,'NEWS162262110326','看完後你會感激我醫師養生法看完後我驚呆了！','測試內容','2021-06-02 00:05:03','2021-06-02 00:05:03',NULL,NULL),(16,'NEWS1622621139742','農場文產生器2','測試內容修改','2021-06-02 00:05:39','2021-06-02 00:05:39',NULL,NULL),(17,'NEWS1622912149280','測試圖片上傳','測試圖片上傳','2021-06-05 08:55:49','2021-06-05 08:55:49','cat.jpg','gVHCQQmREpgEtx0wL6WKfRd2VcCLwpZm3YX6WWAl.jpg');
+/*!40000 ALTER TABLE `newslogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `registerlogs`
+--
+
+DROP TABLE IF EXISTS `registerlogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `registerlogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `salt` char(20) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `salt` (`salt`),
+  UNIQUE KEY `token` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `registerlogs`
+--
+
+LOCK TABLES `registerlogs` WRITE;
+/*!40000 ALTER TABLE `registerlogs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `registerlogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rentlogs`
+--
+
+DROP TABLE IF EXISTS `rentlogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `rentlogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cusid` varchar(20) NOT NULL,
+  `storeid` char(100) NOT NULL,
+  `rentid` enum('R','B') NOT NULL DEFAULT 'R',
+  `nums` int(11) NOT NULL DEFAULT '0',
+  `comments` varchar(255) DEFAULT NULL,
+  `eventtimes` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `checks` enum('Y','N','B') DEFAULT 'N',
+  `cusphone` varchar(20) NOT NULL,
+  `backtimes` timestamp NULL DEFAULT NULL,
+  `backstoreid` char(100) DEFAULT NULL,
+  PRIMARY KEY (`id`,`eventtimes`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8
+/*!50100 PARTITION BY RANGE (year(`eventtimes`))
+SUBPARTITION BY HASH (month(`eventtimes`))
+(PARTITION year2019 VALUES LESS THAN (2020)
+ (SUBPARTITION dec2019 ENGINE = InnoDB,
+  SUBPARTITION jan2019 ENGINE = InnoDB,
+  SUBPARTITION feb2019 ENGINE = InnoDB,
+  SUBPARTITION mar2019 ENGINE = InnoDB,
+  SUBPARTITION apr2019 ENGINE = InnoDB,
+  SUBPARTITION may2019 ENGINE = InnoDB,
+  SUBPARTITION jun2019 ENGINE = InnoDB,
+  SUBPARTITION jul2019 ENGINE = InnoDB,
+  SUBPARTITION aug2019 ENGINE = InnoDB,
+  SUBPARTITION sep2019 ENGINE = InnoDB,
+  SUBPARTITION oct2019 ENGINE = InnoDB,
+  SUBPARTITION nov2019 ENGINE = InnoDB),
+ PARTITION year2020 VALUES LESS THAN (2021)
+ (SUBPARTITION dec2020 ENGINE = InnoDB,
+  SUBPARTITION jan2020 ENGINE = InnoDB,
+  SUBPARTITION feb2020 ENGINE = InnoDB,
+  SUBPARTITION mar2020 ENGINE = InnoDB,
+  SUBPARTITION apr2020 ENGINE = InnoDB,
+  SUBPARTITION may2020 ENGINE = InnoDB,
+  SUBPARTITION jun2020 ENGINE = InnoDB,
+  SUBPARTITION jul2020 ENGINE = InnoDB,
+  SUBPARTITION aug2020 ENGINE = InnoDB,
+  SUBPARTITION sep2020 ENGINE = InnoDB,
+  SUBPARTITION oct2020 ENGINE = InnoDB,
+  SUBPARTITION nov2020 ENGINE = InnoDB),
+ PARTITION year2021 VALUES LESS THAN (2022)
+ (SUBPARTITION dec2021 ENGINE = InnoDB,
+  SUBPARTITION jan2021 ENGINE = InnoDB,
+  SUBPARTITION feb2021 ENGINE = InnoDB,
+  SUBPARTITION mar2021 ENGINE = InnoDB,
+  SUBPARTITION apr2021 ENGINE = InnoDB,
+  SUBPARTITION may2021 ENGINE = InnoDB,
+  SUBPARTITION jun2021 ENGINE = InnoDB,
+  SUBPARTITION jul2021 ENGINE = InnoDB,
+  SUBPARTITION aug2021 ENGINE = InnoDB,
+  SUBPARTITION sep2021 ENGINE = InnoDB,
+  SUBPARTITION oct2021 ENGINE = InnoDB,
+  SUBPARTITION nov2021 ENGINE = InnoDB),
+ PARTITION year2022 VALUES LESS THAN (2023)
+ (SUBPARTITION dec2022 ENGINE = InnoDB,
+  SUBPARTITION jan2022 ENGINE = InnoDB,
+  SUBPARTITION feb2022 ENGINE = InnoDB,
+  SUBPARTITION mar2022 ENGINE = InnoDB,
+  SUBPARTITION apr2022 ENGINE = InnoDB,
+  SUBPARTITION may2022 ENGINE = InnoDB,
+  SUBPARTITION jun2022 ENGINE = InnoDB,
+  SUBPARTITION jul2022 ENGINE = InnoDB,
+  SUBPARTITION aug2022 ENGINE = InnoDB,
+  SUBPARTITION sep2022 ENGINE = InnoDB,
+  SUBPARTITION oct2022 ENGINE = InnoDB,
+  SUBPARTITION nov2022 ENGINE = InnoDB),
+ PARTITION year2023 VALUES LESS THAN (2024)
+ (SUBPARTITION dec2023 ENGINE = InnoDB,
+  SUBPARTITION jan2023 ENGINE = InnoDB,
+  SUBPARTITION feb2023 ENGINE = InnoDB,
+  SUBPARTITION mar2023 ENGINE = InnoDB,
+  SUBPARTITION apr2023 ENGINE = InnoDB,
+  SUBPARTITION may2023 ENGINE = InnoDB,
+  SUBPARTITION jun2023 ENGINE = InnoDB,
+  SUBPARTITION jul2023 ENGINE = InnoDB,
+  SUBPARTITION aug2023 ENGINE = InnoDB,
+  SUBPARTITION sep2023 ENGINE = InnoDB,
+  SUBPARTITION oct2023 ENGINE = InnoDB,
+  SUBPARTITION nov2023 ENGINE = InnoDB),
+ PARTITION year2024 VALUES LESS THAN (2025)
+ (SUBPARTITION dec2024 ENGINE = InnoDB,
+  SUBPARTITION jan2024 ENGINE = InnoDB,
+  SUBPARTITION feb2024 ENGINE = InnoDB,
+  SUBPARTITION mar2024 ENGINE = InnoDB,
+  SUBPARTITION apr2024 ENGINE = InnoDB,
+  SUBPARTITION may2024 ENGINE = InnoDB,
+  SUBPARTITION jun2024 ENGINE = InnoDB,
+  SUBPARTITION jul2024 ENGINE = InnoDB,
+  SUBPARTITION aug2024 ENGINE = InnoDB,
+  SUBPARTITION sep2024 ENGINE = InnoDB,
+  SUBPARTITION oct2024 ENGINE = InnoDB,
+  SUBPARTITION nov2024 ENGINE = InnoDB),
+ PARTITION year2025 VALUES LESS THAN (2026)
+ (SUBPARTITION dec2025 ENGINE = InnoDB,
+  SUBPARTITION jan2025 ENGINE = InnoDB,
+  SUBPARTITION feb2025 ENGINE = InnoDB,
+  SUBPARTITION mar2025 ENGINE = InnoDB,
+  SUBPARTITION apr2025 ENGINE = InnoDB,
+  SUBPARTITION may2025 ENGINE = InnoDB,
+  SUBPARTITION jun2025 ENGINE = InnoDB,
+  SUBPARTITION jul2025 ENGINE = InnoDB,
+  SUBPARTITION aug2025 ENGINE = InnoDB,
+  SUBPARTITION sep2025 ENGINE = InnoDB,
+  SUBPARTITION oct2025 ENGINE = InnoDB,
+  SUBPARTITION nov2025 ENGINE = InnoDB),
+ PARTITION year2026 VALUES LESS THAN (2027)
+ (SUBPARTITION dec2026 ENGINE = InnoDB,
+  SUBPARTITION jan2026 ENGINE = InnoDB,
+  SUBPARTITION feb2026 ENGINE = InnoDB,
+  SUBPARTITION mar2026 ENGINE = InnoDB,
+  SUBPARTITION apr2026 ENGINE = InnoDB,
+  SUBPARTITION may2026 ENGINE = InnoDB,
+  SUBPARTITION jun2026 ENGINE = InnoDB,
+  SUBPARTITION jul2026 ENGINE = InnoDB,
+  SUBPARTITION aug2026 ENGINE = InnoDB,
+  SUBPARTITION sep2026 ENGINE = InnoDB,
+  SUBPARTITION oct2026 ENGINE = InnoDB,
+  SUBPARTITION nov2026 ENGINE = InnoDB),
+ PARTITION year2027 VALUES LESS THAN (2028)
+ (SUBPARTITION dec2027 ENGINE = InnoDB,
+  SUBPARTITION jan2027 ENGINE = InnoDB,
+  SUBPARTITION feb2027 ENGINE = InnoDB,
+  SUBPARTITION mar2027 ENGINE = InnoDB,
+  SUBPARTITION apr2027 ENGINE = InnoDB,
+  SUBPARTITION may2027 ENGINE = InnoDB,
+  SUBPARTITION jun2027 ENGINE = InnoDB,
+  SUBPARTITION jul2027 ENGINE = InnoDB,
+  SUBPARTITION aug2027 ENGINE = InnoDB,
+  SUBPARTITION sep2027 ENGINE = InnoDB,
+  SUBPARTITION oct2027 ENGINE = InnoDB,
+  SUBPARTITION nov2027 ENGINE = InnoDB),
+ PARTITION year2028 VALUES LESS THAN (2029)
+ (SUBPARTITION dec2028 ENGINE = InnoDB,
+  SUBPARTITION jan2028 ENGINE = InnoDB,
+  SUBPARTITION feb2028 ENGINE = InnoDB,
+  SUBPARTITION mar2028 ENGINE = InnoDB,
+  SUBPARTITION apr2028 ENGINE = InnoDB,
+  SUBPARTITION may2028 ENGINE = InnoDB,
+  SUBPARTITION jun2028 ENGINE = InnoDB,
+  SUBPARTITION jul2028 ENGINE = InnoDB,
+  SUBPARTITION aug2028 ENGINE = InnoDB,
+  SUBPARTITION sep2028 ENGINE = InnoDB,
+  SUBPARTITION oct2028 ENGINE = InnoDB,
+  SUBPARTITION nov2028 ENGINE = InnoDB),
+ PARTITION year2029 VALUES LESS THAN (2030)
+ (SUBPARTITION dec2029 ENGINE = InnoDB,
+  SUBPARTITION jan2029 ENGINE = InnoDB,
+  SUBPARTITION feb2029 ENGINE = InnoDB,
+  SUBPARTITION mar2029 ENGINE = InnoDB,
+  SUBPARTITION apr2029 ENGINE = InnoDB,
+  SUBPARTITION may2029 ENGINE = InnoDB,
+  SUBPARTITION jun2029 ENGINE = InnoDB,
+  SUBPARTITION jul2029 ENGINE = InnoDB,
+  SUBPARTITION aug2029 ENGINE = InnoDB,
+  SUBPARTITION sep2029 ENGINE = InnoDB,
+  SUBPARTITION oct2029 ENGINE = InnoDB,
+  SUBPARTITION nov2029 ENGINE = InnoDB),
+ PARTITION year2030 VALUES LESS THAN (2031)
+ (SUBPARTITION dec2030 ENGINE = InnoDB,
+  SUBPARTITION jan2030 ENGINE = InnoDB,
+  SUBPARTITION feb2030 ENGINE = InnoDB,
+  SUBPARTITION mar2030 ENGINE = InnoDB,
+  SUBPARTITION apr2030 ENGINE = InnoDB,
+  SUBPARTITION may2030 ENGINE = InnoDB,
+  SUBPARTITION jun2030 ENGINE = InnoDB,
+  SUBPARTITION jul2030 ENGINE = InnoDB,
+  SUBPARTITION aug2030 ENGINE = InnoDB,
+  SUBPARTITION sep2030 ENGINE = InnoDB,
+  SUBPARTITION oct2030 ENGINE = InnoDB,
+  SUBPARTITION nov2030 ENGINE = InnoDB),
+ PARTITION future VALUES LESS THAN MAXVALUE
+ (SUBPARTITION `dec` ENGINE = InnoDB,
+  SUBPARTITION jan ENGINE = InnoDB,
+  SUBPARTITION feb ENGINE = InnoDB,
+  SUBPARTITION mar ENGINE = InnoDB,
+  SUBPARTITION apr ENGINE = InnoDB,
+  SUBPARTITION may ENGINE = InnoDB,
+  SUBPARTITION jun ENGINE = InnoDB,
+  SUBPARTITION jul ENGINE = InnoDB,
+  SUBPARTITION aug ENGINE = InnoDB,
+  SUBPARTITION sep ENGINE = InnoDB,
+  SUBPARTITION oct ENGINE = InnoDB,
+  SUBPARTITION nov ENGINE = InnoDB)) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rentlogs`
+--
+
+LOCK TABLES `rentlogs` WRITE;
+/*!40000 ALTER TABLE `rentlogs` DISABLE KEYS */;
+INSERT INTO `rentlogs` VALUES (1,'CUS20210517153534265','13354477','B',3,NULL,'2021-05-23 22:56:44','B','0123456789','2021-05-23 07:00:28','13354477'),(2,'CUS20210517153534265','13354477','B',4,NULL,'2021-05-23 22:56:49','B','0123456789','2021-05-23 07:00:28','13354477'),(3,'CUS20210517153534265','13354477','B',5,NULL,'2021-05-23 22:56:51','B','0123456789','2021-05-23 07:00:28','13354477'),(4,'CUS20210517153534265','13354477','B',3,NULL,'2021-05-23 23:01:12','B','0123456789','2021-05-23 07:01:35','13354477'),(5,'CUS20210517153534265','13354477','B',2,'異常','2021-05-23 23:04:17','Y','0123456789','2021-05-23 07:09:52','13354477'),(6,'CUS20210517153534265','13354477','B',5,'異常','2021-05-23 23:04:20','Y','0123456789','2021-05-23 07:09:52','13354477'),(7,'CUS20210517153534265','13354477','B',1,'異常','2021-05-23 23:04:22','Y','0123456789','2021-05-23 07:09:52','13354477'),(8,'CUS20210517153534265','13354477','B',6,NULL,'2021-05-23 23:04:25','Y','0123456789','2021-05-23 07:09:52','13354477'),(9,'CUS20210530143230377','13354477','R',1,NULL,'2021-05-30 22:32:30','Y','1234567890',NULL,NULL),(10,'CUS20210516043825341','13354477','R',1,NULL,'2021-05-30 22:35:28','N','0912345678',NULL,NULL),(11,'CUS20210516043825341','13354477','R',1,NULL,'2021-05-30 22:36:56','N','0912345678',NULL,NULL),(12,'CUS20210516043825341','13354477','R',2,NULL,'2021-05-31 11:07:23','N','0912345678',NULL,NULL),(13,'CUS20210516043825341','13354477','R',2,NULL,'2021-05-31 19:30:39','N','0912345678',NULL,NULL),(14,'CUS20210516043825341','13354477','R',3,NULL,'2021-05-31 19:31:30','N','0912345678',NULL,NULL),(15,'CUS20210516043825341','13354477','R',1,NULL,'2021-06-02 16:59:35','N','0912345678',NULL,NULL),(16,'CUS20210516043825341','13354477','R',12,NULL,'2021-06-02 17:07:18','N','0912345678',NULL,NULL),(17,'CUS20210516043825341','13354477','R',7,NULL,'2021-06-02 17:13:49','N','0912345678',NULL,NULL),(18,'CUS20210516043825341','13354477','R',9,NULL,'2021-06-02 17:14:53','N','0912345678',NULL,NULL),(19,'CUS20210516043825341','13354477','R',1,NULL,'2021-06-02 17:39:11','N','0912345678',NULL,NULL),(20,'CUS20210516043825341','13354477','R',3,NULL,'2021-06-02 17:40:18','N','0912345678',NULL,NULL),(21,'CUS20210516043825341','13354478','R',2,NULL,'2021-06-02 18:20:53','N','0912345678',NULL,NULL),(22,'CUS20210516043825341','13354478','R',2,NULL,'2021-06-02 18:30:29','N','0912345678',NULL,NULL),(23,'CUS20210516043825341','13354477','R',1,NULL,'2021-06-03 11:17:14','N','0912345678',NULL,NULL),(24,'CUS20210516043825341','13354477','R',2,NULL,'2021-06-03 11:17:56','N','0912345678',NULL,NULL);
+/*!40000 ALTER TABLE `rentlogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sociallogs`
+--
+
+DROP TABLE IF EXISTS `sociallogs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `sociallogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `storeid` varchar(100) NOT NULL,
+  `ssname` varchar(100) NOT NULL,
+  `sslink` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sociallogs`
+--
+
+LOCK TABLES `sociallogs` WRITE;
+/*!40000 ALTER TABLE `sociallogs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sociallogs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `stores`
+--
+
+DROP TABLE IF EXISTS `stores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `stores` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
+  `storename` char(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家名稱',
+  `qrcodeid` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家 QRcode 編碼',
+  `phoneno` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '店家連絡用Email(DC2Type:json)',
+  `lock` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Y' COMMENT '凍結帳號與否',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `address` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家地址',
+  `businessid` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家統一編號',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `stores_storeid_unique` (`storeid`),
+  UNIQUE KEY `stores_qrcodeid_unique` (`qrcodeid`),
+  UNIQUE KEY `stores_businessid_unique` (`businessid`)
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `stores`
+--
+
+LOCK TABLES `stores` WRITE;
+/*!40000 ALTER TABLE `stores` DISABLE KEYS */;
+INSERT INTO `stores` VALUES (1,'10011021','花羨沐嵐','125D1CBA5B0A98C18D','088613576',NULL,'Y',NULL,'2021-06-05 06:32:02','屏東縣琉球鄉民生路84號','125D1CBA5B0A98C18D'),(2,'10031223','龜咖','125D1CBA5B0A991077','088614585',NULL,'Y',NULL,'2021-06-05 06:35:32','屏東縣琉球鄉民生路63號','125D1CBA5B0A991077'),(3,'10041324','吉祥純果汁','125D1CBA5B0A9937EC','088612539',NULL,'Y',NULL,'2021-06-05 06:39:13','屏東縣琉球鄉中山路144號','125D1CBA5B0A9937EC'),(4,'10051425','凍檸茶','125D1CBA5B0A995F61','0915992982',NULL,'Y',NULL,'2021-06-05 06:53:01','屏東縣琉球鄉民生路32-2號','125D1CBA5B0A995F61'),(5,'10071627','吳家紅茶冰','125D1CBA5B0A99AE4B','088612679',NULL,'Y',NULL,'2021-06-05 06:54:36','屏東縣琉球鄉民生路49號','125D1CBA5B0A99AE4B'),(6,'10081728','小琉球海洋甜心','125D1CBA5B0A99D5C0','000000000',NULL,'Y',NULL,'2021-06-05 06:57:53','屏東縣琉球鄉中山路99號','125D1CBA5B0A99D5C0'),(7,'10091829','小琉球 Khóo 果子菓子','125D1CBA5B0A99FD35','088612679',NULL,'Y',NULL,'2021-06-05 07:00:09','屏東縣琉球鄉民生路78號','125D1CBA5B0A99FD35'),(8,'10101930','清心福全','125D1CBA5B0A9A24AA','088611797',NULL,'Y',NULL,'2021-06-05 07:56:08','屏東縣琉球鄉中正路172-7號','125D1CBA5B0A9A24AA'),(9,'10112031','Hibula小琉球店','125D1CBA5B0A9A4C1F','088614289',NULL,'Y',NULL,'2021-06-05 07:57:19','屏東縣琉球鄉民生路88-2號','125D1CBA5B0A9A4C1F'),(10,'10122132','Wave Bar 冰郎','125D1CBA5B0A9A7394','0921124435',NULL,'Y',NULL,'2021-06-05 08:46:14','屏東縣琉球鄉三民路308號','125D1CBA5B0A9A7394'),(11,'10132233','ç°çª¯äººæ–‡å’–å•¡ Coral Cafe','125D1CBA5B0A9A9B09',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰æ°‘æ—è·¯10è™Ÿ','125D1CBA5B0A9A9B09'),(12,'10142334','慢板咖啡','125D1CBA5B0A9AC27E','088612415',NULL,'Y',NULL,'2021-06-05 08:03:31','屏東縣琉球鄉本漁路112-2號','125D1CBA5B0A9AC27E'),(13,'10152435','OKLATEE','125D1CBA5B0A9AE9F3','0928408426',NULL,'Y',NULL,'2021-06-05 08:05:13','屏東縣琉球鄉中山路8之27號','125D1CBA5B0A9AE9F3'),(14,'10162536','悅飲小舖','125D1CBA5B0A9B1168','088612539',NULL,'Y',NULL,'2021-06-05 08:06:29','屏東縣琉球鄉相埔路13之23號','125D1CBA5B0A9B1168'),(15,'10172637','小琉球瑪麗安','125D1CBA5B0A9B38DD','088614992',NULL,'Y',NULL,'2021-06-05 08:08:01','屏東縣琉球鄉民生路58號','125D1CBA5B0A9B38DD'),(16,'10182738','超難喝到的紅茶','125D1CBA5B0A9B6052','088612496',NULL,'Y',NULL,'2021-06-05 08:09:04','琉球鄉中山路198之1號','125D1CBA5B0A9B6052'),(17,'10192839','松本鮮奶茶','125D1CBA5B0A9B87C7','088612225',NULL,'Y',NULL,'2021-06-05 08:10:09','琉球鄉中正路172-11號','125D1CBA5B0A9B87C7'),(18,'10213041','7-ELEVEN 小琉球門市','125D1CBA5B0A9BD6B1','088614309',NULL,'Y',NULL,'2021-06-05 08:11:23','琉球鄉民生路61號','125D1CBA5B0A9BD6B1'),(19,'10223142','7-ELEVEN 花瓶岩門市','125D1CBA5B0A9BFE26','088612932',NULL,'Y',NULL,'2021-06-05 08:12:26','琉球鄉中山路51-5號','125D1CBA5B0A9BFE26'),(20,'10233243','7-ELEVEN 白燈塔門市','125D1CBA5B0A9C259B','088612496',NULL,'Y',NULL,'2021-06-05 08:13:44','琉球鄉中正路303之2號','125D1CBA5B0A9C259B'),(21,'10324152','老早伯飲料店','125D1CC638F79D88B8','088613261',NULL,'Y',NULL,'2021-06-05 08:14:37','屏東縣琉球鄉大福村和平路20-2號','125D1CC638F79D88B8'),(22,'10334253','æ¶¼æ°´å†°åº—','125D1CC638F79DB02D',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰æ°‘ç”Ÿè·¯37è™Ÿ','125D1CC638F79DB02D'),(23,'10344354','老甕手工粉圓','125D1CC638F79DD7A2','0925003150',NULL,'Y',NULL,'2021-06-05 08:16:14','屏東縣琉球鄉民生路11-1號','125D1CC638F79DD7A2'),(24,'10354455','自己來紅茶牛奶店','125D1CC638F79DFF17','0903365099',NULL,'Y',NULL,'2021-06-05 08:19:11','屏東縣琉球鄉本福村民生路16號','125D1CC638F79DFF17'),(25,'10364556','乙順飲料店','125D1CC638F79E268C','0988509003',NULL,'Y',NULL,'2021-06-05 08:20:37','屏東縣琉球鄉大福村中正路309號','125D1CC638F79E268C'),(26,'10374657','冰心茶王','125D1CC638F79E4E01','088611390',NULL,'Y',NULL,'2021-06-05 08:21:58','屏東縣琉球鄉大福村和平路3巷31-5號','125D1CC638F79E4E01'),(27,'10384758','堤香茶坊','125D1CC638F79E7576','088613018',NULL,'Y',NULL,'2021-06-05 08:23:20','屏東縣琉球鄉中山路230號','125D1CC638F79E7576'),(28,'10394859','水巷茶弄','125D1CC638F79E9CEB','088613255',NULL,'Y',NULL,'2021-06-05 08:26:57','屏東縣琉球鄉中山路26之1號','125D1CC638F79E9CEB'),(29,'10404960','七里香','125D1CC638F79EC460','088614818',NULL,'Y',NULL,'2021-06-05 08:27:50','屏東縣琉球鄉本福村中山路24之7號','125D1CC638F79EC460'),(30,'10415061','荷花軒','125D1CC638F79EEBD5','0989723932',NULL,'Y',NULL,'2021-06-05 08:28:54','屏東縣琉球鄉中正路182-1號','125D1CC638F79EEBD5'),(31,'10445364','西晒咖啡','125F46CF6CE59F6234','0965105988',NULL,'Y',NULL,'2021-06-05 08:30:16','屏東縣琉球鄉觀光港路30號','125F46CF6CE59F6234'),(32,'10455465','潛水咖啡','125F46CF6D999F89A9','0919791113',NULL,'Y',NULL,'2021-06-05 08:31:39','屏東縣琉琉鄉三民路202號','125F46CF6D999F89A9'),(33,'10465566','å…¨å®¶ä¾¿åˆ©å•†åº—','125F46CF6E839FB11E',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰ç‰é„‰æ°‘ç”Ÿè·¯2-6è™Ÿ','125F46CF6E839FB11E'),(34,'11243344','琉夏萊餐旅','125D1CBA5B0AAB8F50','088612493',NULL,'Y',NULL,'2021-06-05 08:32:55','屏東縣琉球鄉民生路43-2號','125D1CBA5B0AAB8F50'),(35,'11253445','小琉球澎坊免稅商店','125D1CBA5B0AABB6C5','088612415',NULL,'Y',NULL,'2021-06-05 08:34:06','屏東縣琉球鄉三民路360號','125D1CBA5B0AABB6C5'),(36,'11263546','海龜ㄉ故事','125D1CBA5B0AABDE3A','088613233',NULL,'Y',NULL,'2021-06-05 08:35:45','屏東縣琉球鄉民生路84號','125D1CBA5B0AABDE3A'),(37,'11273647','蜜仔琉部','125D1CBA5B0AAC05AF','088614400',NULL,'Y',NULL,'2021-06-05 08:36:47','屏東縣琉球鄉白沙觀光港10號商店','125D1CBA5B0AAC05AF'),(38,'11283748','琉行杯清洗站','125D1CBA5B0AAC2D24','088612248',NULL,'Y',NULL,'2021-06-05 08:38:01','屏東縣琉球鄉民族路20號','125D1CBA5B0AAC2D24'),(39,'12293849','小島停琉-海洋獨立書店','125D1CBA5B0ABB96D9','0936237586',NULL,'Y',NULL,'2021-06-05 08:39:22','屏東縣琉球鄉中正路255-1號','125D1CBA5B0ABB96D9'),(40,'12303950','小琉球遊客中心','125D1CBA5B0ABBBE4E','088614615',NULL,'Y',NULL,'2021-06-05 08:40:53','屏東縣琉球鄉民族路20號','125D1CBA5B0ABBBE4E'),(41,'12324152','鄭記香腸','125F52F8D800BC0D38','0800081223',NULL,'Y',NULL,'2021-06-05 08:41:54','屏東縣琉球鄉中山路204號','125F52F8D800BC0D38'),(42,'12425162','三金馬商店','125D1CC638F7BD97CA','088612625',NULL,'Y',NULL,'2021-06-05 08:43:13','屏東縣琉球鄉本福村中山路187號','125D1CC638F7BD97CA'),(43,'12435263','探索拉美','125D22CDF95EBDBF3F','088614511',NULL,'Y',NULL,'2021-06-05 08:44:26','屏東縣琉球鄉碼頭9號','125D22CDF95EBDBF3F'),(44,'13011021','ç™½ç‡ˆæ¨“æ—…å®¿','125D1CC638F7C6884D',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰ä¸­æ­£è·¯303-2è™Ÿ','125D1CC638F7C6884D'),(45,'13021122','加依家民宿','125D1CC638F7C6AFC2','088611198',NULL,'Y',NULL,'2021-06-05 17:58:37','屏東縣琉球鄉中正路184、184-1號','125D1CC638F7C6AFC2'),(46,'13031223','蘇宅旅店','125D1CC638F7C6D737','088613657',NULL,'Y',NULL,'2021-06-05 17:59:47','屏東縣琉球鄉中山路199號','125D1CC638F7C6D737'),(47,'13041324','海洋風情度假旅館','125D1CC638F7C6FEAC','088612617',NULL,'Y',NULL,'2021-06-05 18:01:08','屏東縣琉球鄉民生路73之1號','125D1CC638F7C6FEAC'),(48,'13051425','馬鞍民宿','125D1CC638F7C72621','088614456',NULL,'Y',NULL,'2021-06-05 18:08:51','屏東縣琉球鄉中正路170之6號','125D1CC638F7C72621'),(49,'13061526','琉球谷民宿','125D1CC638F7C74D96','088614549',NULL,'Y',NULL,'2021-06-05 18:10:35','屏東縣琉球鄉三民路250號','125D1CC638F7C74D96'),(50,'13071627','南國海岸渡假特色民宿','125D1CC638F7C7750B','088613830',NULL,'Y',NULL,'2021-06-05 18:11:58','屏東縣琉球鄉杉福村肚仔坪路8號','125D1CC638F7C7750B'),(51,'13081728','貝殼沙民宿','125D1CC638F7C79C80','088613050',NULL,'Y',NULL,'2021-06-05 18:14:57','屏東縣琉球鄉中福村三民路221-2號','125D1CC638F7C79C80'),(52,'13091829','大峰民宿','125D1CC638F7C7C3F5','088614588',NULL,'Y',NULL,'2021-06-05 18:15:55','屏東縣琉球鄉三民路288-3號','125D1CC638F7C7C3F5'),(53,'13101930','小火雞民宿','125D1CC638F7C7EB6A','0917612006',NULL,'Y',NULL,'2021-06-05 18:17:31','屏東縣琉球鄉杉福村復興路91-9號','125D1CC638F7C7EB6A'),(54,'13112031','鄉村民宿','125D1CC638F7C812DF','088611257',NULL,'Y',NULL,'2021-06-05 18:18:45','屏東縣琉球鄉中山路177之1號','125D1CC638F7C812DF'),(55,'13122132','æ˜Ÿæœˆæ—…åº—','125D1CC638F7C83A54',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰ä¸­å±±è·¯116è™Ÿ','125D1CC638F7C83A54'),(56,'13132233','瑚岩美術館','125D1CC638F7C861C9','0928707585',NULL,'Y',NULL,'2021-06-05 18:20:09','屏東縣琉球鄉本福村中山路23號','125D1CC638F7C861C9'),(57,'13142334','幸福樂民宿','125D1CC638F7C8893E','0920189071',NULL,'Y',NULL,'2021-06-05 18:21:26','屏東縣琉球鄉杉板路67號','125D1CC638F7C8893E'),(58,'13152435','白海民宿','125D1CC638F7C8B0B3','088611767',NULL,'Y',NULL,'2021-06-05 18:24:22','屏東縣琉球鄉杉板路65號','125D1CC638F7C8B0B3'),(59,'13162536','好喝ㄟ特色民宿','125D1CC638F7C8D828','088614148',NULL,'Y',NULL,'2021-06-05 18:23:54','屏東縣琉球鄉中山路176號','125D1CC638F7C8D828'),(60,'13172637','樂活島嶼','125D1CC638F7C8FF9D','0975268989',NULL,'Y',NULL,'2021-06-05 18:25:40','屏東縣琉球鄉杉板路91號','125D1CC638F7C8FF9D'),(61,'13182738','月牙灣','125D1CC638F7C92712','088613777',NULL,'Y',NULL,'2021-06-05 18:32:55','屏東縣琉球鄉杉板路71號','125D1CC638F7C92712'),(62,'13192839','大海的天空','125D1CC638F7C94E87','0915155815',NULL,'Y',NULL,'2021-06-05 18:34:00','屏東縣琉球鄉本漁路102號','125D1CC638F7C94E87'),(63,'13202940','1幸福民宿','125D1CC638F7C975FC','088614517',NULL,'Y',NULL,'2021-06-05 18:35:27','屏東縣琉球鄉本漁路106、108號','125D1CC638F7C975FC'),(64,'13213041','7幸福民宿','125D1CC638F7C99D71','088614517',NULL,'Y',NULL,'2021-06-05 18:36:44','屏東縣琉球鄉本漁路110、112號','125D1CC638F7C99D71'),(65,'13223142','琉夏萊旅店','125D1CC638F7C9C4E6','088611133',NULL,'Y',NULL,'2021-06-05 18:39:39','屏東縣琉球鄉民生路43-2號','125D1CC638F7C9C4E6'),(66,'13233243','å¥½æ¨£çš„æ°‘å®¿','125D1CC638F7C9EC5B',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰ä¸‰æ°‘è·¯129è™Ÿ','125D1CC638F7C9EC5B'),(67,'13243344','海豚灣海景民宿','125D1CC638F7CA13D0','088612570',NULL,'Y',NULL,'2021-06-05 18:31:30','屏東縣琉球鄉三民路276號','125D1CC638F7CA13D0'),(68,'13253445','漁埕民宿','125D1CC638F7CA3B45','0982096908',NULL,'Y',NULL,'2021-06-05 18:41:04','屏東縣琉球鄉三民路19號','125D1CC638F7CA3B45'),(69,'13263546','彩繪民宿','125D1CC638F7CA62BA','0938317390',NULL,'Y',NULL,'2021-06-05 18:42:40','屏東縣琉球鄉本福村中山路193-1號','125D1CC638F7CA62BA'),(70,'13273647','夏堤民宿','125D1CC638F7CA8A2F','088611155',NULL,'Y',NULL,'2021-06-05 18:44:35','屏東縣琉球鄉杉板路51巷2號','125D1CC638F7CA8A2F'),(71,'13283748','雲海居觀景民宿','125D1CC638F7CAB1A4','088611229',NULL,'Y',NULL,'2021-06-05 18:46:01','屏東縣琉球鄉杉福村肚仔坪路6號','125D1CC638F7CAB1A4'),(72,'13293849','杉板灣十號特色民宿','125D1CC638F7CAD919','088613300',NULL,'Y',NULL,'2021-06-05 18:47:56','屏東縣琉球鄉肚仔坪路2-10號','125D1CC638F7CAD919'),(73,'13303950','小琉球古拉克民宿','125D1CC638F7CB008E','0930101968',NULL,'Y',NULL,'2021-06-05 18:51:13','屏東縣琉球鄉中山路61-20號','125D1CC638F7CB008E'),(74,'13314051','小琉球船屋民宿','125D1CC638F7CB2803','088612239',NULL,'Y',NULL,'2021-06-05 18:52:51','屏東縣琉球鄉中山路224號','125D1CC638F7CB2803'),(75,'13324152','法拉園','125D22347214CB4F78','0988377332',NULL,'Y',NULL,'2021-06-05 18:54:08','屏東縣琉球鄉相埔路92-5號','125D22347214CB4F78'),(76,'13334253','上福民宿','125D228E4F4BCB76ED','0963229013',NULL,'Y',NULL,'2021-06-05 18:55:48','屏東縣琉球鄉相埔路79-6號','125D228E4F4BCB76ED'),(77,'13344354','å…«æ‘æ°‘å®¿','125D228E4F8BCB9E62',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰','125D228E4F8BCB9E62'),(78,'13354455','悠遊民宿','125F3A7927B8CBC5D7','0933685532',NULL,'Y',NULL,'2021-06-05 19:04:47','屏東縣琉球鄉三民路146號','125F3A7927B8CBC5D7'),(79,'13354456','緣聚閣民宿','125F3A79286FCBC5D8','0905280849',NULL,'Y',NULL,'2021-06-05 19:05:49','屏東縣琉球鄉民生路6號','125F3A79286FCBC5D8'),(80,'13354457','海明珠民宿','125F3A7929A9CBC5D9','088614947',NULL,'Y',NULL,'2021-06-05 19:06:44','屏東縣琉球鄉上杉路101-5號','125F3A7929A9CBC5D9'),(81,'13354458','蜂潛水民宿','125F3A792A54CBC5DA','0986165777',NULL,'Y',NULL,'2021-06-05 19:08:31','屏東縣琉球鄉中興路33-39號','125F3A792A54CBC5DA'),(82,'13354459','遛一遛民宿','125F3A792ACECBC5DB','0937689107',NULL,'Y',NULL,'2021-06-05 19:09:48','屏東縣琉球鄉和平路三巷6-16號','125F3A792ACECBC5DB'),(83,'13354460','芭芭雅','125F52F8D7A7CBC5DC','0921258662',NULL,'Y',NULL,'2021-06-05 19:10:56','屏東縣琉球鄉本福村民生路1號','125F52F8D7A7CBC5DC'),(84,'13354461','上杉看海民宿','125F46CF6E839FB11F','0966603071',NULL,'Y',NULL,'2021-06-05 19:11:42','屏東縣琉球鄉上福村復興路6-32號','125F46CF6E839FB11F'),(85,'13354462','吉祥民宿','125F46CF6E839FB120','0910997753',NULL,'Y',NULL,'2021-06-05 19:12:19','屏東縣琉球鄉民權路44之5號','125F46CF6E839FB120'),(86,'13354463','國王旅店','125F46CF6E839FB121','0989688395',NULL,'Y',NULL,'2021-06-05 19:13:02','屏東線琉球鄉中山路43之16號','125F46CF6E839FB121'),(87,'13354464','好萊屋民宿','125F46CF6E839FB122','0933688478',NULL,'Y',NULL,'2021-06-05 19:13:42','屏東縣琉球鄉上福村杉板路81巷10號','125F46CF6E839FB122'),(88,'13354465','å¥½å®¿å¤šæ°‘å®¿','125F46CF6E839FB123',NULL,NULL,'Y',NULL,NULL,'å±æ±ç¸£ç‰çƒé„‰ç›¸åŸ”è·¯66è™Ÿ','125F46CF6E839FB123'),(89,'13354466','蜂潛水','125F46CF6E839FB124','0986165777',NULL,'Y',NULL,'2021-06-05 19:15:02','屏東縣琉球鄉中興路33-39號','125F46CF6E839FB124'),(90,'13354467','彩繪假期','125F46CF6E839FB125','0938317390',NULL,'Y',NULL,'2021-06-05 19:16:04','屏東縣琉球鄉中山路193-1號','125F46CF6E839FB125'),(91,'13354468','星宿海民宿','125F46CF6E839FB126','0956111530',NULL,'Y',NULL,'2021-06-05 19:16:48','屏東縣琉球鄉南福村中正路2-2號','125F46CF6E839FB126'),(92,'13354469','星月民宿','125F46CF6E839FB127','0982844110',NULL,'Y',NULL,'2021-06-05 19:17:31','屏東縣琉球鄉中山路116號','125F46CF6E839FB127'),(93,'13354470','景好睡民宿','125F46CF6E839FB128','0938134256',NULL,'Y',NULL,'2021-06-05 19:18:08','屏東縣琉球鄉本福村民生路11號','125F46CF6E839FB128'),(94,'13354471','暮旅民宿    ','125F46CF6E839FB129','0988212039',NULL,'Y',NULL,'2021-05-09 06:43:01','屏東縣琉球鄉中興路5-3號','125F46CF6E839FB129'),(95,'13354472','海墘民宿','125F46CF6E839FB130','0988537535',NULL,'Y',NULL,'2021-05-08 21:28:36','屏東縣琉球鄉三民路28號','125F46CF6E839FB130'),(96,'13354473','琉球夯生態旅遊民宿','125F46CF6E839FB131','0980061585',NULL,'Y',NULL,'2021-05-08 21:27:57','屏東縣琉球鄉中山路6號','125F46CF6E839FB131'),(97,'13354474','睡一宿民宿','125F46CF6E839FB132','0919172795',NULL,'Y',NULL,'2021-05-08 21:26:21','屏東縣琉球鄉民生路20-1號','125F46CF6E839FB132'),(98,'13354475','輪廓莊園','125F46CF6E839FB133',NULL,NULL,'N',NULL,NULL,'屏東縣琉球鄉杉福村復興路163號-5','125F46CF6E839FB133'),(100,'13354476','好棒棒','13354476','0912345678',NULL,'N','2021-05-09 07:51:10',NULL,'屏東縣琉球鄉中正路四號','13354476'),(101,'13354477','好棒棒3','13354477','0912345678',NULL,'N','2021-05-09 08:05:22','2021-06-02 06:07:06','屏東縣琉球鄉中正路四號','13354477'),(102,'13354478','天天開心0','13354478','0912345678',NULL,'N','2021-05-26 04:44:52','2021-06-02 02:13:38','台北市見承接190巷30號','13354478'),(103,'13354479','花花','13354479','1111',NULL,'N','2021-05-26 04:47:12','2021-05-30 20:58:53','台北市花花向','13354479'),(104,'13354480','天天開心4','13354480','09888888839',NULL,'N','2021-05-26 04:50:08','2021-05-30 03:21:57','基隆市edoeid','13354480'),(105,'13354481','彩虹','13354481','0912333489',NULL,'N','2021-05-26 04:52:32','2021-05-31 04:27:59','基隆市2355','13354481'),(106,'13354482','好棒棒2','13354482','098283884884',NULL,'N','2021-05-28 03:20:54','2021-05-30 03:20:08','台北市dddd343245','13354482'),(107,'13354483','存檔同時存分類','13354483','09282828282',NULL,'N','2021-05-30 05:14:30',NULL,'台北市odldofloskfi','13354483'),(108,'13354484','存檔同時存分類2','13354484','09132121212',NULL,'N','2021-05-30 05:17:05','2021-05-31 07:06:15','基隆市ssssss','13354484');
+/*!40000 ALTER TABLE `stores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `storesagentids`
+--
+
+DROP TABLE IF EXISTS `storesagentids`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `storesagentids` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `agentid` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `agentname` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '店家管理人員姓名',
+  `agentphone` char(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
+  `salt` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '加密用的 Hash Key',
+  `token` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員的 Key',
+  `password` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家管理人員密碼',
+  `lock` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '凍結帳號與否',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `storesagentids_agentid_unique` (`agentid`),
+  UNIQUE KEY `storesagentids_salt_unique` (`salt`),
+  UNIQUE KEY `storesagentids_token_unique` (`token`),
+  KEY `storesagentids_storeid_foreign` (`storeid`),
+  CONSTRAINT `storesagentids_storeid_foreign` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storesagentids`
+--
+
+LOCK TABLES `storesagentids` WRITE;
+/*!40000 ALTER TABLE `storesagentids` DISABLE KEYS */;
+INSERT INTO `storesagentids` VALUES (5,'peter@hello.com','王小花','0192929292','13354477','o4&S1rzg3+','$2y$10$1/92PqIRj6E51T1AMnHvzudKgLJYvTrfxEijVMPhqo9Ud.JGuFD6S','ABC123','N','2021-05-15 04:42:50','2021-06-04 05:11:14'),(7,'james',NULL,NULL,'13354477','5Go4rx7&H!','$2y$10$h.Gzb1Gyu2VcTZEe.TFdEev8//Nq.fGB8jjXMrHLY82csriVY64P6','ABC1234','N','2021-05-15 05:08:14','2021-05-15 05:08:14'),(8,'shiuan@yahoo.com','shiuan','0923746571','13354477','?xpE*CbO9r','$2y$10$QGoHM5LQJSM5x8CitWLAIOaBW4B5y7/0OF1bq2Qh7MJO8KXVnIZHK','ABC123','N','2021-06-01 06:58:39','2021-06-02 08:06:25'),(9,'linn@yahoo.con','花','0938472847','13354477','l5of.JqOL+','$2y$10$hreWKYJWYYcgv6Q51fjYmOXimFmnXQU99v.oCqB64nIlLvOQUHU8q','ABC123','N','2021-06-01 07:32:57','2021-06-02 06:20:33'),(10,'may@yahoo.com','shiuan','0912345678','13354475','EK9,lIxa2+','$2y$10$qnBVkMr2YfgqKFMlLXZEZeGnxwNLWj6jwZbGRbx1WmBx6L5fMHnhm','ABC123','N','2021-06-01 21:59:48','2021-06-02 02:28:32'),(11,'sh@yahoo.com','shname','0192922345','13354478','l*he8-pU5A','$2y$10$TuQCfWJq9CLHVnX1g0WShe7X/A49UyQnypLNtDXxWe/SiKTuxcWpO','ABC123','N','2021-06-02 02:12:46','2021-06-02 04:43:30');
+/*!40000 ALTER TABLE `storesagentids` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `storesclass`
+--
+
+DROP TABLE IF EXISTS `storesclass`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `storesclass` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `storesclass_storeid_index` (`storeid`),
+  KEY `storesclass_classid_index` (`classid`),
+  CONSTRAINT `storesclass_classid_classes` FOREIGN KEY (`classid`) REFERENCES `classes` (`classid`),
+  CONSTRAINT `storesclass_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storesclass`
+--
+
+LOCK TABLES `storesclass` WRITE;
+/*!40000 ALTER TABLE `storesclass` DISABLE KEYS */;
+INSERT INTO `storesclass` VALUES (7,'2021-05-13 02:23:05','2021-05-13 02:23:05','13354475','2'),(16,'2021-05-30 03:20:10','2021-05-30 03:20:10','13354482','2'),(17,'2021-05-30 03:22:08','2021-05-30 03:22:08','13354480','1'),(20,'2021-05-30 20:58:53','2021-05-30 20:58:53','13354479','1'),(22,'2021-05-31 04:27:59','2021-05-31 04:27:59','13354481','3'),(59,'2021-05-31 07:06:15','2021-05-31 07:06:15','13354484','3'),(62,'2021-06-02 02:13:39','2021-06-02 02:13:39','13354478','1'),(64,'2021-06-02 06:07:06','2021-06-02 06:07:06','13354477','1'),(66,'2021-06-05 06:32:02','2021-06-05 06:32:02','10011021','3'),(67,'2021-06-05 06:38:18','2021-06-05 06:38:18','10041324','3'),(68,'2021-06-05 06:53:01','2021-06-05 06:53:01','10051425','3'),(69,'2021-06-05 06:54:36','2021-06-05 06:54:36','10071627','3'),(70,'2021-06-05 06:57:53','2021-06-05 06:57:53','10081728','3'),(72,'2021-06-05 07:00:09','2021-06-05 07:00:09','10091829','3'),(73,'2021-06-05 07:56:08','2021-06-05 07:56:08','10101930','3'),(74,'2021-06-05 07:57:20','2021-06-05 07:57:20','10112031','3'),(75,'2021-06-05 08:03:31','2021-06-05 08:03:31','10142334','3'),(76,'2021-06-05 08:05:13','2021-06-05 08:05:13','10152435','3'),(77,'2021-06-05 08:06:29','2021-06-05 08:06:29','10162536','3'),(78,'2021-06-05 08:08:01','2021-06-05 08:08:01','10172637','3'),(79,'2021-06-05 08:09:04','2021-06-05 08:09:04','10182738','3'),(80,'2021-06-05 08:10:09','2021-06-05 08:10:09','10192839','3'),(81,'2021-06-05 08:11:23','2021-06-05 08:11:23','10213041','3'),(82,'2021-06-05 08:12:26','2021-06-05 08:12:26','10223142','3'),(83,'2021-06-05 08:13:44','2021-06-05 08:13:44','10233243','3'),(84,'2021-06-05 08:14:37','2021-06-05 08:14:37','10324152','3'),(85,'2021-06-05 08:16:14','2021-06-05 08:16:14','10344354','3'),(86,'2021-06-05 08:19:11','2021-06-05 08:19:11','10354455','3'),(87,'2021-06-05 08:20:37','2021-06-05 08:20:37','10364556','3'),(88,'2021-06-05 08:21:58','2021-06-05 08:21:58','10374657','3'),(89,'2021-06-05 08:23:20','2021-06-05 08:23:20','10384758','3'),(90,'2021-06-05 08:26:57','2021-06-05 08:26:57','10394859','3'),(91,'2021-06-05 08:27:50','2021-06-05 08:27:50','10404960','3'),(92,'2021-06-05 08:28:54','2021-06-05 08:28:54','10415061','3'),(93,'2021-06-05 08:30:16','2021-06-05 08:30:16','10445364','3'),(94,'2021-06-05 08:31:39','2021-06-05 08:31:39','10455465','3'),(95,'2021-06-05 08:32:55','2021-06-05 08:32:55','11243344','3'),(96,'2021-06-05 08:34:06','2021-06-05 08:34:06','11253445','3'),(97,'2021-06-05 08:35:45','2021-06-05 08:35:45','11263546','3'),(98,'2021-06-05 08:36:47','2021-06-05 08:36:47','11273647','3'),(99,'2021-06-05 08:38:01','2021-06-05 08:38:01','11283748','1'),(100,'2021-06-05 08:39:22','2021-06-05 08:39:22','12293849','3'),(101,'2021-06-05 08:40:53','2021-06-05 08:40:53','12303950','3'),(102,'2021-06-05 08:41:54','2021-06-05 08:41:54','12324152','3'),(103,'2021-06-05 08:43:13','2021-06-05 08:43:13','12425162','3'),(104,'2021-06-05 08:44:26','2021-06-05 08:44:26','12435263','3'),(105,'2021-06-05 08:46:15','2021-06-05 08:46:15','10122132','3'),(106,'2021-06-05 17:58:37','2021-06-05 17:58:37','13021122','2'),(107,'2021-06-05 17:59:47','2021-06-05 17:59:47','13031223','2'),(108,'2021-06-05 18:01:08','2021-06-05 18:01:08','13041324','2'),(109,'2021-06-05 18:08:51','2021-06-05 18:08:51','13051425','2'),(110,'2021-06-05 18:10:35','2021-06-05 18:10:35','13061526','2'),(111,'2021-06-05 18:11:58','2021-06-05 18:11:58','13071627','2'),(113,'2021-06-05 18:14:57','2021-06-05 18:14:57','13081728','2'),(114,'2021-06-05 18:15:55','2021-06-05 18:15:55','13091829','2'),(115,'2021-06-05 18:17:31','2021-06-05 18:17:31','13101930','2'),(116,'2021-06-05 18:18:45','2021-06-05 18:18:45','13112031','2'),(117,'2021-06-05 18:20:09','2021-06-05 18:20:09','13132233','2'),(118,'2021-06-05 18:21:26','2021-06-05 18:21:26','13142334','2'),(120,'2021-06-05 18:23:54','2021-06-05 18:23:54','13162536','2'),(121,'2021-06-05 18:24:22','2021-06-05 18:24:22','13152435','2'),(122,'2021-06-05 18:25:41','2021-06-05 18:25:41','13172637','2'),(123,'2021-06-05 18:31:30','2021-06-05 18:31:30','13243344','2'),(124,'2021-06-05 18:32:55','2021-06-05 18:32:55','13182738','2'),(125,'2021-06-05 18:34:00','2021-06-05 18:34:00','13192839','2'),(126,'2021-06-05 18:35:27','2021-06-05 18:35:27','13202940','2'),(127,'2021-06-05 18:36:44','2021-06-05 18:36:44','13213041','2'),(128,'2021-06-05 18:39:40','2021-06-05 18:39:40','13223142','2'),(129,'2021-06-05 18:41:04','2021-06-05 18:41:04','13253445','2'),(130,'2021-06-05 18:42:40','2021-06-05 18:42:40','13263546','2'),(131,'2021-06-05 18:44:35','2021-06-05 18:44:35','13273647','2'),(132,'2021-06-05 18:46:02','2021-06-05 18:46:02','13283748','2'),(133,'2021-06-05 18:47:56','2021-06-05 18:47:56','13293849','2'),(134,'2021-06-05 18:51:13','2021-06-05 18:51:13','13303950','2'),(135,'2021-06-05 18:52:51','2021-06-05 18:52:51','13314051','2'),(136,'2021-06-05 18:54:08','2021-06-05 18:54:08','13324152','2'),(137,'2021-06-05 18:55:48','2021-06-05 18:55:48','13334253','2'),(138,'2021-06-05 19:04:48','2021-06-05 19:04:48','13354455','2'),(139,'2021-06-05 19:05:49','2021-06-05 19:05:49','13354456','2'),(140,'2021-06-05 19:06:44','2021-06-05 19:06:44','13354457','2'),(141,'2021-06-05 19:08:31','2021-06-05 19:08:31','13354458','2'),(142,'2021-06-05 19:09:48','2021-06-05 19:09:48','13354459','2'),(143,'2021-06-05 19:10:56','2021-06-05 19:10:56','13354460','2'),(144,'2021-06-05 19:11:42','2021-06-05 19:11:42','13354461','2'),(145,'2021-06-05 19:12:19','2021-06-05 19:12:19','13354462','2'),(146,'2021-06-05 19:13:02','2021-06-05 19:13:02','13354463','2'),(147,'2021-06-05 19:13:42','2021-06-05 19:13:42','13354464','2'),(148,'2021-06-05 19:15:02','2021-06-05 19:15:02','13354466','3'),(149,'2021-06-05 19:16:04','2021-06-05 19:16:04','13354467','3'),(150,'2021-06-05 19:16:48','2021-06-05 19:16:48','13354468','2'),(151,'2021-06-05 19:17:31','2021-06-05 19:17:31','13354469','2'),(152,'2021-06-05 19:18:08','2021-06-05 19:18:08','13354470','2');
+/*!40000 ALTER TABLE `storesclass` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `storescups`
+--
+
+DROP TABLE IF EXISTS `storescups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `storescups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pullcup` int(11) NOT NULL DEFAULT '0',
+  `pushcup` int(11) NOT NULL DEFAULT '0',
+  `comment` varchar(255) DEFAULT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `storescups_storeid_stores` (`storeid`),
+  CONSTRAINT `storescups_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storescups`
+--
+
+LOCK TABLES `storescups` WRITE;
+/*!40000 ALTER TABLE `storescups` DISABLE KEYS */;
+INSERT INTO `storescups` VALUES (1,'13354477',0,20,NULL,'2021-05-24 20:41:44'),(2,'13354476',0,0,NULL,'2021-06-02 14:25:34'),(3,'13354475',0,0,NULL,'2021-06-02 14:25:36'),(4,'13354474',0,0,NULL,'2021-06-02 14:25:46'),(5,'13354473',0,0,NULL,'2021-06-02 14:25:54'),(6,'13354472',0,0,NULL,'2021-06-02 14:26:15'),(7,'13354471',0,0,NULL,'2021-06-02 14:26:24');
+/*!40000 ALTER TABLE `storescups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `storescupsrecords`
+--
+
+DROP TABLE IF EXISTS `storescupsrecords`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `storescupsrecords` (
+  `id` bigint(20) unsigned NOT NULL COMMENT '流水序號',
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
+  `pullcup` int(11) NOT NULL DEFAULT '0' COMMENT '取杯數量',
+  `pushcup` int(11) NOT NULL DEFAULT '0' COMMENT '送杯數量',
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '收送時間戳記',
+  `adminid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '管理人員的帳號',
+  `check` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '確認章簽',
+  `comment` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '備註',
+  PRIMARY KEY (`date`,`id`),
+  KEY `storescupsrecords_storeid_adminid_index` (`storeid`,`adminid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+/*!50100 PARTITION BY RANGE (year(`date`))
+SUBPARTITION BY HASH (month(`date`))
+(PARTITION year2019 VALUES LESS THAN (2020)
+ (SUBPARTITION dec2019 ENGINE = InnoDB,
+  SUBPARTITION jan2019 ENGINE = InnoDB,
+  SUBPARTITION feb2019 ENGINE = InnoDB,
+  SUBPARTITION mar2019 ENGINE = InnoDB,
+  SUBPARTITION apr2019 ENGINE = InnoDB,
+  SUBPARTITION may2019 ENGINE = InnoDB,
+  SUBPARTITION jun2019 ENGINE = InnoDB,
+  SUBPARTITION jul2019 ENGINE = InnoDB,
+  SUBPARTITION aug2019 ENGINE = InnoDB,
+  SUBPARTITION sep2019 ENGINE = InnoDB,
+  SUBPARTITION oct2019 ENGINE = InnoDB,
+  SUBPARTITION nov2019 ENGINE = InnoDB),
+ PARTITION year2020 VALUES LESS THAN (2021)
+ (SUBPARTITION dec2020 ENGINE = InnoDB,
+  SUBPARTITION jan2020 ENGINE = InnoDB,
+  SUBPARTITION feb2020 ENGINE = InnoDB,
+  SUBPARTITION mar2020 ENGINE = InnoDB,
+  SUBPARTITION apr2020 ENGINE = InnoDB,
+  SUBPARTITION may2020 ENGINE = InnoDB,
+  SUBPARTITION jun2020 ENGINE = InnoDB,
+  SUBPARTITION jul2020 ENGINE = InnoDB,
+  SUBPARTITION aug2020 ENGINE = InnoDB,
+  SUBPARTITION sep2020 ENGINE = InnoDB,
+  SUBPARTITION oct2020 ENGINE = InnoDB,
+  SUBPARTITION nov2020 ENGINE = InnoDB),
+ PARTITION year2021 VALUES LESS THAN (2022)
+ (SUBPARTITION dec2021 ENGINE = InnoDB,
+  SUBPARTITION jan2021 ENGINE = InnoDB,
+  SUBPARTITION feb2021 ENGINE = InnoDB,
+  SUBPARTITION mar2021 ENGINE = InnoDB,
+  SUBPARTITION apr2021 ENGINE = InnoDB,
+  SUBPARTITION may2021 ENGINE = InnoDB,
+  SUBPARTITION jun2021 ENGINE = InnoDB,
+  SUBPARTITION jul2021 ENGINE = InnoDB,
+  SUBPARTITION aug2021 ENGINE = InnoDB,
+  SUBPARTITION sep2021 ENGINE = InnoDB,
+  SUBPARTITION oct2021 ENGINE = InnoDB,
+  SUBPARTITION nov2021 ENGINE = InnoDB),
+ PARTITION year2022 VALUES LESS THAN (2023)
+ (SUBPARTITION dec2022 ENGINE = InnoDB,
+  SUBPARTITION jan2022 ENGINE = InnoDB,
+  SUBPARTITION feb2022 ENGINE = InnoDB,
+  SUBPARTITION mar2022 ENGINE = InnoDB,
+  SUBPARTITION apr2022 ENGINE = InnoDB,
+  SUBPARTITION may2022 ENGINE = InnoDB,
+  SUBPARTITION jun2022 ENGINE = InnoDB,
+  SUBPARTITION jul2022 ENGINE = InnoDB,
+  SUBPARTITION aug2022 ENGINE = InnoDB,
+  SUBPARTITION sep2022 ENGINE = InnoDB,
+  SUBPARTITION oct2022 ENGINE = InnoDB,
+  SUBPARTITION nov2022 ENGINE = InnoDB),
+ PARTITION year2023 VALUES LESS THAN (2024)
+ (SUBPARTITION dec2023 ENGINE = InnoDB,
+  SUBPARTITION jan2023 ENGINE = InnoDB,
+  SUBPARTITION feb2023 ENGINE = InnoDB,
+  SUBPARTITION mar2023 ENGINE = InnoDB,
+  SUBPARTITION apr2023 ENGINE = InnoDB,
+  SUBPARTITION may2023 ENGINE = InnoDB,
+  SUBPARTITION jun2023 ENGINE = InnoDB,
+  SUBPARTITION jul2023 ENGINE = InnoDB,
+  SUBPARTITION aug2023 ENGINE = InnoDB,
+  SUBPARTITION sep2023 ENGINE = InnoDB,
+  SUBPARTITION oct2023 ENGINE = InnoDB,
+  SUBPARTITION nov2023 ENGINE = InnoDB),
+ PARTITION year2024 VALUES LESS THAN (2025)
+ (SUBPARTITION dec2024 ENGINE = InnoDB,
+  SUBPARTITION jan2024 ENGINE = InnoDB,
+  SUBPARTITION feb2024 ENGINE = InnoDB,
+  SUBPARTITION mar2024 ENGINE = InnoDB,
+  SUBPARTITION apr2024 ENGINE = InnoDB,
+  SUBPARTITION may2024 ENGINE = InnoDB,
+  SUBPARTITION jun2024 ENGINE = InnoDB,
+  SUBPARTITION jul2024 ENGINE = InnoDB,
+  SUBPARTITION aug2024 ENGINE = InnoDB,
+  SUBPARTITION sep2024 ENGINE = InnoDB,
+  SUBPARTITION oct2024 ENGINE = InnoDB,
+  SUBPARTITION nov2024 ENGINE = InnoDB),
+ PARTITION year2025 VALUES LESS THAN (2026)
+ (SUBPARTITION dec2025 ENGINE = InnoDB,
+  SUBPARTITION jan2025 ENGINE = InnoDB,
+  SUBPARTITION feb2025 ENGINE = InnoDB,
+  SUBPARTITION mar2025 ENGINE = InnoDB,
+  SUBPARTITION apr2025 ENGINE = InnoDB,
+  SUBPARTITION may2025 ENGINE = InnoDB,
+  SUBPARTITION jun2025 ENGINE = InnoDB,
+  SUBPARTITION jul2025 ENGINE = InnoDB,
+  SUBPARTITION aug2025 ENGINE = InnoDB,
+  SUBPARTITION sep2025 ENGINE = InnoDB,
+  SUBPARTITION oct2025 ENGINE = InnoDB,
+  SUBPARTITION nov2025 ENGINE = InnoDB),
+ PARTITION year2026 VALUES LESS THAN (2027)
+ (SUBPARTITION dec2026 ENGINE = InnoDB,
+  SUBPARTITION jan2026 ENGINE = InnoDB,
+  SUBPARTITION feb2026 ENGINE = InnoDB,
+  SUBPARTITION mar2026 ENGINE = InnoDB,
+  SUBPARTITION apr2026 ENGINE = InnoDB,
+  SUBPARTITION may2026 ENGINE = InnoDB,
+  SUBPARTITION jun2026 ENGINE = InnoDB,
+  SUBPARTITION jul2026 ENGINE = InnoDB,
+  SUBPARTITION aug2026 ENGINE = InnoDB,
+  SUBPARTITION sep2026 ENGINE = InnoDB,
+  SUBPARTITION oct2026 ENGINE = InnoDB,
+  SUBPARTITION nov2026 ENGINE = InnoDB),
+ PARTITION year2027 VALUES LESS THAN (2028)
+ (SUBPARTITION dec2027 ENGINE = InnoDB,
+  SUBPARTITION jan2027 ENGINE = InnoDB,
+  SUBPARTITION feb2027 ENGINE = InnoDB,
+  SUBPARTITION mar2027 ENGINE = InnoDB,
+  SUBPARTITION apr2027 ENGINE = InnoDB,
+  SUBPARTITION may2027 ENGINE = InnoDB,
+  SUBPARTITION jun2027 ENGINE = InnoDB,
+  SUBPARTITION jul2027 ENGINE = InnoDB,
+  SUBPARTITION aug2027 ENGINE = InnoDB,
+  SUBPARTITION sep2027 ENGINE = InnoDB,
+  SUBPARTITION oct2027 ENGINE = InnoDB,
+  SUBPARTITION nov2027 ENGINE = InnoDB),
+ PARTITION year2028 VALUES LESS THAN (2029)
+ (SUBPARTITION dec2028 ENGINE = InnoDB,
+  SUBPARTITION jan2028 ENGINE = InnoDB,
+  SUBPARTITION feb2028 ENGINE = InnoDB,
+  SUBPARTITION mar2028 ENGINE = InnoDB,
+  SUBPARTITION apr2028 ENGINE = InnoDB,
+  SUBPARTITION may2028 ENGINE = InnoDB,
+  SUBPARTITION jun2028 ENGINE = InnoDB,
+  SUBPARTITION jul2028 ENGINE = InnoDB,
+  SUBPARTITION aug2028 ENGINE = InnoDB,
+  SUBPARTITION sep2028 ENGINE = InnoDB,
+  SUBPARTITION oct2028 ENGINE = InnoDB,
+  SUBPARTITION nov2028 ENGINE = InnoDB),
+ PARTITION year2029 VALUES LESS THAN (2030)
+ (SUBPARTITION dec2029 ENGINE = InnoDB,
+  SUBPARTITION jan2029 ENGINE = InnoDB,
+  SUBPARTITION feb2029 ENGINE = InnoDB,
+  SUBPARTITION mar2029 ENGINE = InnoDB,
+  SUBPARTITION apr2029 ENGINE = InnoDB,
+  SUBPARTITION may2029 ENGINE = InnoDB,
+  SUBPARTITION jun2029 ENGINE = InnoDB,
+  SUBPARTITION jul2029 ENGINE = InnoDB,
+  SUBPARTITION aug2029 ENGINE = InnoDB,
+  SUBPARTITION sep2029 ENGINE = InnoDB,
+  SUBPARTITION oct2029 ENGINE = InnoDB,
+  SUBPARTITION nov2029 ENGINE = InnoDB),
+ PARTITION year2030 VALUES LESS THAN (2031)
+ (SUBPARTITION dec2030 ENGINE = InnoDB,
+  SUBPARTITION jan2030 ENGINE = InnoDB,
+  SUBPARTITION feb2030 ENGINE = InnoDB,
+  SUBPARTITION mar2030 ENGINE = InnoDB,
+  SUBPARTITION apr2030 ENGINE = InnoDB,
+  SUBPARTITION may2030 ENGINE = InnoDB,
+  SUBPARTITION jun2030 ENGINE = InnoDB,
+  SUBPARTITION jul2030 ENGINE = InnoDB,
+  SUBPARTITION aug2030 ENGINE = InnoDB,
+  SUBPARTITION sep2030 ENGINE = InnoDB,
+  SUBPARTITION oct2030 ENGINE = InnoDB,
+  SUBPARTITION nov2030 ENGINE = InnoDB),
+ PARTITION future VALUES LESS THAN MAXVALUE
+ (SUBPARTITION `dec` ENGINE = InnoDB,
+  SUBPARTITION jan ENGINE = InnoDB,
+  SUBPARTITION feb ENGINE = InnoDB,
+  SUBPARTITION mar ENGINE = InnoDB,
+  SUBPARTITION apr ENGINE = InnoDB,
+  SUBPARTITION may ENGINE = InnoDB,
+  SUBPARTITION jun ENGINE = InnoDB,
+  SUBPARTITION jul ENGINE = InnoDB,
+  SUBPARTITION aug ENGINE = InnoDB,
+  SUBPARTITION sep ENGINE = InnoDB,
+  SUBPARTITION oct ENGINE = InnoDB,
+  SUBPARTITION nov ENGINE = InnoDB)) */;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storescupsrecords`
+--
+
+LOCK TABLES `storescupsrecords` WRITE;
+/*!40000 ALTER TABLE `storescupsrecords` DISABLE KEYS */;
+/*!40000 ALTER TABLE `storescupsrecords` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `storesfunctions`
+--
+
+DROP TABLE IF EXISTS `storesfunctions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `storesfunctions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '流水序號',
+  `storeid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '店家編號',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `funcid` char(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `storesfunctions_funcid_functions` (`funcid`),
+  KEY `storesfunctions_storeid_stores` (`storeid`),
+  CONSTRAINT `storesfunctions_funcid_functions` FOREIGN KEY (`funcid`) REFERENCES `functions` (`funcid`),
+  CONSTRAINT `storesfunctions_storeid_stores` FOREIGN KEY (`storeid`) REFERENCES `stores` (`storeid`)
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `storesfunctions`
+--
+
+LOCK TABLES `storesfunctions` WRITE;
+/*!40000 ALTER TABLE `storesfunctions` DISABLE KEYS */;
+INSERT INTO `storesfunctions` VALUES (4,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','1'),(5,'13354475','2021-05-13 01:43:08','2021-05-13 01:43:08','2'),(6,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','1'),(7,'13354474','2021-05-13 01:43:44','2021-05-13 01:43:44','2'),(8,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','1'),(9,'13354476','2021-05-13 01:43:48','2021-05-13 01:43:48','2'),(49,'13354482','2021-05-30 03:20:08','2021-05-30 03:20:08','2'),(50,'13354480','2021-05-30 03:21:53','2021-05-30 03:21:53','2'),(56,'13354479','2021-05-30 20:58:53','2021-05-30 20:58:53','1'),(62,'13354481','2021-05-31 04:27:59','2021-05-31 04:27:59','2'),(82,'13354484','2021-05-31 07:06:15','2021-05-31 07:06:15','2'),(83,'13354484','2021-05-31 07:06:15','2021-05-31 07:06:15','1'),(86,'13354478','2021-06-02 02:13:39','2021-06-02 02:13:39','1'),(87,'13354478','2021-06-02 02:13:39','2021-06-02 02:13:39','2'),(90,'13354477','2021-06-02 06:07:06','2021-06-02 06:07:06','1'),(91,'13354477','2021-06-02 06:07:06','2021-06-02 06:07:06','2'),(93,'10011021','2021-06-05 06:32:02','2021-06-05 06:32:02','1'),(138,'10031223','2021-06-05 06:35:32','2021-06-05 06:35:32','2'),(151,'10041324','2021-06-05 06:39:13','2021-06-05 06:39:13','1'),(153,'10051425','2021-06-05 06:53:01','2021-06-05 06:53:01','1'),(154,'10071627','2021-06-05 06:54:36','2021-06-05 06:54:36','1'),(155,'10081728','2021-06-05 06:57:53','2021-06-05 06:57:53','1'),(157,'10091829','2021-06-05 07:00:09','2021-06-05 07:00:09','1'),(158,'10101930','2021-06-05 07:56:08','2021-06-05 07:56:08','1'),(159,'10112031','2021-06-05 07:57:20','2021-06-05 07:57:20','1'),(160,'10142334','2021-06-05 08:03:31','2021-06-05 08:03:31','1'),(161,'10152435','2021-06-05 08:05:13','2021-06-05 08:05:13','1'),(162,'10162536','2021-06-05 08:06:29','2021-06-05 08:06:29','1'),(163,'10172637','2021-06-05 08:08:01','2021-06-05 08:08:01','1'),(164,'10182738','2021-06-05 08:09:04','2021-06-05 08:09:04','1'),(165,'10192839','2021-06-05 08:10:09','2021-06-05 08:10:09','1'),(166,'10213041','2021-06-05 08:11:23','2021-06-05 08:11:23','1'),(167,'10223142','2021-06-05 08:12:26','2021-06-05 08:12:26','1'),(168,'10233243','2021-06-05 08:13:44','2021-06-05 08:13:44','1'),(169,'10324152','2021-06-05 08:14:37','2021-06-05 08:14:37','1'),(170,'10344354','2021-06-05 08:16:14','2021-06-05 08:16:14','1'),(171,'10354455','2021-06-05 08:19:11','2021-06-05 08:19:11','1'),(172,'10364556','2021-06-05 08:20:37','2021-06-05 08:20:37','1'),(173,'10374657','2021-06-05 08:21:58','2021-06-05 08:21:58','1'),(174,'10384758','2021-06-05 08:23:20','2021-06-05 08:23:20','1'),(175,'10394859','2021-06-05 08:26:57','2021-06-05 08:26:57','1'),(176,'10404960','2021-06-05 08:27:50','2021-06-05 08:27:50','1'),(177,'10415061','2021-06-05 08:28:54','2021-06-05 08:28:54','1'),(178,'10445364','2021-06-05 08:30:16','2021-06-05 08:30:16','1'),(179,'10455465','2021-06-05 08:31:39','2021-06-05 08:31:39','1'),(180,'11243344','2021-06-05 08:32:55','2021-06-05 08:32:55','1'),(181,'11253445','2021-06-05 08:34:06','2021-06-05 08:34:06','1'),(182,'11263546','2021-06-05 08:35:45','2021-06-05 08:35:45','1'),(183,'11273647','2021-06-05 08:36:47','2021-06-05 08:36:47','1'),(184,'11283748','2021-06-05 08:38:01','2021-06-05 08:38:01','1'),(185,'12293849','2021-06-05 08:39:22','2021-06-05 08:39:22','1'),(186,'12303950','2021-06-05 08:40:53','2021-06-05 08:40:53','1'),(187,'12324152','2021-06-05 08:41:54','2021-06-05 08:41:54','1'),(188,'12425162','2021-06-05 08:43:13','2021-06-05 08:43:13','1'),(189,'12435263','2021-06-05 08:44:26','2021-06-05 08:44:26','1'),(190,'10122132','2021-06-05 08:46:15','2021-06-05 08:46:15','1'),(191,'13021122','2021-06-05 17:58:37','2021-06-05 17:58:37','1'),(192,'13031223','2021-06-05 17:59:47','2021-06-05 17:59:47','1'),(193,'13041324','2021-06-05 18:01:08','2021-06-05 18:01:08','1'),(194,'13051425','2021-06-05 18:08:51','2021-06-05 18:08:51','1'),(195,'13061526','2021-06-05 18:10:35','2021-06-05 18:10:35','1'),(196,'13071627','2021-06-05 18:11:58','2021-06-05 18:11:58','1'),(198,'13081728','2021-06-05 18:14:57','2021-06-05 18:14:57','1'),(199,'13091829','2021-06-05 18:15:55','2021-06-05 18:15:55','1'),(200,'13101930','2021-06-05 18:17:31','2021-06-05 18:17:31','1'),(201,'13112031','2021-06-05 18:18:45','2021-06-05 18:18:45','1'),(202,'13132233','2021-06-05 18:20:09','2021-06-05 18:20:09','1'),(203,'13142334','2021-06-05 18:21:26','2021-06-05 18:21:26','1'),(205,'13162536','2021-06-05 18:23:54','2021-06-05 18:23:54','1'),(206,'13152435','2021-06-05 18:24:22','2021-06-05 18:24:22','1'),(207,'13172637','2021-06-05 18:25:41','2021-06-05 18:25:41','1'),(208,'13243344','2021-06-05 18:31:30','2021-06-05 18:31:30','1'),(209,'13182738','2021-06-05 18:32:55','2021-06-05 18:32:55','1'),(210,'13192839','2021-06-05 18:34:00','2021-06-05 18:34:00','1'),(211,'13202940','2021-06-05 18:35:27','2021-06-05 18:35:27','1'),(212,'13213041','2021-06-05 18:36:44','2021-06-05 18:36:44','1'),(213,'13223142','2021-06-05 18:39:40','2021-06-05 18:39:40','1'),(214,'13253445','2021-06-05 18:41:04','2021-06-05 18:41:04','1'),(215,'13263546','2021-06-05 18:42:40','2021-06-05 18:42:40','1'),(216,'13273647','2021-06-05 18:44:35','2021-06-05 18:44:35','1'),(217,'13283748','2021-06-05 18:46:02','2021-06-05 18:46:02','1'),(218,'13293849','2021-06-05 18:47:56','2021-06-05 18:47:56','1'),(219,'13303950','2021-06-05 18:51:13','2021-06-05 18:51:13','1'),(220,'13314051','2021-06-05 18:52:51','2021-06-05 18:52:51','1'),(221,'13324152','2021-06-05 18:54:08','2021-06-05 18:54:08','1'),(222,'13334253','2021-06-05 18:55:48','2021-06-05 18:55:48','1'),(223,'13354455','2021-06-05 19:04:47','2021-06-05 19:04:47','1'),(224,'13354456','2021-06-05 19:05:49','2021-06-05 19:05:49','1'),(225,'13354457','2021-06-05 19:06:44','2021-06-05 19:06:44','1'),(226,'13354458','2021-06-05 19:08:31','2021-06-05 19:08:31','1'),(227,'13354459','2021-06-05 19:09:48','2021-06-05 19:09:48','1'),(228,'13354460','2021-06-05 19:10:56','2021-06-05 19:10:56','1'),(229,'13354461','2021-06-05 19:11:42','2021-06-05 19:11:42','1'),(230,'13354462','2021-06-05 19:12:19','2021-06-05 19:12:19','1'),(231,'13354463','2021-06-05 19:13:02','2021-06-05 19:13:02','1'),(232,'13354464','2021-06-05 19:13:42','2021-06-05 19:13:42','1'),(233,'13354466','2021-06-05 19:15:02','2021-06-05 19:15:02','1'),(234,'13354467','2021-06-05 19:16:04','2021-06-05 19:16:04','1'),(235,'13354468','2021-06-05 19:16:48','2021-06-05 19:16:48','1'),(236,'13354469','2021-06-05 19:17:31','2021-06-05 19:17:31','1'),(237,'13354470','2021-06-05 19:18:08','2021-06-05 19:18:08','1');
+/*!40000 ALTER TABLE `storesfunctions` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-06-06 11:26:18
