@@ -69,13 +69,15 @@ class checkrents extends Model
             switch ($action) {
                 case "A01":
                     $result = DB::table('rentlogs')
-                                ->where('id',trim($source['id']))
+                                ->where('id',intval(trim($source['id'])))
                                 ->where('storeid',$storeid)
                                 ->where('rentid',"R")
                                 ->where('checks',"N")
-                                ->where('cusphone',$cusphone)
                                 ->update(['checks'=>"Y"]);
                     $tmp_word = "借杯";
+                    //從庫存裡扣去待借杯數量
+                    $rent_nums = DB::table('rentlogs')->where('id',trim($source['id']))->get('nums');
+                    DB::table('storescups')->where('storeid',$storeid)->decrement('pushcup',intval($rent_nums[0]->nums));
                     break;
                 case "B02":
                     $result = DB::table('rentlogs')
@@ -83,9 +85,11 @@ class checkrents extends Model
                                 ->where('storeid',$storeid)
                                 ->where('rentid',"B")
                                 ->where('checks',"Y")
-                                ->where('cusphone',$cusphone)
                                 ->update(['checks'=>"B"]);
                     $tmp_word = "還杯";
+                    //從庫存裡增加待收杯數量
+                    $rent_nums = DB::table('rentlogs')->where('id',trim($source['id']))->get('nums');
+                    DB::table('storescups')->where('storeid',$storeid)->increment('pullcup',intval($rent_nums[0]->nums));
                     break;
                 default:
                     $msg = array(["error" => "資料有誤，無法確認！"]);
