@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 
 class newslist extends Model
 {
@@ -49,7 +49,8 @@ class newslist extends Model
                           'newsdate' => $updated_at,
                           'filename' => $filename,
                           'url' => $urllink]);
-
+            //$url = Storage::download('news/'.$value->filename);
+            //return $url;
         }
         return json_encode($msg,JSON_PRETTY_PRINT);
 
