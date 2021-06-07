@@ -49,7 +49,7 @@ class newslist extends Model
                           'newsdate' => $updated_at,
                           'filename' => $filename,
                           'url' => $urllink]);
-            //$url = Storage::download('news/'.$value->filename);
+            //$url = Storage::download('public/news/'.$value->filename);
             //return $url;
         }
         return json_encode($msg,JSON_PRETTY_PRINT);

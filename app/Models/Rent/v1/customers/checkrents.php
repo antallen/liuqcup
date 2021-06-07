@@ -32,7 +32,7 @@ class checkrents extends Model
                 $result = DB::table('rentlogs')
                             ->where('storeid',$storeid)
                             ->where('rentid','B')
-                            ->where('checks','N')
+                            ->where('checks','Y')
                             ->where('eventtimes','>',$timestamp)
                             ->get();
                 break;
