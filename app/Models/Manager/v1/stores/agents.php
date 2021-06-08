@@ -91,6 +91,8 @@ class agents extends Model
                 return $result;
             }
 
+            $msg = array(["error" => "非管理處人員不得新增管理人員"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
 
         } else {
             $msg = array(["result" => "Invalidated data"]);
