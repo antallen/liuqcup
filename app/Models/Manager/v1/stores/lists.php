@@ -65,7 +65,7 @@ class lists extends Model
 
     //店家社交軟體功能列表
     public function getSocials($storeid){
-        $socials = DB::table('sociallogs')->where('storeid'.$storeid)->get();
+        $socials = DB::table('sociallogs')->where('storeid',$storeid)->get();
         return $socials;
     }
 }
