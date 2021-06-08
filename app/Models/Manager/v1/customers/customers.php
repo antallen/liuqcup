@@ -152,12 +152,14 @@ class customers extends Model
             $update['password'] = $password;
         }
         if (isset($source['cusphone'])){
+            /*
             $result = DB::table('customers')->where('cusphone','like','%'.trim($source['cusphone']).'%')->get();
 
             if ($result != "[]"){
                 $msg = array(["result" => "該手機號碼己有人持用！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
+            */
             $old_cusphone = DB::table('customers')->where('id',intval(trim($source['id'])))->get('cusphone');
             if ($old_cusphone[0]->cusphone == trim($source['cusphone']))
             {
