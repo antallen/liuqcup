@@ -91,7 +91,7 @@ class agents extends Model
                 return $result;
             }
 
-            $msg = array(["error" => "非管理處人員不得新增管理人員"]);
+            $msg = array(["error" => "沒有適當權限！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
 
         } else {
