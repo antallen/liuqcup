@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-
+//
 class lists extends Model
 {
     use HasFactory;
@@ -61,5 +61,11 @@ class lists extends Model
                     ->orderBy('functions.funcid')
                     ->get('functions.funcname');
         return $funcs;
+    }
+
+    //店家社交軟體功能列表
+    public function getSocials($storeid){
+        $socials = DB::table('sociallogs')->where('storeid'.$storeid)->get();
+        return $socials;
     }
 }

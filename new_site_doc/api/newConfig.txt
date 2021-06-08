@@ -10,6 +10,9 @@ return [
   'qrcode' => env('QRCODE_URL',null),
 ];
 
+開放下載時，需要進行必要的設定
+php artisan storage:link
+
 總後台最高權限： admin / AB123456
       最低權限： peter / ABCD123456 --> 可用於收杯人員
 

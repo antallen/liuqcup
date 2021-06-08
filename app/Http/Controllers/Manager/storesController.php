@@ -32,6 +32,7 @@ class storesController extends Controller
             }
             $results = $lists->mgetStores($classes);
             foreach ($results as $result){
+                //列出借還杯功能
                 $funcs = $lists->getStoresFuncs($result->storeid);
                 $result->funid1 = null;
                 $result->funid2 = null;
@@ -42,6 +43,33 @@ class storesController extends Controller
                             break;
                         case "借杯":
                             $result->funid1= $func->funcname;
+                            break;
+                    }
+                }
+                //列出社交軟體網址
+                $social = $lists->getSocials($result->storeid);
+                $result->facebook = null;
+                $result->line = null;
+                $result->instagram = null;
+                $result->offical = null;
+                $result->telegram = null;
+                $result->youtube = null;
+                foreach ($social as $value) {
+                    switch ($value->ssname) {
+                        case "facebook":
+                            $result->facebook = $value->sslink;
+                            break;
+                        case "line":
+                            $result->line = $value->sslink;
+                            break;
+                        case "instagram":
+                            $result->instagram = $value->sslink;
+                            break;
+                        case "offical":
+                            $result->offical = $value->sslink;
+                            break;
+                        case "youtube":
+                            $result->youtube = $value->sslink;
                             break;
                     }
                 }
@@ -66,6 +94,33 @@ class storesController extends Controller
                         break;
                     case "借杯":
                         $result->funid1= $func->funcname;
+                        break;
+                }
+            }
+            //列出社交軟體網址
+            $social = $lists->getSocials($result->storeid);
+            $result->facebook = null;
+            $result->line = null;
+            $result->instagram = null;
+            $result->offical = null;
+            $result->telegram = null;
+            $result->youtube = null;
+            foreach ($social as $value) {
+                switch ($value->ssname) {
+                    case "facebook":
+                        $result->facebook = $value->sslink;
+                        break;
+                    case "line":
+                        $result->line = $value->sslink;
+                        break;
+                    case "instagram":
+                        $result->instagram = $value->sslink;
+                        break;
+                    case "offical":
+                        $result->offical = $value->sslink;
+                        break;
+                    case "youtube":
+                        $result->youtube = $value->sslink;
                         break;
                 }
             }
