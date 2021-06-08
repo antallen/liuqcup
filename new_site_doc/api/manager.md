@@ -1178,6 +1178,15 @@ HOST: https://liuqapi.tdhome.tw/api
   + 遊客查自己
   + 店家查自己借還記錄
   + 總管理處可以查所有店家
++ rentid符號：
+  + R：借杯
+  + B：還杯
++ lock 符號：
+  + Y：確認己借杯
+  + N：未確認借杯
+  + B：確認己還杯
++ comment: 註解
+  + 異常：表示還杯不正常
 ### 遊客借還杯資料查詢 [GET]
 
 + Parameters
@@ -1208,7 +1217,17 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "result" : "success"
+                    "id": 2,
+                    "cusid": "ABC123",
+                    "storeid": "100300",
+                    "rentid": "R",
+                    "nums": 2,
+                    "comments": null,
+                    "eventtimes": "2021-06-08 02:49:32",
+                    "checks": "Y",
+                    "cusphone": "0912345678",
+                    "backtimes": null,
+                    "backstoreid": null
                 }
             ]
 
