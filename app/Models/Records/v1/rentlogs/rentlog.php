@@ -51,8 +51,10 @@ class  rentlog extends Model
         }
         if (isset($source['cusphone'])){
             $cusphone = trim($source['cusphone']);
+            $allcusphone = array();
+            $allcusphone = explode(",",$cusphone);
             $result = DB::table('rentlogs')
-                ->where('cusphone','like','%'.$cusphone.'%')
+                ->whereIn('cusphone',$allcusphone)
                 ->orderByDesc('eventtimes')
                 ->skip($pages)->take(50)->get();
             return $result;
