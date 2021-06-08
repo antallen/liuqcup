@@ -23,7 +23,7 @@ class newslist extends Model
         } else {
             $counts = 0;
         }
-        $url = \Config::get('qrcode', 'qrcode'); //->select(['newsid','newstitle','newscontent','updated_at',])
+        $url = \Config::get('downloadnews', 'downloadnews');
         $result = DB::table('newslogs')->orderByDesc('updated_at')->skip($counts)->take(50)->get();
         //return $result;
         $msg = array();
@@ -39,7 +39,7 @@ class newslist extends Model
                 $filename = "NoPicture";
             }
             if (!empty($value->filename)){
-                $urllink = $url['qrcode']."storage/news/".$value->filename;
+                $urllink = $url['downloadnews']."storage/news/".$value->filename;
             } else {
                 $urllink = "NoPicture";
             }
@@ -49,8 +49,6 @@ class newslist extends Model
                           'newsdate' => $updated_at,
                           'filename' => $filename,
                           'url' => $urllink]);
-            //$url = Storage::download('public/news/'.$value->filename);
-            //return $url;
         }
         return json_encode($msg,JSON_PRETTY_PRINT);
 

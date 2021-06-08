@@ -4,7 +4,11 @@ QRCODE_URL="http://127.0.0.1:8000/"
 $url = \Config::get('qrcode', 'qrcode');
         $hosturl = $url['qrcode'];
 
-
+config/qrcode.php
+<?php
+return [
+  'qrcode' => env('QRCODE_URL',null),
+];
 
 總後台最高權限： admin / AB123456
       最低權限： peter / ABCD123456 --> 可用於收杯人員
