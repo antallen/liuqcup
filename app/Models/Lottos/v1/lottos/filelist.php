@@ -13,7 +13,7 @@ class filelist extends Model
 {
     use HasFactory;
     public function fileList($source){
-        $url = \Config::get('qrcode', 'qrcode');
+        $url = \Config::get('downloadnews', 'downloadnews');
 
         if (isset($source['month'])){
             $month = strval(trim($source['month']));
@@ -22,7 +22,7 @@ class filelist extends Model
                 $fileid = $value->fileid;
                 $disname = $value->disname;
                 $filename = $value->filename;
-                $fileurl = $url['qrcode']."storage/".$filename;
+                $fileurl = $url['downloadnews']."storage/".$filename;
             $msg = array(['fileid' => $fileid,'filename' => $disname,'link' => $fileurl]);
             return json_encode($msg,JSON_PRETTY_PRINT);
             }
@@ -33,7 +33,7 @@ class filelist extends Model
                 $month = $value->month;
                 $disname = $value->disname;
                 $filename = $value->filename;
-                $fileurl = $url['qrcode']."storage/".$filename;
+                $fileurl = $url['downloadnews']."storage/".$filename;
             $msg = array(['fileid' => $fileid,'month' => $month,'filename' => $disname,'link' => $fileurl]);
             return json_encode($msg,JSON_PRETTY_PRINT);
             }
