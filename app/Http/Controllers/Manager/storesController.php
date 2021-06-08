@@ -178,8 +178,8 @@ class storesController extends Controller
 
         $querys = new querys();
         $auths = $querys->token($request->all());
-
-        if ($auths == "Manager"){
+        //return $auths;
+        if ($auths == ("Manager" or "Agent")){
             $results = $querys->queryStores($request->all());
             return $results;
         } else {

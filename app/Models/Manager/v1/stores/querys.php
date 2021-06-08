@@ -13,10 +13,14 @@ class querys extends Model
     //驗證管理人員的 token
     public function token($source){
         $token = trim($source['token']);
-        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->get('level');
-
-        if ($user[0]->level !== "[]"){
+        $user = DB::table('accounts')->where('lock','N')->where('token',$token)->count();
+        $agentid = DB::table('storesagentids')->where('lock','N')->where('token',$token)->count();
+        //return $agentid;
+        if (intval($user) >= 1){
             return "Manager";
+        }
+        if (intval($agentid) >=1 ){
+            return "Agent";
         } else {
             return "NOT";
         }
