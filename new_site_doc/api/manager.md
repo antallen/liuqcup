@@ -1003,7 +1003,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄確認功能 [/rent/v1/stores/rent/checks/check{?token,action,storeid,id,check}]
+## 店家收送杯記錄確認功能 [/rent/v1/stores/checks/check{?token,action,storeid,id,check}]
 
 ### 店家收送杯記錄確認功能 [PATCH]
 
