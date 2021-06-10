@@ -105,8 +105,12 @@ class  rentcups extends Model
                                     ->where('checks',"Y")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->sum('nums');
+                        $storename = DB::table('stores')
+                                        ->select('storename')
+                                        ->where('storeid',$value->storeid)->get();
                         $totals['rentid'] = "己借杯數量";
-                        $totals['storeid'] = strval($value->storeid);
+                        //$totals['storeid'] = strval($value->storeid);
+                        $totals['storeid'] = strval($storename->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
                         //$tatols['借杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);

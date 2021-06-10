@@ -1034,9 +1034,9 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯記錄列表 [/rent/v1/stores/rent/show{?token,storeid,pages,action}]
+## 店家收送杯記錄列表-店家後台 [/rent/v1/stores/rent/show{?token,storeid,pages,action}]
 + 管理處可以列出完整收送杯記錄
-### 店家收送杯記錄列表 [GET]
+### 店家收送杯記錄列表-店家後台 [GET]
 
 + Parameters
 
@@ -1295,7 +1295,7 @@ HOST: https://liuqapi.tdhome.tw/api
 + 預約收送杯功能 (總管理處/店家預約功能)<font color="green">(稍晚)</font>
   + 列表
   + 新增
-+ 收送杯記錄列表
++ 收送杯記錄列表(總管理處使用)
   + 依 全部 / 各店家顯示記錄
   + 依時間長短顯示(每日/每周/每月)
 
@@ -1405,10 +1405,10 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 收送杯記錄列表 [/records/v1/stores/pushlist/pushlist{?token,storeid,pages,times,action}]
+## 收送杯記錄列表-總管理處後台 [/records/v1/stores/pushlist/pushlist{?token,storeid,pages,times,action}]
 + 顯示收送杯記錄
 + 店家可顯示自家的收送杯記錄
-### 收送杯記錄列表 [GET]
+### 收送杯記錄列表-總管理處後台 [GET]
 
 + Parameters
 
