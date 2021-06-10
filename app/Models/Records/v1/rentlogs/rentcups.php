@@ -124,8 +124,12 @@ class  rentcups extends Model
                                     ->where('checks',"B")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->sum('nums');
+                        $storename = DB::table('stores')
+                                    ->select('storename')
+                                    ->where('storeid',$value->storeid)->get();
                         $totals['rentid'] = "己還杯數量";
-                        $totals['storeid'] = strval($value->storeid);
+                        //$totals['storeid'] = strval($value->storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
                         //$tatols['還杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
@@ -139,8 +143,12 @@ class  rentcups extends Model
                                     ->where('comments',"異常")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->count();
+                        $storename = DB::table('stores')
+                                    ->select('storename')
+                                    ->where('storeid',$value->storeid)->get();
                         $totals['rentid'] = "異常筆數";
-                        $totals['storeid'] = strval($value->storeid);
+                        //$totals['storeid'] = strval($value->storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
                         //$tatols['異常筆數'][$dateTimes][strval($value->storeid)] = intval($nums);
@@ -165,8 +173,12 @@ class  rentcups extends Model
                                 ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
+                        $storename = DB::table('stores')
+                                ->select('storename')
+                                ->where('storeid',strval($storeid))->get();
                         $totals['rentid'] = "己借杯數量";
-                        $totals['storeid'] = strval($storeid);
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
 
@@ -181,8 +193,12 @@ class  rentcups extends Model
                                     ->where('checks',"B")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->sum('nums');
+                        $storename = DB::table('stores')
+                                    ->select('storename')
+                                    ->where('storeid',strval($storeid))->get();
                         $totals['rentid'] = "己還杯數量";
-                        $totals['storeid'] = strval($storeid);
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
 
@@ -196,8 +212,12 @@ class  rentcups extends Model
                                 ->where('comments',"異常")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->count();
+                        $storename = DB::table('stores')
+                                ->select('storename')
+                                ->where('storeid',strval($storeid))->get();
                         $totals['rentid'] = "異常筆數";
-                        $totals['storeid'] = strval($storeid);
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
                         $totals['nums'] = intval($nums);
 
