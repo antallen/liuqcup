@@ -235,9 +235,10 @@ class agents extends Model
                 break;
             case "Agent":
                 $result = DB::table('storesagentids')
-                        ->where('storeid',trim($source['storeid']))
-                        ->where('token',trim($source['token']))
-                        ->orderBy('id')->get();
+                        ->leftJoin('stores','storesagentids.storeid','=','stores.storeid')
+                        ->where('storesagentids.storeid',trim($source['storeid']))
+                        ->where('storesagentids.token',trim($source['token']))
+                        ->orderBy('storesagentids.id')->get();
                 return $result;
                 break;
             default:
