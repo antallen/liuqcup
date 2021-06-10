@@ -118,19 +118,21 @@ class  pushlist extends Model
         switch ($action) {//
             case "pullcup":
                 $result = DB::table('storescupsrecords')
-                      ->select(['storeid','pullcup','date','adminid','check','comment'])
-                      ->where('pushcup','=',0)
-                      ->whereBetween('date',[$timestamp,$nowtime])
-                      ->orderByDesc('date')
+                      ->leftJoin('stores','storescupsrecords.storeid','=','stores.storeid')
+                      ->select(['storescupsrecords.storeid','stores.storename','storescupsrecords.pullcup','storescupsrecords.date','storescupsrecords.adminid','storescupsrecords.check','storescupsrecords.comment'])
+                      ->where('storescupsrecords.pushcup','=',0)
+                      ->whereBetween('storescupsrecords.date',[$timestamp,$nowtime])
+                      ->orderByDesc('storescupsrecords.date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
             case "pushcup":
                 $result = DB::table('storescupsrecords')
-                      ->select(['storeid','pushcup','date','adminid','check','comment'])
-                      ->where('pullcup','=',0)
-                      ->whereBetween('date',[$timestamp,$nowtime])
-                      ->orderByDesc('date')
+                      ->leftJoin('stores','storescupsrecords.storeid','=','stores.storeid')
+                      ->select(['storescupsrecords.storeid','stores.storename','storescupsrecords.pushcup','storescupsrecords.date','storescupsrecords.adminid','storescupsrecords.check','storescupsrecords.comment'])
+                      ->where('storescupsrecords.pullcup','=',0)
+                      ->whereBetween('storescupsrecords.date',[$timestamp,$nowtime])
+                      ->orderByDesc('storescupsrecords.date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
@@ -148,21 +150,23 @@ class  pushlist extends Model
         switch ($action) {
             case "pullcup":
                 $result = DB::table('storescupsrecords')
-                      ->select(['storeid','pullcup','date','adminid','check','comment'])
-                      ->where('storeid',$storeid)
-                      ->where('pushcup','=',0)
-                      ->whereBetween('date',[$timestamp,$nowtime])
-                      ->orderByDesc('date')
+                      ->leftJoin('stores','storescupsrecords.storeid','=','stores.storeid')
+                      ->select(['storescupsrecords.storeid','stores.storename','storescupsrecords.pullcup','storescupsrecords.date','storescupsrecords.adminid','storescupsrecords.check','storescupsrecords.comment'])
+                      ->where('storescupsrecords.storeid',$storeid)
+                      ->where('storescupsrecords.pushcup','=',0)
+                      ->whereBetween('storescupsrecords.date',[$timestamp,$nowtime])
+                      ->orderByDesc('storescupsrecords.date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
             case "pushcup":
                 $result = DB::table('storescupsrecords')
-                      ->select(['storeid','pushcup','date','adminid','check','comment'])
-                      ->where('storeid',$storeid)
-                      ->where('pullcup','=',0)
-                      ->whereBetween('date',[$timestamp,$nowtime])
-                      ->orderByDesc('date')
+                      ->leftJoin('stores','storescupsrecords.storeid','=','stores.storeid')
+                      ->select(['storescupsrecords.storeid','stores.storename','storescupsrecords.pushcup','storescupsrecords.date','storescupsrecords.adminid','storescupsrecords.check','storescupsrecords.comment'])
+                      ->where('storescupsrecords.storeid',$storeid)
+                      ->where('storescupsrecords.pullcup','=',0)
+                      ->whereBetween('storescupsrecords.date',[$timestamp,$nowtime])
+                      ->orderByDesc('storescupsrecords.date')
                       ->skip($pages)->take(50)->get();
                 return $result;
                 break;
