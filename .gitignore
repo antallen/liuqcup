@@ -5,6 +5,8 @@
 /vendor
 /database.orig
 /new_site_doc/*.php
+/new_site_doc/transfer
+/net_site_doc/test
 .env
 .env.backup
 .phpunit.result.cache
