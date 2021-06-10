@@ -223,10 +223,13 @@ class agents extends Model
             case "Manager":
                 if (isset($source['storeid'])){
                     $result = DB::table('storesagentids')
-                                ->where('storeid',trim($source['storeid']))
-                                ->orderBy('storeid')->get();
+                                ->leftJoin('stores','storesagentids.storeid','=','stores.storeid')
+                                ->where('storesagentids.storeid',trim($source['storeid']))
+                                ->orderBy('storesagentids.storeid')->get();
                 }else{
-                    $result = DB::table('storesagentids')->orderBy('storeid')->get();
+                    $result = DB::table('storesagentids')
+                                    ->leftJoin('stores','storesagentids.storeid','=','stores.storeid')
+                                    ->orderBy('storesagentids.storeid')->get();
                 }
                 return $result;
                 break;
