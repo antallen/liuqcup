@@ -28,10 +28,16 @@ class rent extends Model
             } else {
                 //若是有店家 QRCode，利用店家QRCode 取得店家的管理 token ，再進行借杯工作
                 if (isset($source['qrcode']) and isset($source['cusphone'])){
-                    $auths = DB::table('stores')->where('qrcodeid',trim($source['qrcode']))->get('storeid');
+                    //$auths = DB::table('stores')->where('qrcodeid',trim($source['qrcode']))->get('storeid');
+                    $auths = DB::table('stores')->where('qrcodeid',trim($source['qrcode']))->count();
+                    if ($auths >= 1 ){
+                        return "Success";
+                    }
+                    /*
                     if ($auths[0]->storeid == trim($source['storeid'])){
                         return "Success";
                     }
+                    */
                 }
 
                 $msg = array(["error" => "Token is not here2!"]);

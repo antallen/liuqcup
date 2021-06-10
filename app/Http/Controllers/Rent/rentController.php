@@ -86,5 +86,5 @@ class rentController extends Controller
                 break;
         }
     }
-    
+
 }
