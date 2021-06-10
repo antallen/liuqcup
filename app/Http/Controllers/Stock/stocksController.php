@@ -27,7 +27,8 @@ class stocksController extends Controller
                     ->where('token',trim($request->token))
                     ->count();
                 if ($checktoken == 1){
-                    $result = $auths->checkcupslist($request->all());
+                    //$result = $auths->checkcupslist($request->all());
+                    $result = $auths->checkstockslist($request->all());
                     return $result;
                 } else {
                     $msg = array(["error" => "無法查詢1"]);

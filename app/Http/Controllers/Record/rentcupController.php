@@ -73,4 +73,8 @@ class rentcupController extends Controller
         }
         return $result;
     }
+
+    //店家代遊客借杯功能
+
+    //店家代遊客還杯功能
 }
