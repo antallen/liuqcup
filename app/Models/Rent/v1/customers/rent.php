@@ -47,7 +47,7 @@ class rent extends Model
     //借杯
     public function borrowcup($source){
         if (isset($source['qrcode'])){
-            $db_Result = DB::table('stores')->where('qrcode',strval(trim($source['qrcode'])))->get('storeid');
+            $db_Result = DB::table('stores')->where('qrcodeid',strval(trim($source['qrcode'])))->get('storeid');
             foreach ($db_Result as $value) {
                 $storeid = $value->storeid;
             }
@@ -90,7 +90,7 @@ class rent extends Model
     //還杯
     public function reback($source){
         if (isset($source['qrcode'])){
-            $db_Result = DB::table('stores')->where('qrcode',strval(trim($source['qrcode'])))->get('storeid');
+            $db_Result = DB::table('stores')->where('qrcodeid',strval(trim($source['qrcode'])))->get('storeid');
             foreach ($db_Result as $value) {
                 $storeid = $value->storeid;
             }
