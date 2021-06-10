@@ -46,7 +46,15 @@ class rent extends Model
     }
     //借杯
     public function borrowcup($source){
-        $storeid = trim($source['storeid']);
+        if (isset($source['qrcode'])){
+            $db_Result = DB::table('stores')->where('qrcode',strval(trim($source['qrcode'])))->get('storeid');
+            foreach ($db_Result as $value) {
+                $storeid = $value->storeid;
+            }
+        } else {
+            $storeid = trim($source['storeid']);
+        }
+
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
         if (strlen($cusphone) != 10){
@@ -81,7 +89,15 @@ class rent extends Model
 
     //還杯
     public function reback($source){
-        $storeid = trim($source['storeid']);
+        if (isset($source['qrcode'])){
+            $db_Result = DB::table('stores')->where('qrcode',strval(trim($source['qrcode'])))->get('storeid');
+            foreach ($db_Result as $value) {
+                $storeid = $value->storeid;
+            }
+        } else {
+            $storeid = trim($source['storeid']);
+        }
+        //$storeid = trim($source['storeid']);
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
         $timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
