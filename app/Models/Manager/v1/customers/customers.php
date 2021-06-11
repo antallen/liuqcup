@@ -143,20 +143,22 @@ class customers extends Model
     //遊客資料更新
     public function updateData($source){
         $timestamp = date('Y-m-d H:i:s');
-        $updata['updated_at'] = $timestamp;
+        //$updata['updated_at'] = $timestamp;
         if (isset($source['cusname'])){
-            $updata['cusname'] = trim($source['cusname']);
+            //$updata['cusname'] = trim($source['cusname']);
+            $cusname = strval(trim($source['cusname']));
         }
         if (isset($source['email'])){
-            $update['email'] = trim($source['email']);
+            //$update['email'] = trim($source['email']);
+            $email = strval(trim($source['email']));
         }
         if (isset($source['cuspassword'])){
             $password = trim($source['cuspassword']);
             $salt = strval(SecretClass::generateSalt());
             $custoken = strval(SecretClass::generateToken($salt,$password));
-            $updata['salt'] = $salt;
-            $updata['token'] = $custoken;
-            $update['password'] = $password;
+            //$updata['salt'] = $salt;
+            //$updata['token'] = $custoken;
+            //$update['password'] = $password;
         }
         if (isset($source['cusphone'])){
             /*
@@ -174,10 +176,17 @@ class customers extends Model
             } else {
                 $new_cusphone = $old_cusphone[0]->cusphone.",".trim($source['cusphone']);
             }
-            $updata['cusphone']=$new_cusphone;
+            //$updata['cusphone']=$new_cusphone;
         }
         try {
-            DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->update($updata);
+            DB::table('customers')->where('cusid',intval(trim($source['cusid'])))
+                        ->update(['cusname' => $cusname,
+                                  'email' => $email,
+                                  'salt' => $salt,
+                                  'token' => $custoken,
+                                  'password' => $password,
+                                  'cusphone' => $new_cusphone,
+                                  'updated_at' => $timestamp]);
             $msg = array(["result" => "更新成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
