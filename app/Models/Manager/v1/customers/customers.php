@@ -187,7 +187,7 @@ class customers extends Model
                                   'password' => $password,
                                   'cusphone' => $new_cusphone,
                                   'updated_at' => strval(trim($timestamp1))]);
-            $msg = array(["result" => "更新成功！"]);
+            $msg = array(["result" => "更新成功，請重新登入！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
             //return $e;

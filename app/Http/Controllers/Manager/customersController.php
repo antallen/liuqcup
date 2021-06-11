@@ -35,7 +35,7 @@ class customersController extends Controller
             DB::table('registerlogs')->where('token',trim($request['token']))->delete();
             return $results;
         } else {
-            $msg = array(["error" => "帳號己鎖定！"]);
+            $msg = array(["error" => "請重新登入！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
