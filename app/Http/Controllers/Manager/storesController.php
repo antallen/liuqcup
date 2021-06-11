@@ -183,15 +183,15 @@ class storesController extends Controller
         if ($auths == ("Manager" or "Agent")){
             $results = $querys->queryStores($request->all());
             $funcresults = DB::table('storesfunctions')->where('storeid',trim($results[0]->storeid))->get();
-            $results->funid1 = null;
-            $results->funid2 = null;
+            $results[0]->funid1 = null;
+            $results[0]->funid2 = null;
             foreach ($funcresults as $func){
                 switch (strval(trim($func->funcid))){
                     case "1":
-                        $results->funid2= "還杯";
+                        $results[0]->funid2= "還杯";
                         break;
                     case "2":
-                        $results->funid1= "借杯";
+                        $results[0]->funid1= "借杯";
                         break;
                 }
             }
