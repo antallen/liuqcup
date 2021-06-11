@@ -142,7 +142,7 @@ class customers extends Model
 
     //遊客資料更新
     public function updateData($source){
-        $timestamp = date('Y-m-d H:i:s');
+        $timestamp1 = date('Y-m-d H:i:s');
         //$updata['updated_at'] = $timestamp;
         if (isset($source['cusname'])){
             //$updata['cusname'] = trim($source['cusname']);
@@ -186,7 +186,7 @@ class customers extends Model
                                   'token' => $custoken,
                                   'password' => $password,
                                   'cusphone' => $new_cusphone,
-                                  'updated_at' => $timestamp]);
+                                  'updated_at' => strval(trim($timestamp1))]);
             $msg = array(["result" => "更新成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
