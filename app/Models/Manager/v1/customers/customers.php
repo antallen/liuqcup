@@ -167,7 +167,7 @@ class customers extends Model
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
             */
-            $old_cusphone = DB::table('customers')->where('id',intval(trim($source['id'])))->get('cusphone');
+            $old_cusphone = DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->get('cusphone');
             if ($old_cusphone[0]->cusphone == trim($source['cusphone']))
             {
                 $new_cusphone = $old_cusphone[0]->cusphone;
@@ -177,7 +177,7 @@ class customers extends Model
             $updata['cusphone']=$new_cusphone;
         }
         try {
-            DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
+            DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->update($updata);
             $msg = array(["result" => "更新成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
