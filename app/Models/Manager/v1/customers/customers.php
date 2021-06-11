@@ -181,6 +181,7 @@ class customers extends Model
             $msg = array(["result" => "更新成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
+            return $e;
             $msg = array(["error" => "更新失敗！請查看內容"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
