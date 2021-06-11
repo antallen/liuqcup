@@ -90,18 +90,19 @@ class customers extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
             //判斷手機號碼是否己經註冊過了
-            $detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->get('cusid');
-
-            if ($detect == "[]"){
-
+            //$detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->get('cusid');
+            $detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->count();
+            //if ($detect == "[]"){
+            if ($detect < 1){
                 //遊客 ID ，預設使用時間編號
               do {
                     $rand = strval(rand(0,1000));
                     $date = strval(date("YmdHis"));
                     $cusid = "CUS".$date.$rand;
-                    $detect1 = DB::table('customers')->where('cusid','like',$cusid)->get('cusid');
-
-                    if ($detect1 == "[]"){
+                    //$detect1 = DB::table('customers')->where('cusid','like',$cusid)->get('cusid');
+                    $detect1 = DB::table('customers')->where('cusid','like',$cusid)->count();
+                    if ($detect1 < 1){
+                    //if ($detect1 == "[]"){
                         if (isset($source['cuspassword'])){
                             $password = trim($source['cuspassword']);
                         } else {
