@@ -98,6 +98,7 @@ class  rentlog extends Model
                 case "B02":
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
+                                    ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
                                     ->where('storeid',$storeid)
                                     ->whereNotIn('backstoreid',[$backid])
                                     ->orderByDesc('eventtimes')
@@ -108,6 +109,7 @@ class  rentlog extends Model
                 case "C03":
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
+                                    ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
                                     ->whereNotIn('storeid',[$storeid])
                                     ->where('backstoreid',$backid)
                                     ->orderByDesc('eventtimes')
