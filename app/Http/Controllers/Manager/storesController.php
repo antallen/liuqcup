@@ -181,6 +181,7 @@ class storesController extends Controller
         //return $auths;
         if ($auths == ("Manager" or "Agent")){
             $results = $querys->queryStores($request->all());
+            /*
             foreach ($results as $result){
                 $funcs = $querys->getStoresFuncs($result->storeid);
                 $result->funid1 = null;
@@ -196,6 +197,7 @@ class storesController extends Controller
                     }
                 }
             }
+            */
             return $results;
         } else {
             $msg = array(["error" => "Create Failed"]);
