@@ -8,6 +8,7 @@ use App\Models\Manager\v1\stores\lists;
 use App\Models\Manager\v1\stores\renews;
 use App\Models\Manager\v1\stores\creates;
 use App\Models\Manager\v1\stores\querys;
+use Illuminate\Support\Facades\DB;
 class storesController extends Controller
 {
     //店家資料列表
@@ -181,23 +182,19 @@ class storesController extends Controller
         //return $auths;
         if ($auths == ("Manager" or "Agent")){
             $results = $querys->queryStores($request->all());
-            /*
-            foreach ($results as $result){
-                $funcs = $querys->getStoresFuncs($result->storeid);
-                $result->funid1 = null;
-                $result->funid2 = null;
-                foreach ($funcs as $func){
-                    switch ($func->funcname){
-                        case "還杯":
-                            $result->funid2= $func->funcname;
-                            break;
-                        case "借杯":
-                            $result->funid1= $func->funcname;
-                            break;
-                    }
+            $funcresults = DB::table('storesfunctions')->where('storeid',trim($results[0]->storeid))->get();
+            $results->funid1 = null;
+            $results->funid2 = null;
+            foreach ($funcresults as $func){
+                switch (strval(trim($func->funcid))){
+                    case "1":
+                        $results->funid2= "還杯";
+                        break;
+                    case "2":
+                        $results->funid1= "借杯";
+                        break;
                 }
             }
-            */
             return $results;
         } else {
             $msg = array(["error" => "Create Failed"]);
