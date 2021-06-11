@@ -136,13 +136,22 @@ class rent extends Model
     public function rentCups($cus,$cusphone,$timestamp,$nums,$storeid){
         //應還杯的借杯記錄
         $cus2 = DB::table('rentlogs')
-        ->where('cusphone','like','%'.$cusphone.'%')
-        ->where('eventtimes','>',$timestamp)
-        ->where('checks',"Y")
-        ->where('rentid',"R")
-        ->orderByDesc('eventtimes')
-        ->get();
+                ->where('cusphone','like','%'.$cusphone.'%')
+                ->where('eventtimes','>',$timestamp)
+                ->where('checks',"Y")
+                ->where('rentid',"R")
+                ->orderByDesc('eventtimes')
+                ->get();
 
+        //應還杯的資料筆數
+        $cus2test = DB::table('rentlogs')
+                    ->where('cusphone','like','%'.$cusphone.'%')
+                    ->where('eventtimes','>',$timestamp)
+                    ->where('checks',"Y")
+                    ->where('rentid',"R")
+                    ->orderByDesc('eventtimes')
+                    ->count();
+        //應還杯的杯數
         $cus2_count = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
                 ->where('eventtimes','>',$timestamp)
@@ -153,7 +162,7 @@ class rent extends Model
 
         //避免重複還杯
         //先確認是否為店家忘了處理
-        if ($cus2 == "[]"){
+        if ($cus2test <= 0){
 
             $cus3 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
@@ -161,13 +170,13 @@ class rent extends Model
                 ->where('checks',"N")
                 ->where('rentid',"R")
                 ->orderByDesc('eventtimes')
-                ->get();
+                ->count();
 
-            if (!($cus3 == "[]")){
+            if (!($cus3 <= 0)){
                 $msg = array(["Error" => "店家未處理借杯確認，無法還杯，請洽店家或管理人員！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             } elseif ($cus2_count == 0) {
-                $msg = array(["Error" => "請勿重複還杯！"]);
+                $msg = array(["Error" => "請勿重複要求還杯！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
         }

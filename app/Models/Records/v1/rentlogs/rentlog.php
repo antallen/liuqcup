@@ -54,14 +54,16 @@ class  rentlog extends Model
             $allcusphone = array();
             $allcusphone = explode(",",$cusphone);
             $result = DB::table('rentlogs')
-                ->whereIn('cusphone',$allcusphone)
-                ->orderByDesc('eventtimes')
+                ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                ->whereIn('rentlogs.cusphone',$allcusphone)
+                ->orderByDesc('rentlogs.eventtimes')
                 ->skip($pages)->take(50)->get();
             return $result;
         } else {
             $result = DB::table('rentlogs')
-                ->where('cusid',$cusid)
-                ->orderByDesc('eventtimes')
+                ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                ->where('rentlogs.cusid',$cusid)
+                ->orderByDesc('rentlogs.eventtimes')
                 ->skip($pages)->take(50)->get();
             return $result;
         }
