@@ -111,17 +111,23 @@ class customers extends Model
                         $salt = strval(SecretClass::generateSalt());
                         $custoken = strval(SecretClass::generateToken($salt,$password));
                         $timestamp = date('Y-m-d H:i:s');
-                        DB::table('customers')->insert([
-                            'cusphone' => trim($source['cusphone']),
-                            'cusid' => $cusid,
-                            'salt' => $salt,
-                            'token' => $custoken,
-                            'password' => $password,
-                            'created_at' => $timestamp,
-                            'updated_at'=> $timestamp
-                        ]);
+                        try {
+                            DB::table('customers')->insert([
+                                'cusphone' => trim($source['cusphone']),
+                                'cusid' => $cusid,
+                                'salt' => $salt,
+                                'token' => $custoken,
+                                'password' => $password,
+                                'created_at' => $timestamp,
+                                'updated_at'=> $timestamp
+                            ]);
+
                         $msg = array(["result" => "success"]);
                         return json_encode($msg,JSON_PRETTY_PRINT);
+                        } catch (QueryException $e) {
+                            $msg = array(["result" => "該手機號碼己註冊！"]);
+                            return json_encode($msg,JSON_PRETTY_PRINT);
+                        }
                     }
                 } while (!empty($detect1));
             } else {
