@@ -190,7 +190,7 @@ class  rentlog extends Model
                 default:
                     $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
                     from rentlogs as a join stores as c, stores as d
-                    where a.storeid = c.storeid or a.backstoreid = d.storeid order by a.eventtimes desc');
+                    where a.storeid = c.storeid and ( a.backstoreid = d.storeid or a.backstoreid is null ) order by a.eventtimes desc');
                     return $result;
                     break;
             }
@@ -198,7 +198,7 @@ class  rentlog extends Model
         //查全部
         $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
                                from rentlogs as a join stores as c, stores as d
-                               where a.storeid = c.storeid or a.backstoreid = d.storeid order by a.eventtimes desc');
+                               where a.storeid = c.storeid and ( a.backstoreid = d.storeid or a.backstoreid is null ) order by a.eventtimes desc');
         return $result;
         }
     }
