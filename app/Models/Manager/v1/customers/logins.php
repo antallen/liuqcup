@@ -17,14 +17,24 @@ class logins extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
         $password = DB::table('customers')->select('cusid','password')->where('cusphone','like','%'.trim($source['cusphone']).'%')->get();
-        return $password;
-        if ($password[0]->password == trim($source['cusauth'])){
-            $salt = strval(SecretClass::generateSalt());
-            $custoken = strval(SecretClass::generateToken($salt,$password[0]->password));
-            $timestamp = date('Y-m-d H:i:s');
-            DB::table('customers')->where('cusid',$password[0]->cusid)->update(['salt' => $salt,'token' => $custoken,'updated_at' => $timestamp]);
-            $token = DB::table('customers')->select('cusid','cusphone','token')->where('cusid',$password[0]->cusid)->get();
+        //return $password;
+        $password = json_decode($password);
+        foreach ($password as $value) {
+            if ($value->password == strval(trim($source['cusauth']))){
+                $salt = strval(SecretClass::generateSalt());
+                $custoken = strval(SecretClass::generateToken($salt,$password[0]->password));
+                $timestamp = date('Y-m-d H:i:s');
+                DB::table('customers')->where('cusid',$value->cusid)->update(['salt' => $salt,'token' => $custoken,'updated_at' => $timestamp]);
+                $token = DB::table('customers')->select('cusid','cusphone','token')->where('cusid',$value->cusid)->get();
+                return $token;
+            } else {
+                $msg = array(["error" => "Auth Failure!"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
         }
-        return $token;
+
+        $msg = array(["error" => "Auth Failure!"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
     }
 }
