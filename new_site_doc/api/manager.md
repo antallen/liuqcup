@@ -1330,7 +1330,7 @@ HOST: https://liuqapi.tdhome.tw/api
             ]
 
 
-## 借還杯統計數量與列表 [/records/v1/stores/rentcup/rentcup{?token,storeid,times}]
+## 借還杯統計數量與列表 [/records/v1/stores/rentcup/rentcup{?token,storeid,times,action}]
 + 總管理處看到全部的統計數字
   + 依店家分類
   + 依日期分類
@@ -1353,6 +1353,7 @@ HOST: https://liuqapi.tdhome.tw/api
       - 30: 一個月
     + action: A01 (optional, string)
       - A01: 看統計，不分店家！總管理人員後台使用！
+      - B02: 一般店家看自己的統計！
 
 + Response 200 (application/json)
 
