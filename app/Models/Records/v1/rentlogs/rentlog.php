@@ -166,10 +166,45 @@ class  rentlog extends Model
             return $result;
         }
         */
+        if (isset($source['post'])){
+            $post = trim($source['post']);
+            switch ($post) {
+                case "A01"://本店借，本店還
+                    $result = DB::select('select * from rentlogs as a join rentlogs as b where a.storeid = b.backstoreid');
+                    return $result;
+                    break;
+                case "B02":
+                    $result = DB::table('rentlogs')
+                                    ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
+                                    ->where('rentlogs.storeid',$storeid)
+                                    ->whereNotIn('rentlogs.backstoreid',array($backid))
+                                    ->orderByDesc('rentlogs.eventtimes')
+                                    ->skip($pages)->take(50)
+                                    ->get();
+                    return $result;
+                    break;
+                case "C03":
+                    $backid = $storeid;
+                    $result = DB::table('rentlogs')
+                                    ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                                    ->whereNotIn('rentlogs.storeid',array($storeid))
+                                    ->where('rentlogs.backstoreid',$backid)
+                                    ->orderByDesc('rentlogs.eventtimes')
+                                    ->skip($pages)->take(50)
+                                    ->get();
+                    return $result;
+                    break;
+                default:
+                    $msg = array(["error" => "無法查詢"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
+                    break;
+            }
+        } else {
         //查全部
         $result = DB::table('rentlogs')
                     ->orderByDesc('eventtimes')
                     ->skip($pages)->take(50)->get();
         return $result;
+        }
     }
 }
