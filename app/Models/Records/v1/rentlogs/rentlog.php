@@ -172,13 +172,13 @@ class  rentlog extends Model
                 case "A01"://本店借，本店還
                     $result = DB::select('select a.eventtimes,a.cusphone,c.storename,a.nums,a.backtimes
                                from rentlogs as a join rentlogs as b, stores as c
-                               where a.storeid = b.backstoreid and a.storeid = c.storeid');
+                               where a.storeid = b.backstoreid and a.storeid = c.storeid order by a.eventtimes desc');
                     return $result;
                     break;
                 case "B02"://本店借，非本店還
                     $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
                                from rentlogs as a join rentlogs as b, stores as c, stores as d
-                               where a.storeid <> b.backstoreid and a.storeid = c.storeid and b.backstoreid = d.storeid');
+                               where a.storeid <> b.backstoreid and a.storeid = c.storeid and b.backstoreid = d.storeid order by a.eventtimes desc');
                     return $result;
                     break;
                 case "C03":
