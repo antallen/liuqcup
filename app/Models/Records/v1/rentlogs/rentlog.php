@@ -177,8 +177,8 @@ class  rentlog extends Model
                     break;
                 case "B02"://本店借，非本店還
                     $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
-                               from rentlogs as a join rentlogs as b, stores as c, stores as d
-                               where a.storeid <> b.backstoreid and a.storeid = c.storeid and b.backstoreid = d.storeid order by a.eventtimes desc');
+                               from rentlogs as a join stores as c, stores as d
+                               where a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc');
                     return $result;
                     break;
                 case "C03":
