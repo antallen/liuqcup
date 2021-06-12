@@ -207,7 +207,7 @@ class  rentlog extends Model
         (select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
         from rentlogs as a join stores as c, stores as d
         where a.storeid = c.storeid and a.backstoreid = d.storeid ORDER BY a.eventtimes DESC))
-         as tmp order by a.eventtimes DESC
+         as tmp order by eventtimes DESC
         ');
         return $result;
         }
