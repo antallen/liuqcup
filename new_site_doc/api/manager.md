@@ -1202,10 +1202,10 @@ HOST: https://liuqapi.tdhome.tw/api
     + storeid: ABC123 (optional, string)
       - 店家編號
     + post: A01 (optional, string)
-      - 店家用辨別資料
       - A01: 本家借還
       - B02: 本家借，非本家還
       - C03: 非本家借，但本家還
+      - 如果沒有這個項目，表示是顯示全部
     + pages: 1 (optional, integer)
       - 頁數：每頁 50 筆！
 
@@ -1217,17 +1217,13 @@ HOST: https://liuqapi.tdhome.tw/api
 
             [
                 {
-                    "id": 2,
-                    "cusid": "ABC123",
-                    "storeid": "100300",
-                    "rentid": "R",
-                    "nums": 2,
-                    "comments": null,
-                    "eventtimes": "2021-06-08 02:49:32",
-                    "checks": "Y",
-                    "cusphone": "0912345678",
-                    "backtimes": null,
-                    "backstoreid": null
+                    "eventtimes": "2021-06-11 00:24:45",
+                    "cusphone": "0321456789",
+                    "rentstore": "花羨沐嵐",
+                    "nums": 1,
+                    "backtimes": "2021-06-10 16:26:03",
+                    "backstoreid": "10031223",
+                    "backstore": "龜咖"
                 }
             ]
 
