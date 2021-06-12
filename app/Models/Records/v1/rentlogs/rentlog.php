@@ -170,7 +170,9 @@ class  rentlog extends Model
             $post = trim($source['post']);
             switch ($post) {
                 case "A01"://本店借，本店還
-                    $result = DB::select('select * from rentlogs as a join rentlogs as b where a.storeid = b.backstoreid');
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename,a.nums,a.backtimes
+                               from rentlogs as a join rentlogs as b, stores as c
+                               where a.storeid = b.backstoreid and a.storeid = c.storeid');
                     return $result;
                     break;
                 case "B02":
