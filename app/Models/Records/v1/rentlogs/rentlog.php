@@ -99,9 +99,9 @@ class  rentlog extends Model
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
-                                    ->where('storeid',$storeid)
-                                    ->whereNotIn('backstoreid',array($backid))
-                                    ->orderByDesc('eventtimes')
+                                    ->where('rentlogs.storeid',$storeid)
+                                    ->whereNotIn('rentlogs.backstoreid',array($backid))
+                                    ->orderByDesc('rentlogs.eventtimes')
                                     ->skip($pages)->take(50)
                                     ->get();
                     return $result;
@@ -110,9 +110,9 @@ class  rentlog extends Model
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                    ->whereNotIn('storeid',array($storeid))
-                                    ->where('backstoreid',$backid)
-                                    ->orderByDesc('eventtimes')
+                                    ->whereNotIn('rentlogs.storeid',array($storeid))
+                                    ->where('rentlogs.backstoreid',$backid)
+                                    ->orderByDesc('rentlogs.eventtimes')
                                     ->skip($pages)->take(50)
                                     ->get();
                     return $result;
