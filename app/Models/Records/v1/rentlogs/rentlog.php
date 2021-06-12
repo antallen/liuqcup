@@ -100,7 +100,7 @@ class  rentlog extends Model
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
                                     ->where('storeid',$storeid)
-                                    ->whereNot('backstoreid',$backid)
+                                    ->whereNotIn('backstoreid',array($backid))
                                     ->orderByDesc('eventtimes')
                                     ->skip($pages)->take(50)
                                     ->get();
@@ -110,7 +110,7 @@ class  rentlog extends Model
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                    ->whereNot('storeid',$storeid)
+                                    ->whereNotIn('storeid',array($storeid))
                                     ->where('backstoreid',$backid)
                                     ->orderByDesc('eventtimes')
                                     ->skip($pages)->take(50)
