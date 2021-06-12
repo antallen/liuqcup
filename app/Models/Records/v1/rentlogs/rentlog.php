@@ -175,14 +175,10 @@ class  rentlog extends Model
                                where a.storeid = b.backstoreid and a.storeid = c.storeid');
                     return $result;
                     break;
-                case "B02":
-                    $result = DB::table('rentlogs')
-                                    ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
-                                    ->where('rentlogs.storeid',$storeid)
-                                    ->whereNotIn('rentlogs.backstoreid',array($backid))
-                                    ->orderByDesc('rentlogs.eventtimes')
-                                    ->skip($pages)->take(50)
-                                    ->get();
+                case "B02"://本店借，非本店還
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+                               from rentlogs as a join rentlogs as b, stores as c, stores as d
+                               where a.storeid <> b.backstoreid and a.storeid = c.storeid and b.backstoreid = d.storeid');
                     return $result;
                     break;
                 case "C03":
