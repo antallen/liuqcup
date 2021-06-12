@@ -55,6 +55,7 @@ class  rentlog extends Model
             $allcusphone = explode(",",$cusphone);
             $result = DB::table('rentlogs')
                 ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                ->select('rentlogs.id','rentlogs.cusid','stores.storename','rentlogs.checks','rentlogs.cusphone','rentlogs.eventtimes','rentlogs.nums')
                 ->whereIn('rentlogs.cusphone',$allcusphone)
                 ->orderByDesc('rentlogs.eventtimes')
                 ->skip($pages)->take(50)->get();
@@ -62,6 +63,7 @@ class  rentlog extends Model
         } else {
             $result = DB::table('rentlogs')
                 ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                ->select('rentlogs.id','rentlogs.cusid','stores.storename','rentlogs.checks','rentlogs.cusphone','rentlogs.eventtimes','rentlogs.nums')
                 ->where('rentlogs.cusid',$cusid)
                 ->orderByDesc('rentlogs.eventtimes')
                 ->skip($pages)->take(50)->get();
@@ -142,30 +144,7 @@ class  rentlog extends Model
         } else {
             $pages = (intval(trim($source['pages'])) - 1)*50;
         }
-        /*
-        //單一店家的借還杯記錄
-        if (isset($source['storeid'])){
-            $storeid = trim($source['storeid']);
-            $result = DB::table('rentlogs')
-                    ->where('storeid',$storeid)
-                    ->orderByDesc('eventtimes')
-                    ->skip($pages)->take(50)->get();
-            return $result;
-        }
-        */
-        /*
-        //單一遊客借還杯記錄
-        if (isset($source['cusphone'])){
-            $cusphone = trim($source['cusphone']);
-            $allcusphone = array();
-            $allcusphone = explode(",",$cusphone);
-            $result = DB::table('rentlogs')
-                    ->whereIn('cusphone',$allcusphone)
-                    ->orderByDesc('eventtimes')
-                    ->skip($pages)->take(50)->get();
-            return $result;
-        }
-        */
+
         if (isset($source['post'])){
             $post = trim($source['post']);
             switch ($post) {
