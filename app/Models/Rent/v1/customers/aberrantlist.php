@@ -50,35 +50,39 @@ class aberrantlist extends Model
             $pages = 0;
         }
         //有 storeid 跟沒有 storeid 的差別
-        $action = trim($source['action']);
+        //$action = trim($source['action']);
         if (isset($source['storeid'])){
             $storeid = trim($source['storeid']);
             $rentlogs = DB::table('rentlogs')
-                            ->select('cusphone','nums','eventtimes','comments')
-                            ->where('storeid',$storeid)
-                            ->whereIn('rentid',["R","B"])
-                            ->where('checks',"Y")
-                            ->orderByDesc('eventtimes')
+                            ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                            ->select('rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->where('rentlogs.storeid',$storeid)
+                            ->where('rentlogs.rentid',"R")
+                            ->where('rentlogs.checks',"Y")
+                            ->orderByDesc('rentlogs.eventtimes')
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
-                            ->select('cusphone','nums','eventtimes','comments')
-                            ->where('storeid',$storeid)
-                            ->where('checks',"N")
-                            ->orderByDesc('eventtimes')
+                            ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
+                            ->select('aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->where('aberrantlogs.storeid',$storeid)
+                            ->where('aberrantlogs.checks',"N")
+                            ->orderByDesc('aberrantlogs.eventtimes')
                             ->union($rentlogs)
                             ->skip($pages)->take(50)->get();
             return $aberrants;
         } else {
             $rentlogs = DB::table('rentlogs')
-                            ->select('cusphone','nums','eventtimes','comments')
-                            ->whereIn('rentid',["R","B"])
-                            ->where('checks',"Y")
-                            ->orderByDesc('eventtimes')
+                            ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                            ->select('rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->where('rentlogs.rentid',"R")
+                            ->where('rentlogs.checks',"Y")
+                            ->orderByDesc('rentlogs.eventtimes')
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
-                            ->select('cusphone','nums','eventtimes','comments')
-                            ->where('checks',"N")
-                            ->orderByDesc('eventtimes')
+                            ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
+                            ->select('aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->where('aberrantlogs.checks',"N")
+                            ->orderByDesc('aberrantlogs.eventtimes')
                             ->union($rentlogs)
                             ->skip($pages)->take(50)->get();
             return $aberrants;
