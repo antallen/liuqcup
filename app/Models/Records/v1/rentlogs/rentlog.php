@@ -100,7 +100,7 @@ class  rentlog extends Model
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
                                     ->where('storeid',$storeid)
-                                    ->whereNotIn('backstoreid',[$backid])
+                                    ->whereNot('backstoreid',$backid)
                                     ->orderByDesc('eventtimes')
                                     ->skip($pages)->take(50)
                                     ->get();
@@ -110,7 +110,7 @@ class  rentlog extends Model
                     $backid = $storeid;
                     $result = DB::table('rentlogs')
                                     ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                    ->whereNotIn('storeid',[$storeid])
+                                    ->whereNot('storeid',$storeid)
                                     ->where('backstoreid',$backid)
                                     ->orderByDesc('eventtimes')
                                     ->skip($pages)->take(50)
@@ -135,13 +135,15 @@ class  rentlog extends Model
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
 
-    //管理處人員查詢借還杯記錄
+    //管理處人員查詢借還杯記錄--以遊客為觀點
     public function accountrentlog($source){
         if (!isset($source['pages']) or (intval(trim($source['pages'])) <=0)){
             $pages = 0;
         } else {
             $pages = (intval(trim($source['pages'])) - 1)*50;
         }
+        /*
+        //單一店家的借還杯記錄
         if (isset($source['storeid'])){
             $storeid = trim($source['storeid']);
             $result = DB::table('rentlogs')
@@ -150,6 +152,9 @@ class  rentlog extends Model
                     ->skip($pages)->take(50)->get();
             return $result;
         }
+        */
+        /*
+        //單一遊客借還杯記錄
         if (isset($source['cusphone'])){
             $cusphone = trim($source['cusphone']);
             $allcusphone = array();
@@ -160,7 +165,7 @@ class  rentlog extends Model
                     ->skip($pages)->take(50)->get();
             return $result;
         }
-
+        */
         //查全部
         $result = DB::table('rentlogs')
                     ->orderByDesc('eventtimes')
