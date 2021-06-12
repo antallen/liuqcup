@@ -178,18 +178,13 @@ class  rentlog extends Model
                 case "B02"://本店借，非本店還
                     $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
                                from rentlogs as a join stores as c, stores as d
-                               where a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc');
+                               where a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid group by a.storeid order by a.eventtimes desc');
                     return $result;
                     break;
-                case "C03":
-                    $backid = $storeid;
-                    $result = DB::table('rentlogs')
-                                    ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                    ->whereNotIn('rentlogs.storeid',array($storeid))
-                                    ->where('rentlogs.backstoreid',$backid)
-                                    ->orderByDesc('rentlogs.eventtimes')
-                                    ->skip($pages)->take(50)
-                                    ->get();
+                case "C03"://非本店借，但本店還
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+                               from rentlogs as a join stores as c, stores as d
+                               where a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid group by a.backstoreid order by a.eventtimes desc');
                     return $result;
                     break;
                 default:
