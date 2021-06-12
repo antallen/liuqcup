@@ -140,7 +140,7 @@ class rent extends Model
                 ->where('eventtimes','>',$timestamp)
                 ->where('checks',"Y")
                 ->where('rentid',"R")
-                ->orderByDesc('eventtimes')
+                ->orderBy('nums')
                 ->get();
 
         //應還杯的資料筆數
@@ -198,7 +198,6 @@ class rent extends Model
         } elseif ($nums > $cus2_count) {
             // 還杯數量大於借杯數量
             // 先還掉相對數量的杯子
-
             foreach ($cus2 as $num){
                 DB::table('rentlogs')->where('id',$num->id)
                     ->orderByDesc('eventtimes')
@@ -213,8 +212,8 @@ class rent extends Model
             return $result;
         } elseif ($nums < $cus2_count){
             // 還杯數量小於借杯數量
-            // 先還掉杯數小的，再將大的記錄標示異常
-            $codeid = "";
+            // 先還掉可以還的，再將其他的記錄維持借杯狀況
+            //$codeid =  0;
             foreach ($cus2 as $value) {
                 if ($nums >= $value->nums){
                     DB::table('rentlogs')->where('id',$value->id)
@@ -223,18 +222,40 @@ class rent extends Model
                             'backstoreid' => $storeid]);
                     $nums = $nums - $value->nums;
                 } else {
-                    DB::table('rentlogs')->where('id',$value->id)
-                    ->update(['rentid' => "B",
-                            'backtimes' => $timestamp,
-                            'backstoreid' => $storeid,
-                            'comments' => "異常"]);
-                    $codeid = $codeid."H".$value->id;
+                    //無法還掉的記錄，拆分成一筆還，一筆借的狀況
+                    if ($nums > 0){
+                        $tmp_result = DB::table('rentlogs')->where('id',$value->id)->get();
+
+                        DB::table('rentlogs')->where('id',$value->id)
+                        ->update(['rentid' => "B",
+                                'nums' => $nums,
+                                'backtimes' => $timestamp,
+                                'comments' => "拆分先還",
+                                'backstoreid' => $storeid]);
+
+
+                        //$tmp_result = json_decode($tmp_result);
+                        foreach ($tmp_result as $value) {
+                            DB::table('rentlogs')->insert(['cusid' => $value->cusid,
+                                                            'storeid' => $value->storeid,
+                                                            'rentid' => "R",
+                                                            'nums' => ($value->nums - $nums),
+                                                            'eventtimes' => $value->eventtimes,
+                                                            'comments' => "拆分未還，原id:".strval($value->id)."，原數量:".$value->nums,
+                                                            'checks' => "Y",
+                                                            'cusphone' => $value->cusphone]);
+                        }
+                        $msg = array(["result" => "還杯結束，請等店家確認！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    } else {
+                        $msg = array(["result" => "還杯結束，請等店家確認！"]);
+                        return json_encode($msg,JSON_PRETTY_PRINT);
+                    }
+
                 }
             }
-            $codeid = $codeid."H";
-            //計入異常記錄表
-            $result = $this->writeAberrantlogs($storeid,$nums,$cusphone,$timestamp,$cus->cusid,$codeid);
-            return $result;
+            $msg = array(["result" => "還杯結束，請等店家確認！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
         }
     }
 
