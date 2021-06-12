@@ -188,15 +188,17 @@ class  rentlog extends Model
                     return $result;
                     break;
                 default:
-                    $msg = array(["error" => "無法查詢"]);
-                    return json_encode($msg,JSON_PRETTY_PRINT);
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+                    from rentlogs as a join stores as c, stores as d
+                    where a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc');
+                    return $result;
                     break;
             }
         } else {
         //查全部
-        $result = DB::table('rentlogs')
-                    ->orderByDesc('eventtimes')
-                    ->skip($pages)->take(50)->get();
+        $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+                               from rentlogs as a join stores as c, stores as d
+                               where a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc');
         return $result;
         }
     }
