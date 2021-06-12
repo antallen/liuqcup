@@ -200,13 +200,14 @@ class  rentlog extends Model
             }
         } else {
         //查全部
-        $result = DB::select('(select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
-                    from rentlogs as a join stores as c, stores as d
-                    where a.storeid = c.storeid and a.backstoreid = d.storeid)
-                    UNION
-                    (select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,a.backstoreid as backstore
-                    from rentlogs as a join stores as c
-                    where a.storeid = c.storeid and a.backstoreid is null) order by a.eventtimes desc');
+        $result = DB::select('(select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,a.backstoreid as backstore
+        from rentlogs as a join stores as c
+        where a.storeid = c.storeid and a.backstoreid is null order by a.eventtimes desc)
+        UNION
+        (select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+        from rentlogs as a join stores as c, stores as d
+        where a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc)
+        ');
         return $result;
         }
     }
