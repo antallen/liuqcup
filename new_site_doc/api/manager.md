@@ -1351,6 +1351,8 @@ HOST: https://liuqapi.tdhome.tw/api
       - 1: 一天
       - 7: 一周
       - 30: 一個月
+    + action: A01 (optional, string)
+      - A01: 看統計，不分店家！總管理人員後台使用！
 
 + Response 200 (application/json)
 

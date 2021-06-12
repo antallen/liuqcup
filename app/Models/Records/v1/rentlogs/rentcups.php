@@ -47,28 +47,46 @@ class  rentcups extends Model
         } else {
             $times = trim($source['times']);
         }
-        $result = $this->caculateTime($times,$storeid);
+        if (isset($source['action'])){
+            $action = strval(trim($source['action']));
+        } else {
+            $action = "B02";
+        }
+
+        $result = $this->caculateTime($times,$storeid,$action);
         return $result;
     }
     //時間分類統計
-    private function caculateTime($times,$storeid){
+    private function caculateTime($times,$storeid,$action){
         switch ($times) {
             case 1:
                 $starttime = date('Y-m-d');
                 $nowtime = date('Y-m-d H:i:s');
-                $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                if ($action == "A01"){
+                    $result = $this->accountCups($starttime,$nowtime,$storeid,$action);
+                } else {
+                    $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                }
                 return $result;
                 break;
             case 7:
                 $starttime = date('Y-m-d',strtotime('-7 days'));
                 $nowtime = date('Y-m-d H:i:s');
-                $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                if ($action == "A01"){
+                    $result = $this->accountCups($starttime,$nowtime,$storeid,$action);
+                } else {
+                    $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                }
                 return $result;
                 break;
             case 30:
                 $starttime = date('Y-m-d',strtotime('-30 days'));
                 $nowtime = date('Y-m-d H:i:s');
-                $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                if ($action == "A01"){
+                    $result = $this->accountCups($starttime,$nowtime,$storeid,$action);
+                } else {
+                    $result = $this->caculateCups($starttime,$nowtime,$storeid);
+                }
                 return $result;
                 break;
             default:
@@ -77,7 +95,7 @@ class  rentcups extends Model
                 break;
         }
     }
-    //統計杯量 function
+    //統計杯量 function -- for 各店
     private function caculateCups($starttime,$nowtime,$storeid){
         $days = intval((strtotime($nowtime)-strtotime($starttime))/(60*60*24));
         $a = 0;
@@ -163,6 +181,130 @@ class  rentcups extends Model
                 $total_datas = array();
                 //借杯數量
                 //$starttime = date('2021-05-20 00:00:00');
+                while ($a <= $days) {
+                    $totals = array();
+                    $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
+                    $nums = DB::table('rentlogs')
+                                ->where('storeid',strval($storeid))
+                                ->where('rentid',"R")
+                                ->where('checks',"Y")
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                ->sum('nums');
+                        $storename = DB::table('stores')
+                                ->select('storename')
+                                ->where('storeid',strval($storeid))->get();
+                        $totals['rentid'] = "己借杯數量";
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
+                        $totals['datetime'] = $dateTimes;
+                        $totals['nums'] = intval($nums);
+
+                        array_push($total_datas,$totals);
+
+                    //$tatols['借杯數量'][$dateTimes][$storeid] = intval($nums);
+
+                    //己還杯資料
+                    $nums = DB::table('rentlogs')
+                                    ->where('storeid',strval($storeid))
+                                    ->where('rentid',"B")
+                                    ->where('checks',"B")
+                                    ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                    ->sum('nums');
+                        $storename = DB::table('stores')
+                                    ->select('storename')
+                                    ->where('storeid',strval($storeid))->get();
+                        $totals['rentid'] = "己還杯數量";
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
+                        $totals['datetime'] = $dateTimes;
+                        $totals['nums'] = intval($nums);
+
+                        array_push($total_datas,$totals);
+                    //$tatols['還杯數量'][$dateTimes][$storeid] = intval($nums);
+
+                    //異常資料
+                    $nums = DB::table('rentlogs')
+                                ->where('storeid',strval($storeid))
+                                ->where('rentid',"B")
+                                ->where('comments',"異常")
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                ->count();
+                        $storename = DB::table('stores')
+                                ->select('storename')
+                                ->where('storeid',strval($storeid))->get();
+                        $totals['rentid'] = "異常筆數";
+                        //$totals['storeid'] = strval($storeid);
+                        $totals['storeid'] = strval($storename[0]->storename);
+                        $totals['datetime'] = $dateTimes;
+                        $totals['nums'] = intval($nums);
+
+                        array_push($total_datas,$totals);
+                    //$tatols['異常筆數'][$dateTimes][$storeid] = intval($nums);
+                    $a+=1;
+                }
+                return json_encode($total_datas, JSON_UNESCAPED_UNICODE);
+                break;
+        }
+        $msg = array(["error" => "無法查詢"]);
+        return json_encode($msg,JSON_PRETTY_PRINT);
+        //借杯未還資料
+    }
+
+    //統計杯量 function -- for 總計
+    private function accountCups($starttime,$nowtime,$storeid,$action){
+        $days = intval((strtotime($nowtime)-strtotime($starttime))/(60*60*24));
+        $a = 0;
+        //$tatols = array();
+        switch ($action) {
+            //總管理處看的資料！
+            case "A01":
+                //每日統計
+                $total_datas = array();
+                while ($a <= $days) {
+                    //每日借杯資料
+                    $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
+                    $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
+                    $totals = array();
+                    $nums = DB::table('rentlogs')
+                                ->where('rentid',"R")
+                                ->where('checks',"Y")
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                ->sum('nums');
+                    $totals['rentid'] = "己借杯數量";
+                    $totals['datetime'] = $dateTimes;
+                    $totals['nums'] = intval($nums);
+                    array_push($total_datas,$totals);
+
+                    //己還杯資料
+                    $nums = DB::table('rentlogs')
+                                ->where('rentid',"B")
+                                ->where('checks',"B")
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                ->sum('nums');
+                    $totals['rentid'] = "己還杯數量";
+                    $totals['datetime'] = $dateTimes;
+                    $totals['nums'] = intval($nums);
+                    array_push($total_datas,$totals);
+
+                    //異常資料
+                    $nums = DB::table('rentlogs')
+                                ->where('rentid',"B")
+                                ->where('comments',"異常")
+                                ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
+                                ->count();
+                    $totals['rentid'] = "異常筆數";
+                    $totals['datetime'] = $dateTimes;
+                    $totals['nums'] = intval($nums);
+                    array_push($total_datas,$totals);
+
+                    $a += 1;
+                }
+                return json_encode($total_datas, JSON_UNESCAPED_UNICODE);
+                break;
+            //各店家看的資料
+            default:
+                $total_datas = array();
                 while ($a <= $days) {
                     $totals = array();
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
