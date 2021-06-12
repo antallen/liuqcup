@@ -213,22 +213,6 @@
 |backstoreid|char(100)|NULL|還杯店家編號|
 
 
-### 遊客還杯暫記記錄表 rentcupstmp
-
-+ 將遊客未歸還至借杯總數的餘額，記錄下來
-+ 等遊客全部歸還後，再給予清除
-
-|欄位名稱|資料類型規格|設定參數|說明|
-|:-------|:-----------|:-------|:---|
-|id|unsignBigInteger|PRI|流水序號|
-|cusid|char(20)|NOT NULL,INDEX|遊客編號|
-|storeid|char(100)|NOT NULL,INDEX|還杯店家編號|
-|nums|int|NOT NULL,Default(0)|借還數量|
-|comments|char(255)|NULL|註備說明|
-|eventtimes|timestamp|NOT NULL, Default(now())|還杯時間戳記|
-|cusphone|varchar(20)|NOT NULL|遊客借杯時的手機號碼|
-|rentlogid|varchar(200)|NULL|借杯記錄號碼|
-
 ### 遊客借還杯異常記錄表 aberrantlogs
 
 + 遊客借還杯異常狀況記錄
