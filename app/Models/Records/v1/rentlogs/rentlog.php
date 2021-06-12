@@ -86,51 +86,35 @@ class  rentlog extends Model
         if (isset($source['post'])){
             $post = trim($source['post']);
             switch ($post) {
-                case "A01":
-                    $backid = $storeid;
-                    $result = DB::table('rentlogs')
-                                    ->where('storeid',$storeid)
-                                    ->where('backstoreid',$backid)
-                                    ->orWhere('backstoreid')
-                                    ->orderByDesc('eventtimes')
-                                    ->skip($pages)->take(50)
-                                    ->get();
+                case "A01"://本店借，本店還
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename,a.nums,a.backtimes
+                               from rentlogs as a join stores as c
+                               where a.storeid = ? and a.storeid = a.backstoreid and a.storeid = c.storeid order by a.eventtimes desc',[$storeid]);
                     return $result;
                     break;
-                case "B02":
-                    $backid = $storeid;
-                    $result = DB::table('rentlogs')
-                                    ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
-                                    ->where('rentlogs.storeid',$storeid)
-                                    ->whereNotIn('rentlogs.backstoreid',array($backid))
-                                    ->orderByDesc('rentlogs.eventtimes')
-                                    ->skip($pages)->take(50)
-                                    ->get();
+                case "B02"://本店借，非本店還
+                    $result = DB::select('select a.eventtimes,a.cusphone,a.storeid,c.storename as rentstore,a.nums,a.backtimes,d.storename as backstore
+                               from rentlogs as a join stores as c, stores as d
+                               where a.storeid = ? and a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc',[$storeid]);
                     return $result;
                     break;
-                case "C03":
-                    $backid = $storeid;
-                    $result = DB::table('rentlogs')
-                                    ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                    ->whereNotIn('rentlogs.storeid',array($storeid))
-                                    ->where('rentlogs.backstoreid',$backid)
-                                    ->orderByDesc('rentlogs.eventtimes')
-                                    ->skip($pages)->take(50)
-                                    ->get();
+                case "C03"://非本店借，但本店還
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename as rentstore,a.nums,a.backtimes,a.backstoreid,d.storename as backstore
+                               from rentlogs as a join stores as c, stores as d
+                               where a.backstoreid = ? and a.storeid <> a.backstoreid and a.storeid = c.storeid and a.backstoreid = d.storeid order by a.eventtimes desc',[$storeid]);
                     return $result;
                     break;
                 default:
-                    $msg = array(["error" => "無法查詢"]);
-                    return json_encode($msg,JSON_PRETTY_PRINT);
+                    $result = DB::select('select a.eventtimes,a.cusphone,c.storename,a.nums,a.backtimes
+                                        from rentlogs as a join stores as c
+                                        where a.storeid = ? and a.storeid = c.storeid order by a.eventtimes desc',[$storeid]);
+                    return $result;
                     break;
             }
         } else {
-            $result = DB::table('rentlogs')
-                        ->where('storeid',$storeid)
-                        ->orWhere('backstoreid',$storeid)
-                        ->orderByDesc('eventtimes')
-                        ->skip($pages)->take(50)
-                        ->get();
+            $result = DB::select('select a.eventtimes,a.cusphone,c.storename,a.nums,a.backtimes
+                                        from rentlogs as a join stores as c
+                                        where a.storeid = ? and a.storeid = c.storeid order by a.eventtimes desc',[$storeid]);
             return $result;
         }
         $msg = array(["error" => "無法查詢"]);
