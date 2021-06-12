@@ -17,6 +17,7 @@ class logins extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
         $password = DB::table('customers')->select('cusid','password')->where('cusphone','like','%'.trim($source['cusphone']).'%')->get();
+        return $password;
         if ($password[0]->password == trim($source['cusauth'])){
             $salt = strval(SecretClass::generateSalt());
             $custoken = strval(SecretClass::generateToken($salt,$password[0]->password));
