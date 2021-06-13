@@ -47,8 +47,6 @@ class updatenews extends Model
                 $disname = trim($source['filename']);
                 DB::table('newslogs')->where('newsid',$newsid)
                         ->update(['disname' => $disname,'filename' => $fileName,'updated_at' => $timestamp]);
-            } else {
-                return "failed";
             }
 
             $msg = array(["result" => "Update Completed"]);

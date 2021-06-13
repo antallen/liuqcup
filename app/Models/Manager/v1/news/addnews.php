@@ -27,6 +27,9 @@ class addnews extends Model
                     $storagePath = Storage::put('/public/news',$source['file']);
                     $fileName = basename($storagePath);
                     $disname = trim($source['filename']);
+                } else {
+                    $disname = "預設圖.jpg";
+                    $fileName = "7wjoCPR5UK2ObqTsOjhGdtOVWFQw9QcUACK80V0H.jpg";
                 }
                 $result = DB::table('newslogs')->insert([
                                 'newsid' => $newsid,
