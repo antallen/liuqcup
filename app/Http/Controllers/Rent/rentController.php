@@ -63,6 +63,7 @@ class rentController extends Controller
         //C03 收杯   D04 送杯
         switch ($request['action']) {
             case "C03":
+                return $result;
                 if (array_search('2',$result)){
                     $results = $auth->withdraw($request,$result);
                 } else {
