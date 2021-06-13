@@ -67,7 +67,7 @@ class rent extends Model
             $cusid = $cus[0]->cusid;
         } else {
             //新增 cusid 給新的客戶用
-            $newcustomer = array('cusphone' => $cusphone,'password' => $password);
+            $newcustomer = array('cusphone' => $cusphone,'cuspassword' => $password);
             $addcustomer = new CustomersCustomers();
             $addcustomer->newCustomers($newcustomer);
             $cus = DB::table('customers')->where('cusphone','like','%'.$cusphone.'%')->get();
