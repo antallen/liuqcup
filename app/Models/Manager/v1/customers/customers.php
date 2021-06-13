@@ -177,10 +177,10 @@ class customers extends Model
             $phoneresult = DB::table('customers')->where('cusphone','like','%'.trim($source['cusphone']).'%')->count();
 
             if ($phoneresult >= 1){
-                $old_cusphone = DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->get('cusphone');
+                $old_cusphone = DB::table('customers')->where('cusid',strval(trim($source['cusid'])))->get('cusphone');
                 $new_cusphone = $old_cusphone[0]->cusphone;
             } else {
-                   $old_cusphone = DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->get('cusphone');
+                   $old_cusphone = DB::table('customers')->where('cusid',strval(trim($source['cusid'])))->get('cusphone');
                    $new_cusphone = $old_cusphone[0]->cusphone.",".trim($source['cusphone']);
             }
 
