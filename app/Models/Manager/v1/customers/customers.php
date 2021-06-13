@@ -185,7 +185,7 @@ class customers extends Model
             }
 
         }
-        return $new_cusphone;
+        //return $new_cusphone;
         try {
             DB::table('customers')->where('cusid',strval(trim($source['cusid'])))
                         ->update(['cusname' => $cusname,
