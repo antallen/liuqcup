@@ -15,8 +15,7 @@ class storesRent extends Model
 
     public function token($source){
         //先判斷一下，是否有重要的兩把 key
-        if ((!isset($source['token'])) xor (!isset($source['adminid'])) or
-            ((!isset($source['token'])) and (!isset($source['adminid']))) or
+        if (((!isset($source['token'])) and (!isset($source['adminid']))) or
             ((!isset($source['qrcode'])) and (!isset($source['adminid'])))){
             $msg = array(["error" => "Action is failed! Hacker is not here!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
