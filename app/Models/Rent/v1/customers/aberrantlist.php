@@ -55,7 +55,7 @@ class aberrantlist extends Model
             $storeid = trim($source['storeid']);
             $rentlogs = DB::table('rentlogs')
                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.rentid')
                             ->where('rentlogs.storeid',$storeid)
                             ->where('rentlogs.rentid',"R")
                             ->where('rentlogs.checks',"Y")
@@ -73,7 +73,7 @@ class aberrantlist extends Model
         } else {
             $rentlogs = DB::table('rentlogs')
                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.rentid')
                             ->where('rentlogs.rentid',"R")
                             ->where('rentlogs.checks',"Y")
                             ->orderByDesc('rentlogs.eventtimes')
