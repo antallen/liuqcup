@@ -938,7 +938,7 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家收送杯功能 [/rent/v1/stores/rent/rent{?token,action,nums,adminid}]
+## 店家收送杯功能 [/rent/v1/stores/rent/rent{?token,action,nums,adminid,qrcode}]
 + action 功能項說明
   - C03: 收杯(總管理處向店家收杯 pullcup)
   - D04: 送杯(總管理處向店家送杯 pushcup)
@@ -957,6 +957,9 @@ HOST: https://liuqapi.tdhome.tw/api
       - 收送杯數量
     + adminid: peter (required, string)
       - 總管理人員帳號
+    + qrcode: ABChello (optional, string)
+      - 店家的 qrcode
+      - 手機專用
 
 + Response 200 (application/json)
 

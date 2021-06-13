@@ -16,14 +16,22 @@ class storesRent extends Model
     public function token($source){
         //先判斷一下，是否有重要的兩把 key
         if ((!isset($source['token'])) xor (!isset($source['adminid'])) or
-            ((!isset($source['token'])) and (!isset($source['adminid'])))){
+            ((!isset($source['token'])) and (!isset($source['adminid']))) or
+            ((!isset($source['qrcode'])) and (!isset($source['adminid'])))){
             $msg = array(["error" => "Action is failed! Hacker is not here!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
-        $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
-        foreach ($storeid as $value){
-            $storeids = $value->storeid;
+        if (isset($source['token'])){
+            $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
+            foreach ($storeid as $value){
+                $storeids = $value->storeid;
+            }
+        } elseif (isset($source['qrcode'])) {
+            $storeid = DB::table('stores')->where('qrcodeid',strval(trim($source['qrcode'])))->get('storeid');
+            foreach ($storeid as $value){
+                $storeids = $value->storeid;
+            }
         }
         $mantoken = DB::table('accounts')->where('adminid',trim($source['adminid']))->get('token');
         foreach ($mantoken as $value) {
