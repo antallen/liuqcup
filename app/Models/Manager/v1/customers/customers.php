@@ -162,11 +162,18 @@ class customers extends Model
         if (isset($source['cusname'])){
 
             $cusname = strval(trim($source['cusname']));
+        } else {
+            $cus_old_name = DB::table('customers')->where('cusid',strval(trim($source['cusid'])))->get('cusname');
+            $cusname = $cus_old_name[0]->cusname;
         }
         if (isset($source['email'])){
 
             $email = strval(trim($source['email']));
+        } else {
+            $email_old = DB::table('customers')->where('cusid',strval(trim($source['cusid'])))->get('email');
+            $email = $email_old[0]->email;
         }
+
         if (isset($source['cuspassword'])){
             $password = trim($source['cuspassword']);
             $salt = strval(SecretClass::generateSalt());
