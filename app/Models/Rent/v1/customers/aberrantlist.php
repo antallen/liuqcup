@@ -63,7 +63,7 @@ class aberrantlist extends Model
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
                             ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->select('aberrantlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
                             ->where('aberrantlogs.storeid',$storeid)
                             ->where('aberrantlogs.checks',"N")
                             ->orderByDesc('aberrantlogs.eventtimes')
@@ -80,7 +80,7 @@ class aberrantlist extends Model
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
                             ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->select('aberrantlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
                             ->where('aberrantlogs.checks',"N")
                             ->orderByDesc('aberrantlogs.eventtimes')
                             ->union($rentlogs)
