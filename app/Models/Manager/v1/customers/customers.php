@@ -111,10 +111,25 @@ class customers extends Model
                         $salt = strval(SecretClass::generateSalt());
                         $custoken = strval(SecretClass::generateToken($salt,$password));
                         $timestamp = date('Y-m-d H:i:s');
+
+                        //如果是網路註冊過來的，必須輸入名字與email
+                        if (isset($source['cusname'])){
+                            $cusname = strval(trim($source['cusname']));
+                        } else {
+                            $cusname = NULL;
+                        }
+                        if (isset($source['email'])){
+                            $email = strval(trim($source['email']));
+                        } else {
+                            $email = NULL;
+                        }
+
                         try {
                             DB::table('customers')->insert([
                                 'cusphone' => trim($source['cusphone']),
                                 'cusid' => $cusid,
+                                'cusname' => $cusname,
+                                'email' => $email,
                                 'salt' => $salt,
                                 'token' => $custoken,
                                 'password' => $password,
@@ -125,13 +140,13 @@ class customers extends Model
                         $msg = array(["result" => "success"]);
                         return json_encode($msg,JSON_PRETTY_PRINT);
                         } catch (QueryException $e) {
-                            $msg = array(["result" => "該手機號碼己註冊！"]);
+                            $msg = array(["error" => "該手機號碼己註冊！"]);
                             return json_encode($msg,JSON_PRETTY_PRINT);
                         }
                     }
                 } while (!empty($detect1));
             } else {
-                $msg = array(["result" => "該手機號碼己註冊！"]);
+                $msg = array(["error" => "該手機號碼己註冊！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
 
