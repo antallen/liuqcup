@@ -55,7 +55,7 @@ class aberrantlist extends Model
             $storeid = trim($source['storeid']);
             $rentlogs = DB::table('rentlogs')
                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
                             ->where('rentlogs.storeid',$storeid)
                             ->where('rentlogs.rentid',"R")
                             ->where('rentlogs.checks',"Y")
@@ -63,7 +63,7 @@ class aberrantlist extends Model
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
                             ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
-                            ->select('aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->select('rentlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
                             ->where('aberrantlogs.storeid',$storeid)
                             ->where('aberrantlogs.checks',"N")
                             ->orderByDesc('aberrantlogs.eventtimes')
@@ -73,14 +73,14 @@ class aberrantlist extends Model
         } else {
             $rentlogs = DB::table('rentlogs')
                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                            ->select('rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
+                            ->select('rentlogs.id','rentlogs.eventtimes','rentlogs.cusphone','rentlogs.nums','stores.storename','rentlogs.comments')
                             ->where('rentlogs.rentid',"R")
                             ->where('rentlogs.checks',"Y")
                             ->orderByDesc('rentlogs.eventtimes')
                             ->skip($pages)->take(50);
             $aberrants = DB::table('aberrantlogs')
                             ->leftJoin('stores','aberrantlogs.storeid','=','stores.storeid')
-                            ->select('aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
+                            ->select('rentlogs.id','aberrantlogs.eventtimes','aberrantlogs.cusphone','aberrantlogs.nums','stores.storename','aberrantlogs.comments')
                             ->where('aberrantlogs.checks',"N")
                             ->orderByDesc('aberrantlogs.eventtimes')
                             ->union($rentlogs)
