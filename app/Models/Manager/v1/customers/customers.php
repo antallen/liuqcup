@@ -178,6 +178,11 @@ class customers extends Model
             $password = trim($source['cuspassword']);
             $salt = strval(SecretClass::generateSalt());
             $custoken = strval(SecretClass::generateToken($salt,$password));
+        } else {
+            $old_token = DB::table('customers')->select('salt','token','password')->where('cusid',strval(trim($source['cusid'])))->get();
+            $custoken = $old_token[0]->token;
+            $salt = $old_token[0]->salt;
+            $password = $old_token[0]->password;
         }
         if (isset($source['cusphone'])){
 
@@ -191,6 +196,9 @@ class customers extends Model
                    $new_cusphone = $old_cusphone[0]->cusphone.",".trim($source['cusphone']);
             }
 
+        } else {
+            $old_cusphone = DB::table('customers')->where('cusid',strval(trim($source['cusid'])))->get('cusphone');
+            $new_cusphone = $old_cusphone[0]->cusphone;
         }
         //return $new_cusphone;
         try {
