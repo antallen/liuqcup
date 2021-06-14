@@ -40,7 +40,7 @@ try {
 $runSQL = $dbConn->prepare('INSERT INTO customers(cusid,cusname,cusphone,email,salt,token,`password`) VALUES (?,?,?,?,?,?,?)');
 
 //從CSV檔案讀取資料進來
-$csv = fopen('../test/cadd01.csv','rb');
+$csv = fopen('customer12.csv','rb');
 
 //列出檔案內容
 while ((! feof($csv)) && ($line = fgetcsv($csv))){
@@ -48,9 +48,18 @@ while ((! feof($csv)) && ($line = fgetcsv($csv))){
     {
         //print (strval(trim($line[0])));
         $cusphone = (strval(trim($line[0])));
+
     } else {
         continue;
     }
+    //判斷是否有重複的客戶電話
+    $query_SQL = "select * from customers where cusphone like '%".$cusphone."%'";
+    $result = $dbConn->query($query_SQL);
+    if ($result->rowCount() > 0)
+    {
+        continue;
+    }
+
     if (!empty(strval(trim($line[1])))){
         print strval(trim($line[1]));
         $cusname = strval(trim($line[1]));
@@ -67,11 +76,20 @@ while ((! feof($csv)) && ($line = fgetcsv($csv))){
     }
     if (!empty(strval(trim($line[5])))){
         print strval(trim($line[5]));
-        $rand = strval(rand(0,100));
-        $cusid = "CUS".strval(trim($line[5])).$rand;
+        do {
+            $rand = strval(rand(0,100));
+            $cusid = "CUS".strval(trim($line[5])).$rand;
+            $cus_sql = "select * from customers where cusid like '%".$cusid."%'";
+            $cus_result = $dbConn->query($cus_sql);
+        } while ($cus_result->rowCount() > 0);
+
+
     }else {
         print "空白";
     }
+
+
+
     $auths = new SecretClass();
     $salt = $auths->generateSalt();
     $password = "ABC123";
