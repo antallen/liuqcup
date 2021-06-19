@@ -33,11 +33,11 @@ class qrcode extends Model
         $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
         $storeQrcode = DB::table('stores')->where('storeid',$storeid[0]->storeid)->get('qrcodeid');
         $allow_results = DB::table('storesfunctions')->where('storeid',$storeid[0]->storeid)->get('funcid');
-        $allow_pushorpullcup = array();
+        $allow_pushorpullcup = "";
         foreach ($allow_results as $value) {
-            array_push($allow_pushorpullcup,$value);
+            $allow_pushorpullcup = $value->funcid;
         }
-        return var_dump(in_array("2",$allow_pushorpullcup));
+        return $allow_pushorpullcup;
         switch ($action) {
             case "A01":
                 if (in_array("2",$allow_pushorpullcup)){
