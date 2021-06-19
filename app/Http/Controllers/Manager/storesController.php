@@ -35,15 +35,28 @@ class storesController extends Controller
             foreach ($results as $result){
                 //列出借還杯功能
                 $funcs = $lists->getStoresFuncs($result->storeid);
+                $storeQrcode = DB::table('stores')->where('storeid',$result->storeid)->get('qrcodeid');
                 $result->funid1 = null;
                 $result->funid2 = null;
+                $result->funid1_qrcode = null;
+                $result->funid2_qrcode = null;
                 foreach ($funcs as $func){
                     switch ($func->funcname){
                         case "還杯":
                             $result->funid2= $func->funcname;
+                            //列出還杯的 qrcode
+                            $returncup = "#/return_cup";
+                            $url = \Config::get('qrcode', 'qrcode');
+                            $hosturl = $url['qrcode'].$returncup."?qrcode=".$storeQrcode[0]->qrcodeid;
+                            $result->funid2_qrcode = $hosturl;
                             break;
                         case "借杯":
                             $result->funid1= $func->funcname;
+                            //列出借杯的 qrcode
+                            $borrowcup = "#/borrow_cup";
+                            $url = \Config::get('qrcode', 'qrcode');
+                            $hosturl = $url['qrcode'].$borrowcup."?qrcode=".$storeQrcode[0]->qrcodeid;
+                            $result->funid1_qrcode = $hosturl;
                             break;
                     }
                 }
