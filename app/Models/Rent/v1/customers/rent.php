@@ -54,6 +54,12 @@ class rent extends Model
         } else {
             $storeid = trim($source['storeid']);
         }
+        //判斷店家可否借杯
+        $allow_rent = DB::table('storesfunctions')->where('storeid',$storeid)->where('funcid',"2")->count();
+        if ($allow_rent <= 0){
+            $msg = array(["error" => "該店家無法借杯！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
 
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
@@ -114,6 +120,14 @@ class rent extends Model
         } else {
             $storeid = trim($source['storeid']);
         }
+
+        //判斷店家可否還杯
+        $allow_rent = DB::table('storesfunctions')->where('storeid',$storeid)->where('funcid',"1")->count();
+        if ($allow_rent <= 0){
+            $msg = array(["error" => "該店家無法還杯！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
         //$storeid = trim($source['storeid']);
         $nums = intval(trim($source['nums']));
         $cusphone = trim($source['cusphone']);
