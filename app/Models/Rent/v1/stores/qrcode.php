@@ -14,8 +14,11 @@ class qrcode extends Model
     public function token($source){
         //先比對密碼
         if (isset($source['token'])){
-            $stores = DB::table('storesagentids')->where('token',trim($source['token']))->get();
-            if ($stores[0]->lock == "N"){
+            $stores = DB::table('storesagentids')->where('token',trim($source['token']))->get('lock');
+            foreach ($stores as $value) {
+                $stores_lock = $value->lock;
+            }
+            if ($stores_lock == "N"){
                 return "success";
             } else {
                 return "failed";
