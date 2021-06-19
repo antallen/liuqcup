@@ -37,7 +37,7 @@ class qrcode extends Model
         foreach ($allow_results as $value) {
             array_push($allow_pushorpullcup,$value->funcid);
         }
-        return $allow_pushorpullcup;
+        return in_array("1",$allow_pushorpullcup);
         switch ($action) {
             case "A01":
                 if (in_array("2",$allow_pushorpullcup)){
