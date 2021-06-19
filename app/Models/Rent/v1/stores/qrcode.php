@@ -33,9 +33,9 @@ class qrcode extends Model
         $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
         $storeQrcode = DB::table('stores')->where('storeid',$storeid[0]->storeid)->get('qrcodeid');
         $allow_results = DB::table('storesfunctions')->where('storeid',$storeid[0]->storeid)->get('funcid');
-        $allow_pushorpullcup = "";
+        $allow_pushorpullcup = array();
         foreach ($allow_results as $value) {
-            $allow_pushorpullcup = $value->funcid;
+            array_push($allow_pushorpullcup,$value->funcid);
         }
         return $allow_pushorpullcup;
         switch ($action) {
