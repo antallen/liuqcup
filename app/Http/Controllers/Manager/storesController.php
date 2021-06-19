@@ -173,14 +173,11 @@ class storesController extends Controller
     //查詢各別店家資料
     public function show(Request $request){
         if (!(isset($_REQUEST['token']))){
+            /*
             $msg = array(["error" => "invalid data"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
-        }
-
-        $querys = new querys();
-        $auths = $querys->token($request->all());
-        //return $auths;
-        if ($auths == ("Manager" or "Agent")){
+            */
+            $querys = new querys();
             $results = $querys->queryStores($request->all());
             $funcresults = DB::table('storesfunctions')->where('storeid',trim($results[0]->storeid))->get();
             $results[0]->funid1 = null;
@@ -196,10 +193,31 @@ class storesController extends Controller
                 }
             }
             return $results;
-        } else {
-            $msg = array(["error" => "Create Failed"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-        }
+        } else{
 
+            $querys = new querys();
+            $auths = $querys->token($request->all());
+            //return $auths;
+            if ($auths == ("Manager" or "Agent")){
+                $results = $querys->queryStores($request->all());
+                $funcresults = DB::table('storesfunctions')->where('storeid',trim($results[0]->storeid))->get();
+                $results[0]->funid1 = null;
+                $results[0]->funid2 = null;
+                foreach ($funcresults as $func){
+                    switch (strval(trim($func->funcid))){
+                        case "1":
+                            $results[0]->funid2= "還杯";
+                            break;
+                        case "2":
+                            $results[0]->funid1= "借杯";
+                            break;
+                    }
+                }
+                return $results;
+            } else {
+                $msg = array(["error" => "Create Failed"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+        }
     }
 }
