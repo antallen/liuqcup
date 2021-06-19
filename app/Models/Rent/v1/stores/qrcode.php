@@ -30,6 +30,7 @@ class qrcode extends Model
         $storeQrcode = DB::table('stores')->where('storeid',$storeid[0]->storeid)->get('qrcodeid');
         $allow_pushorpullcup = DB::table('storesfunctions')->where('storeid',$storeid[0]->storeid)->get('funcid');
         $allow_pushorpullcup = json_decode($allow_pushorpullcup);
+        return $allow_pushorpullcup;
         switch ($action) {
             case "A01":
                 if (in_array("2",$allow_pushorpullcup)){
