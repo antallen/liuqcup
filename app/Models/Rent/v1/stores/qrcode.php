@@ -15,6 +15,7 @@ class qrcode extends Model
         //先比對密碼
         if (isset($source['token'])){
             $stores = DB::table('storesagentids')->where('token',trim($source['token']))->get('lock');
+            $stores_lock = "";
             foreach ($stores as $value) {
                 $stores_lock = $value->lock;
             }
