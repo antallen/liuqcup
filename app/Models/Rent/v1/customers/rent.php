@@ -78,6 +78,17 @@ class rent extends Model
         }
 
         try {
+            //處理借杯上限問題
+            $count_rent_log = DB::table('rentlogs')
+                                    ->where('cusid',$cusid)
+                                    ->where('rentid',"R")
+                                    ->where('checks',"Y")
+                                    ->sum('nums');
+            if ($count_rent_log >=5 ){
+                $msg = array(["error" => "借杯己達上限 5 杯，借杯失敗！"]);
+                return json_encode($msg,JSON_PRETTY_PRINT);
+            }
+
             DB::table('rentlogs')->insert([
                 'cusid' => $cusid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $cusphone,'checks' =>"Y"
             ]);
