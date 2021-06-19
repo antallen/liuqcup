@@ -29,7 +29,7 @@ class qrcode extends Model
         $storeid = DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
         $storeQrcode = DB::table('stores')->where('storeid',$storeid[0]->storeid)->get('qrcodeid');
         $allow_pushorpullcup = DB::table('storesfunctions')->where('storeid',$storeid[0]->storeid)->get('funcid');
-        $allow_pushorpullcup = json_decode($allow_pushorpullcup);
+        $allow_pushorpullcup = json_decode($allow_pushorpullcup,true);
         return $allow_pushorpullcup;
         switch ($action) {
             case "A01":
