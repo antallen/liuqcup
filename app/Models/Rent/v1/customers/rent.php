@@ -61,13 +61,16 @@ class rent extends Model
             $msg = array(["error" => "Phone Number is Wrong!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
+        /* 新版本不用輸入密碼
         $password = trim($source['password']);
+        */
         $cus = DB::table('customers')->where('cusphone','like','%'.$cusphone.'%')->get();
         if (!empty($cus[0]->cusid)){
             $cusid = $cus[0]->cusid;
         } else {
             //新增 cusid 給新的客戶用
-            $newcustomer = array('cusphone' => $cusphone,'cuspassword' => $password);
+            //$newcustomer = array('cusphone' => $cusphone,'cuspassword' => $password);
+            $newcustomer = array('cusphone' => $cusphone);
             $addcustomer = new CustomersCustomers();
             $addcustomer->newCustomers($newcustomer);
             $cus = DB::table('customers')->where('cusphone','like','%'.$cusphone.'%')->get();
@@ -76,9 +79,12 @@ class rent extends Model
 
         try {
             DB::table('rentlogs')->insert([
-                'cusid' => $cusid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $cusphone
+                'cusid' => $cusid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $cusphone,'checks' =>"Y"
             ]);
+            /*
             $msg = array(["result" => "遊客 ".$cusphone." 借杯，等待店家確認！"]);
+            */
+            $msg = array(["result" => "遊客 ".$cusphone." 借杯成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }catch(QueryException $e){
             $msg = array(["error" => "借杯失敗！"]);
@@ -162,6 +168,7 @@ class rent extends Model
 
         //避免重複還杯
         //先確認是否為店家忘了處理
+        //新版程式，下列狀況應不會發生
         if ($cus2test <= 0){
 
             $cus3 = DB::table('rentlogs')
@@ -190,9 +197,10 @@ class rent extends Model
                 ->orderByDesc('eventtimes')
                 ->update(['rentid' => "B",
                         'backtimes' => $timestamp,
-                        'backstoreid' => $storeid]);
+                        'backstoreid' => $storeid,
+                        'checks' => "B"]);
             }
-            $msg = array(["result" => "還杯成功，等待店家確認"]);
+            $msg = array(["result" => "還杯成功!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
 
         } elseif ($nums > $cus2_count) {
@@ -203,7 +211,8 @@ class rent extends Model
                     ->orderByDesc('eventtimes')
                     ->update(['rentid' => "B",
                             'backtimes' => $timestamp,
-                            'backstoreid' => $storeid]);
+                            'backstoreid' => $storeid,
+                            'checks' => "B"]);
             }
             //計算多餘的杯子
             $cups = $nums - $cus2_count;
@@ -219,7 +228,8 @@ class rent extends Model
                     DB::table('rentlogs')->where('id',$value->id)
                     ->update(['rentid' => "B",
                             'backtimes' => $timestamp,
-                            'backstoreid' => $storeid]);
+                            'backstoreid' => $storeid,
+                            'checks' => "B"]);
                     $nums = $nums - $value->nums;
                 } else {
                     //無法還掉的記錄，拆分成一筆還，一筆借的狀況
@@ -231,7 +241,8 @@ class rent extends Model
                                 'nums' => $nums,
                                 'backtimes' => $timestamp,
                                 'comments' => "拆分先還",
-                                'backstoreid' => $storeid]);
+                                'backstoreid' => $storeid,
+                                'checks' => "B"]);
 
 
                         //$tmp_result = json_decode($tmp_result);
@@ -245,16 +256,15 @@ class rent extends Model
                                                             'checks' => "Y",
                                                             'cusphone' => $value->cusphone]);
                         }
-                        $msg = array(["result" => "還杯結束，請等店家確認！"]);
+                        $msg = array(["result" => "還杯結束！"]);
                         return json_encode($msg,JSON_PRETTY_PRINT);
                     } else {
-                        $msg = array(["result" => "還杯結束，請等店家確認！"]);
+                        $msg = array(["result" => "還杯結束！"]);
                         return json_encode($msg,JSON_PRETTY_PRINT);
                     }
-
                 }
             }
-            $msg = array(["result" => "還杯結束，請等店家確認！"]);
+            $msg = array(["result" => "還杯結束！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
     }
