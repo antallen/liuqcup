@@ -1,43 +1,39 @@
 <?php
 
-namespace App\Models\Rent\v1\customers;
+namespace App\Models\Rent\v1\stores;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Manager\v1\customers\customers as CustomersCustomers;
-use Doctrine\DBAL\FetchMode;
-use LengthException;
 
-class rent extends Model
+class rentagent extends Model
 {
     use HasFactory;
 
     public function token($source){
-        //確認有店家 token 以及客戶的手機號碼，未來需要增加「店家專屬 QRcode」判斷！
+        //確認有店家 token 以及 店家代號！
 
-            if (isset($source['token']) and isset($source['cusphone'])){
+            if (isset($source['token']) and isset($source['storeid'])){
                 $auth =  DB::table('storesagentids')->where('token',trim($source['token']))->get();
                 if ($auth[0]->storeid == trim($source['storeid'])){
                     return "Success";
                 } else {
+                    if (!empty($auth[0]->storeid) and (trim($source['action']) == "B02")){
+                        return "Success";
+                    }
                     $msg = array(["error" => "Token is not here!"]);
                     return json_encode($msg,JSON_PRETTY_PRINT);
                 }
             } else {
                 //若是有店家 QRCode，利用店家QRCode 取得店家的管理 token ，再進行借杯工作
-                if (isset($source['qrcode']) and isset($source['cusphone'])){
+                if (isset($source['qrcode']) and isset($source['storeid'])){
                     //$auths = DB::table('stores')->where('qrcodeid',trim($source['qrcode']))->get('storeid');
-                    $auths = DB::table('stores')->where('qrcodeid',trim($source['qrcode']))->count();
+                    $auths = DB::table('stores')->where('storeid',trim($source['storeid']))->where('qrcodeid',trim($source['qrcode']))->count();
                     if ($auths >= 1 ){
                         return "Success";
                     }
-                    /*
-                    if ($auths[0]->storeid == trim($source['storeid'])){
-                        return "Success";
-                    }
-                    */
+
                 }
 
                 $msg = array(["error" => "Token is not here2!"]);
@@ -62,22 +58,22 @@ class rent extends Model
         }
 
         $nums = intval(trim($source['nums']));
-
         //判斷店家庫存是否足夠
         $pushcup = DB::table('storescups')->where('storeid',$storeid)->get('pushcup');
         if (intval($pushcup[0]->pushcup) < intval($nums)){
-            $msg = array(["error" => "該店家無法借杯！"]);
+            $msg = array(["error" => "該店家庫存量不足，無法借杯！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
+        /*代借不用客戶手機號碼
         $cusphone = trim($source['cusphone']);
         if (strlen($cusphone) != 10){
             $msg = array(["error" => "Phone Number is Wrong!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
-        }
+        } */
         /* 新版本不用輸入密碼
         $password = trim($source['password']);
-        */
+
         $cus = DB::table('customers')->where('cusphone','like','%'.$cusphone.'%')->get();
         if (!empty($cus[0]->cusid)){
             $cusid = $cus[0]->cusid;
@@ -90,9 +86,10 @@ class rent extends Model
             $cus = DB::table('customers')->where('cusphone','like','%'.$cusphone.'%')->get();
             $cusid = $cus[0]->cusid;
         }
-
+        */
         try {
             //處理借杯上限問題
+            /*
             $count_rent_log = DB::table('rentlogs')
                                     ->where('cusid',$cusid)
                                     ->where('rentid',"R")
@@ -102,9 +99,9 @@ class rent extends Model
                 $msg = array(["error" => "借杯己達上限 5 杯，借杯失敗！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
-
+            */
             DB::table('rentlogs')->insert([
-                'cusid' => $cusid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $cusphone,'checks' =>"Y"
+                'cusid' => $storeid,'storeid' => $storeid,'nums' => $nums,'cusphone' => $storeid,'checks' =>"Y"
             ]);
             /*
             $msg = array(["result" => "遊客 ".$cusphone." 借杯，等待店家確認！"]);
@@ -112,172 +109,88 @@ class rent extends Model
             //在沒有確認功能時，直接處理庫存問題
             DB::table('storescups')->where('storeid',$storeid)->decrement('pushcup',$nums);
 
-            $msg = array(["result" => "遊客 ".$cusphone." 借杯成功！"]);
+            $msg = array(["result" => "店家代借杯成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }catch(QueryException $e){
-            $msg = array(["error" => "借杯失敗！"]);
+            $msg = array(["error" => "店家代借杯失敗！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
-        return $cusid;
+        return $storeid;
     }
-
     //還杯
     public function reback($source){
         if (isset($source['qrcode'])){
             $db_Result = DB::table('stores')->where('qrcodeid',strval(trim($source['qrcode'])))->get('storeid');
             foreach ($db_Result as $value) {
-                $storeid = $value->storeid;
+                $now_storeid = $value->storeid;
             }
         } else {
-            $storeid = trim($source['storeid']);
+            $rent_storeid = trim($source['storeid']);
         }
-
         //判斷店家可否還杯
-        $allow_rent = DB::table('storesfunctions')->where('storeid',$storeid)->where('funcid',"1")->count();
+        $back_storeid =  DB::table('storesagentids')->where('token',trim($source['token']))->get('storeid');
+        $allow_rent = DB::table('storesfunctions')->where('storeid',trim($back_storeid[0]->storeid))->where('funcid',"1")->count();
         if ($allow_rent <= 0){
-            $msg = array(["error" => "該店家無法還杯！"]);
+            $msg = array(["error" => "本店家無法還杯！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
-        //$storeid = trim($source['storeid']);
         $nums = intval(trim($source['nums']));
-        $cusphone = trim($source['cusphone']);
-        $timestamp = date('Y-m-d H:i:s',strtotime("-30 day"));
-        //$timestamp = date('Y-m-d H:i:s');
-
-        //隔離還杯數量小於零的惡作劇
-        if ($nums <= 0){
-            $msg = array(["Error" => "請勿惡作劇！"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-        }
-
-        //取出最近 30 天的還杯記錄
-        $cus = DB::table('rentlogs')
-            ->where('cusphone','like','%'.$cusphone.'%')
-            ->where('eventtimes','>',$timestamp)
-            ->where('checks',"B")
-            ->where('rentid',"B")
-            ->orderByDesc('backtimes')
-            ->first();
-
-        //若沒有，則是取出最近 30 天的借杯記錄
-        if (($cus == "[]") or (is_null($cus))){
-            $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
-            return $result;
-        } else {
-        //若有，從上次還杯的時間點到現在時間，取出借杯資料
-            $timestamp = $cus->backtimes;
-            $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
-            return $result;
-        }
-
-        $msg = array(["Error" => "Other Exception !!"]);
-        return json_encode($msg,JSON_PRETTY_PRINT);
-    }
-    //還杯流程
-    public function rentCups($cus,$cusphone,$timestamp,$nums,$storeid){
-        //應還杯的借杯記錄
-        $cus2 = DB::table('rentlogs')
-                ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
-                ->where('checks',"Y")
-                ->where('rentid',"R")
-                ->orderBy('nums')
-                ->get();
-
-        //應還杯的資料筆數
-        $cus2test = DB::table('rentlogs')
-                    ->where('cusphone','like','%'.$cusphone.'%')
-                    ->where('eventtimes','>',$timestamp)
-                    ->where('checks',"Y")
-                    ->where('rentid',"R")
-                    ->orderByDesc('eventtimes')
-                    ->count();
-        //應還杯的杯數
-        $cus2_count = DB::table('rentlogs')
-                ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
-                ->where('checks',"Y")
-                ->where('rentid',"R")
-                ->orderByDesc('eventtimes')
-                ->sum('nums');
-
-        //避免重複還杯
-        //先確認是否為店家忘了處理
-        //新版程式，下列狀況應不會發生
-        if ($cus2test <= 0){
-
-            $cus3 = DB::table('rentlogs')
-                ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
-                ->where('checks',"N")
-                ->where('rentid',"R")
-                ->orderByDesc('eventtimes')
-                ->count();
-
-            if (!($cus3 <= 0)){
-                $msg = array(["Error" => "店家未處理借杯確認，無法還杯，請洽店家或管理人員！"]);
-                return json_encode($msg,JSON_PRETTY_PRINT);
-            } elseif ($cus2_count == 0) {
-                $msg = array(["Error" => "請勿重複要求還杯！"]);
+        try {
+            //還杯複雜流程
+            $timestamp = date('Y-m-d H:i:s');
+            $rentlogs_count = DB::table('rentlogs')->where('cusid',$rent_storeid)
+                        ->where('storeid',$rent_storeid)
+                        ->where('cusphone',$rent_storeid)
+                        ->where('rentid',"R")
+                        ->where('checks',"Y")
+                        ->count();
+            if ($rentlogs_count <= 0){
+                $msg = array(["result" => "店家無代借杯記錄！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
-        }
-        //還杯手續開始
-        //先處理正常的狀況：還杯數與借杯數相同
-        $timestamp = date('Y-m-d H:i:s');
-        if ($nums == $cus2_count){
-
-            foreach ($cus2 as $num){
-            DB::table('rentlogs')->where('id',$num->id)
-                ->orderByDesc('eventtimes')
-                ->update(['rentid' => "B",
-                        'backtimes' => $timestamp,
-                        'backstoreid' => $storeid,
-                        'checks' => "B"]);
-            }
-            //在沒有確認功能時，直接處理庫存問題
-            DB::table('storescups')->where('storeid',$storeid)->increment('pullcup',$nums);
-
-            $msg = array(["result" => "還杯成功!"]);
-            return json_encode($msg,JSON_PRETTY_PRINT);
-
-        } elseif ($nums > $cus2_count) {
-            // 還杯數量大於借杯數量
-            // 先還掉相對數量的杯子
-            foreach ($cus2 as $num){
-                DB::table('rentlogs')->where('id',$num->id)
-                    ->orderByDesc('eventtimes')
-                    ->update(['rentid' => "B",
-                            'backtimes' => $timestamp,
-                            'backstoreid' => $storeid,
-                            'checks' => "B"]);
-            }
-            //在沒有確認功能時，直接處理庫存問題
-            DB::table('storescups')->where('storeid',$storeid)->increment('pullcup',$nums);
-            //計算多餘的杯子
-            $cups = $nums - $cus2_count;
-            //計入異常記錄表
-            $result = $this->writeAberrantlogs($storeid,$cups,$cusphone,$timestamp,$cus->cusid,"多還杯");
-            return $result;
-        } elseif ($nums < $cus2_count){
-            // 還杯數量小於借杯數量
-            // 先還掉可以還的，再將其他的記錄維持借杯狀況
-            //$codeid =  0;
-            foreach ($cus2 as $value) {
-                if ($nums >= $value->nums){
-                    DB::table('rentlogs')->where('id',$value->id)
-                    ->update(['rentid' => "B",
-                            'backtimes' => $timestamp,
-                            'backstoreid' => $storeid,
-                            'checks' => "B"]);
+            $rentlogs = DB::table('rentlogs')->where('cusid',$rent_storeid)
+                        ->where('storeid',$rent_storeid)
+                        ->where('cusphone',$rent_storeid)
+                        ->where('rentid',"R")
+                        ->where('checks',"Y")
+                        ->get();
+            foreach ($rentlogs as $value) {
+                if ($nums == $value->nums){
+                    //表示正常記錄，直接還杯
+                    DB::table('rentlogs')->where('cusid',$rent_storeid)
+                                 ->where('storeid',$rent_storeid)
+                                 ->where('cusphone',$rent_storeid)
+                                 ->where('nums',$nums)
+                                 ->where('rentid',"R")
+                                 ->update(['rentid' => "B",'checks' => "B",'backtimes' => $timestamp,'backstoreid' => trim($back_storeid[0]->storeid)]);
                     //在沒有確認功能時，直接處理庫存問題
-                    DB::table('storescups')->where('storeid',$storeid)->increment('pullcup',$value->nums);
+                    DB::table('storescups')->where('storeid',trim($back_storeid[0]->storeid))->increment('pullcup',$nums);
 
-                    $nums = $nums - $value->nums;
+                    $msg = array(["result" => "店家代還杯成功！"]);
+                    return json_encode($msg,JSON_PRETTY_PRINT);
                 } else {
-                    //無法還掉的記錄，拆分成一筆還，一筆借的狀況
-                    if ($nums > 0){
+                    if ($nums > $value->nums){
+                        //表示杯數太多，先正常還，再處理不足的杯數
+                        /*
+                        DB::table('rentlogs')->where('cusid',$rent_storeid)
+                                 ->where('storeid',$rent_storeid)
+                                 ->where('cusphone',$rent_storeid)
+                                 ->where('nums',$nums)
+                                 ->where('rentid',"R")
+                                 ->update(['rentid' => "B",'checks' => "B",'backtimes' => $timestamp,'backstoreid' => trim($back_storeid[0]->storeid)]);
+                        */
+                        DB::table('rentlogs')->where('id',$value->id)
+                                 ->update(['rentid' => "B",'checks' => "B",'backtimes' => $timestamp,'backstoreid' => trim($back_storeid[0]->storeid)]);
+
+                                 //在沒有確認功能時，直接處理庫存問題
+                        DB::table('storescups')->where('storeid',trim($back_storeid[0]->storeid))->increment('pullcup',$nums);
+
+                        $nums = $nums - $value->nums;
+
+                        
+                    } elseif (($nums < $value->nums) and ($nums > 0)){
+                        //拆分還
                         $tmp_result = DB::table('rentlogs')->where('id',$value->id)->get();
 
                         DB::table('rentlogs')->where('id',$value->id)
@@ -285,11 +198,11 @@ class rent extends Model
                                 'nums' => $nums,
                                 'backtimes' => $timestamp,
                                 'comments' => "拆分先還",
-                                'backstoreid' => $storeid,
+                                'backstoreid' => trim($back_storeid[0]->storeid),
                                 'checks' => "B"]);
 
                         //在沒有確認功能時，直接處理庫存問題
-                        DB::table('storescups')->where('storeid',$storeid)->increment('pullcup',$nums);
+                        DB::table('storescups')->where('storeid',trim($back_storeid[0]->storeid))->increment('pullcup',$nums);
 
                         //$tmp_result = json_decode($tmp_result);
                         foreach ($tmp_result as $value) {
@@ -310,7 +223,17 @@ class rent extends Model
                     }
                 }
             }
-            $msg = array(["result" => "還杯結束！"]);
+        if ($nums > 0){
+            //表示多還杯，需要記錄
+            $result = $this->writeAberrantlogs(trim($back_storeid[0]->storeid),$nums,$rent_storeid,$timestamp,$rent_storeid,"多還杯");
+            return $result;
+        }
+
+
+            $msg = array(["result" => "店家代還杯成功！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } catch(QueryException $e){
+            $msg = array(["error" => "店家代還杯失敗！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
     }
@@ -338,5 +261,4 @@ class rent extends Model
         $msg = array(["result" => "己列入異常記錄表內"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
-
 }

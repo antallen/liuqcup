@@ -772,6 +772,9 @@ HOST: https://liuqapi.tdhome.tw/api
 + 店家收送杯確認記錄列表
 + 店家收送杯記錄確認功能
 + 店家收送杯記錄列表
++ 店家代借代還杯功能
+  + 店家可代遊客借杯
+  + 店家可代遊客還杯
 
 ## 店家登入功能 [/rent/v1/stores/login{?agentid,agentauth}]
 + 店家管理人員登入
@@ -1070,6 +1073,36 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
+## 店家代借代還杯功能 [/rent/v1/stores/rentagent{?token,storeid,nums,action}]
++ 店家代借代還杯功能
+  + 店家可代遊客借杯
+  + 店家可代遊客還杯
+
+### 店家代借代還杯功能 [POST]
+
++ Parameters
+
+    + token: ABC123 (required, string)
+      + 店家管理人員的 key
+    + storeid: ABC123 (required, string)
+      + 店家代號
+    + nums: 30 (required, string)
+      + 借還杯數量
+    + action: A01 (required, string)
+      + A01: 借杯
+      + B02: 還杯
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "result": "success"
+                }
+            ]
 
 # Group 遊客資料與記錄管理
 
