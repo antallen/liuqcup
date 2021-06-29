@@ -19,7 +19,7 @@ class rent extends Model
 
             if (isset($source['token']) and isset($source['cusphone'])){
                 $auth =  DB::table('storesagentids')->where('token',trim($source['token']))->get();
-                return $auth;
+                return $auth[9]->storeid;
                 if ($auth[0]->storeid == trim($source['storeid'])){
                     return "Success";
                 } else {
