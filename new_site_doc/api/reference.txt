@@ -250,6 +250,10 @@ PARTITION `year2029` VALUES LESS THAN (2030)
 
 show create table rentlogs;
 
+統計資訊
+select storeid, sum(nums) from rentlogs where rentid = "B" and eventtimes between '2021-06-01 00:00:00' and '2021-07-01 00:00:00' group by storeid;
+
+
 網站設定
 semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/storage(/.*)?'
 semanage fcontext -a -t httpd_sys_rw_content_t '/usr/share/nginx/html/liuqcup/bootstrap/cache(/.*)?'

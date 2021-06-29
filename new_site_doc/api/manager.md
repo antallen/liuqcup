@@ -1330,6 +1330,9 @@ HOST: https://liuqapi.tdhome.tw/api
 + 收送杯記錄列表(總管理處使用)
   + 依 全部 / 各店家顯示記錄
   + 依時間長短顯示(每日/每周/每月)
++ 店家借還杯統計記錄(日/周/月/年)
+  + 以店家為主要統計對象
+  + 輸出 CSV 檔做為存檔記錄
 
 ## 即時顯示目前借還杯數量狀況 [/records/v1/stores/rentcuplist{?token,storeid}]
 + 即時顯示目前借還杯數狀況
@@ -1475,6 +1478,33 @@ HOST: https://liuqapi.tdhome.tw/api
                 {
                     "可借杯數": 0,
                     "待收杯數": 0
+                }
+            ]
+
+## 店家借還杯統計記錄 [/records/v1/stores/rent/statics{?token,timea,timeb}]
+
+### 店家借還杯統計記錄 [GET]
+
++ Parameters
+
+    + token: "ABC123" (required, string)
+      - 總管理處人員的 key
+    + timea: "2021_05_01" (required, datetime)
+      - 統計的起始時間，以日為單位 
+    + timeb: "2021_06_01" (required, datetime)
+      - 統計的終了時間，以日為單位
+
++ Response 200 (application/json)
+
+    + Headers
+
+    + Body
+
+            [
+                {
+                    "storeid": 13354477,
+                    "storename": 好棒棒,
+                    "nums": 12
                 }
             ]
 
