@@ -57,7 +57,7 @@ class rent extends Model
         //判斷店家可否借杯
         $allow_rent = DB::table('storesfunctions')->where('storeid',$storeid)->where('funcid',"2")->count();
         if ($allow_rent <= 0){
-            $msg = array(["error" => "該店家庫存量不足，無法借杯！"]);
+            $msg = array(["error" => "該店家無借杯功能，無法借杯！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
@@ -66,7 +66,7 @@ class rent extends Model
         //判斷店家庫存是否足夠
         $pushcup = DB::table('storescups')->where('storeid',$storeid)->get('pushcup');
         if (intval($pushcup[0]->pushcup) < intval($nums)){
-            $msg = array(["error" => "該店家無法借杯！"]);
+            $msg = array(["error" => "該店家庫存不足，無法借杯！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
