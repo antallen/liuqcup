@@ -62,7 +62,10 @@ class rent extends Model
         }
 
         $nums = intval(trim($source['nums']));
-
+        if ($nums == 0){
+            $msg = array(["error" => "有趣的客人，借伶杯去玩嗎？"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
         //判斷店家庫存是否足夠
         $pushcup = DB::table('storescups')->where('storeid',$storeid)->get('pushcup');
         if (intval($pushcup[0]->pushcup) < intval($nums)){
@@ -83,7 +86,7 @@ class rent extends Model
         if (intval($rent_nums_old) >= 5){
             $msg = array(["error" => "該手機號碼己借超過 5 杯，無法再借杯！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
-        } elseif (($nums + intval($rent_nums_old)) >= 5) {
+        } elseif (($nums + intval($rent_nums_old)) > 5) {
             $msg = array(["error" => "該手機號碼只能再借".(5-intval($rent_nums_old))."杯，請重新操作！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
