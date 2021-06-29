@@ -17,9 +17,8 @@ class rent extends Model
     public function token($source){
         //確認有店家 token 以及客戶的手機號碼，未來需要增加「店家專屬 QRcode」判斷！
 
-            if (isset($source['token']) and isset($source['cusphone'])){
+            if (isset($source['token']) and isset($source['cusphone']) and isset($source['storeid'])){
                 $auth =  DB::table('storesagentids')->where('token',trim($source['token']))->get();
-                return $auth[0]->storeid;
                 if ($auth[0]->storeid == trim($source['storeid'])){
                     return "Success";
                 } else {
