@@ -75,6 +75,19 @@ class rent extends Model
             $msg = array(["error" => "Phone Number is Wrong!"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
+        //判斷借杯是否超過５杯
+        $rent_nums_old = DB::table('rentlogs')
+                             ->where('cusphone', '=' ,$cusphone)
+                             ->where('rentid','=',"R")
+                             ->where('checks','=',"Y")->sum('nums');
+        if (intval($rent_nums_old) >= 5){
+            $msg = array(["error" => "該手機號碼己借超過 5 杯，無法再借杯！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        } elseif (($nums + intval($rent_nums_old)) >= 5) {
+            $msg = array(["error" => "該手機號碼只能再借".(5-intval($rent_nums_old))."杯，請重新操作！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
+        }
+
         /* 新版本不用輸入密碼
         $password = trim($source['password']);
         */
