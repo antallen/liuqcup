@@ -27,6 +27,7 @@ use App\Http\Controllers\Record\rentlogsController;
 use App\Http\Controllers\Record\rentcupController;
 use App\Http\Controllers\Stock\stocksController;
 use App\Http\Controllers\Lottos\lottosController;
+use App\Http\Controllers\Statics\staticsController;
 use SebastianBergmann\CodeCoverage\CrapIndex;
 
 Route::apiResource('manager/accounts/v1/auths',authController::class)->only('store');
@@ -71,6 +72,7 @@ Route::apiResource('news/v1/news/create',addnewsController::class)->only('store'
 Route::apiResource('lottos/v1/news',lottosController::class);
 Route::apiResource('manager/v1/stores/social',socialController::class);
 Route::apiResource('rent/v1/stores/rentagent',rentagentController::class);
+Route::apiResource('rent/v1/stores/statics',staticsController::class);
 //Route::apiResource('storage/news/{file_name}',downloadnewsController::class)->only('store');
 /*
 |--------------------------------------------------------------------------

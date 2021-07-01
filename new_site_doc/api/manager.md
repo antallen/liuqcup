@@ -1481,18 +1481,18 @@ HOST: https://liuqapi.tdhome.tw/api
                 }
             ]
 
-## 店家借還杯統計記錄 [/records/v1/stores/rent/statics{?token,timea,timeb}]
+## 店家借還杯統計記錄(報表用) [/rent/v1/stores/statics{?token,timea,timeb}]
 
-### 店家借還杯統計記錄 [GET]
+### 店家借還杯統計記錄(報表用) [GET]
 
 + Parameters
 
     + token: "ABC123" (required, string)
       - 總管理處人員的 key
-    + timea: "2021_05_01" (required, datetime)
-      - 統計的起始時間，以日為單位 
-    + timeb: "2021_06_01" (required, datetime)
-      - 統計的終了時間，以日為單位
+    + timea: "2021" (required, datetime)
+      - 年份時間，以西洋年為主
+    + timeb: "06" (required, datetime)
+      - 月份時間，以雙位數為主
 
 + Response 200 (application/json)
 
