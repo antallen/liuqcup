@@ -93,6 +93,7 @@ class customers extends Model
             //$detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->get('cusid');
             $detect = DB::table('customers')->where('cusphone','like','%'.strval(trim($source['cusphone'])).'%')->count();
             //if ($detect == "[]"){
+            return $detect;
             if ($detect < 1){
                 //遊客 ID ，預設使用時間編號
               do {
