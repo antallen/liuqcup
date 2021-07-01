@@ -267,8 +267,6 @@ class  rentcups extends Model
                     $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
                     $totals = array();
                     $nums = DB::table('rentlogs')
-                                ->where('rentid',"R")
-                                ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
                     $totals['rentid'] = "己借杯數量";
@@ -289,11 +287,11 @@ class  rentcups extends Model
 
                     //異常資料
                     $nums = DB::table('rentlogs')
-                                ->where('rentid',"B")
-                                ->where('comments',"異常")
+                                ->where('rentid',"R")
+                                ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                ->count();
-                    $totals['rentid'] = "異常筆數";
+                                ->sum('nums');
+                    $totals['rentid'] = "借杯未還數量";
                     $totals['datetime'] = $dateTimes;
                     $totals['nums'] = intval($nums);
                     array_push($total_datas,$totals);
@@ -311,8 +309,6 @@ class  rentcups extends Model
                     $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
                     $nums = DB::table('rentlogs')
                                 ->where('storeid',strval($storeid))
-                                ->where('rentid',"R")
-                                ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
                         $storename = DB::table('stores')
@@ -347,17 +343,17 @@ class  rentcups extends Model
                         array_push($total_datas,$totals);
                     //$tatols['還杯數量'][$dateTimes][$storeid] = intval($nums);
 
-                    //異常資料
+                    //借杯未還資料
                     $nums = DB::table('rentlogs')
                                 ->where('storeid',strval($storeid))
-                                ->where('rentid',"B")
-                                ->where('comments',"異常")
+                                ->where('rentid',"R")
+                                ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
-                                ->count();
+                                ->sum('nums');
                         $storename = DB::table('stores')
                                 ->select('storename')
                                 ->where('storeid',strval($storeid))->get();
-                        $totals['rentid'] = "異常筆數";
+                        $totals['rentid'] = "借杯未還數量";
                         //$totals['storeid'] = strval($storeid);
                         $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
