@@ -65,8 +65,6 @@ class  rentcupslist extends Model
         $totals = array();
         //目前借杯總數
         $rentcups = DB::table('rentlogs')
-                        ->where('rentid',"R")
-                        ->where('checks',"Y")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日總借杯數'] = intval($rentcups);
@@ -99,8 +97,6 @@ class  rentcupslist extends Model
 
         $rentcups = DB::table('rentlogs')
                         ->where('storeid',$storeid)
-                        ->where('rentid',"R")
-                        ->where('checks',"Y")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日借杯數'] = intval($rentcups);

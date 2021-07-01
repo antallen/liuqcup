@@ -354,7 +354,7 @@ class rent extends Model
                         'cusphone' => $cusphone,
                         'rentlogid' => $key]);
         }
-        $msg = array(["result" => "己列入異常記錄表內"]);
+        $msg = array(["result" => "多還杯！多出的杯數己列入異常記錄表內"]);
         return json_encode($msg,JSON_PRETTY_PRINT);
     }
 
