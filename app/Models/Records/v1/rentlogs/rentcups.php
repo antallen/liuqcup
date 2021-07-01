@@ -307,6 +307,7 @@ class  rentcups extends Model
                     $totals = array();
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
                     $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
+                    return $nextTimes;
                     $nums = DB::table('rentlogs')
                                 ->where('storeid',strval($storeid))
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
