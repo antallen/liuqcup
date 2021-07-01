@@ -213,19 +213,22 @@ class storesController extends Controller
             //return $auths;
             if ($auths == ("Manager" or "Agent")){
                 $results = $querys->queryStores($request->all());
-                $funcresults = DB::table('storesfunctions')->where('storeid',trim($results[0]->storeid))->get();
-                $results[0]->funid1 = null;
-                $results[0]->funid2 = null;
-                foreach ($funcresults as $func){
-                    switch (strval(trim($func->funcid))){
-                        case "1":
-                            $results[0]->funid2= "還杯";
-                            break;
-                        case "2":
-                            $results[0]->funid1= "借杯";
-                            break;
+                foreach ($results as $value) {
+                    $funcresults = DB::table('storesfunctions')->where('storeid',trim($value->storeid))->get();
+                    $value->funid1 = null;
+                    $value->funid2 = null;
+                    foreach ($funcresults as $func){
+                        switch (strval(trim($func->funcid))){
+                            case "1":
+                                $value->funid2= "還杯";
+                                break;
+                            case "2":
+                                $value->funid1= "借杯";
+                                break;
+                        }
                     }
                 }
+
                 return $results;
             } else {
                 $msg = array(["error" => "Create Failed"]);
