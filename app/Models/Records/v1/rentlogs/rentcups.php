@@ -119,8 +119,6 @@ class  rentcups extends Model
                     foreach ($hello as $value) { //->select(DB::raw('sum(nums) as nums'))
                         $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
-                                    ->where('rentid',"R")
-                                    ->where('checks',"Y")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->sum('nums');
                         $storename = DB::table('stores')
@@ -153,18 +151,18 @@ class  rentcups extends Model
                         //$tatols['還杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
                         array_push($total_datas,$totals);
                     }
-                    //異常資料
+                    //借杯未還資料
                     foreach ($hello as $value) {
                         $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
-                                    ->where('rentid',"B")
-                                    ->where('comments',"異常")
+                                    ->where('rentid',"R")
+                                    ->where('checks',"Y")
                                     ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                     ->count();
                         $storename = DB::table('stores')
                                     ->select('storename')
                                     ->where('storeid',$value->storeid)->get();
-                        $totals['rentid'] = "異常筆數";
+                        $totals['rentid'] = "借杯未還數量";
                         //$totals['storeid'] = strval($value->storeid);
                         $totals['storeid'] = strval($storename[0]->storename);
                         $totals['datetime'] = $dateTimes;
@@ -307,7 +305,7 @@ class  rentcups extends Model
                     $totals = array();
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
                     $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
-                    return $nextTimes;
+                    //return $nextTimes;
                     $nums = DB::table('rentlogs')
                                 ->where('storeid',strval($storeid))
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
