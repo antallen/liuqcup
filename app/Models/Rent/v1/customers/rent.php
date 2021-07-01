@@ -197,7 +197,7 @@ class rent extends Model
         //應還杯的借杯記錄
         $cus2 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
+                ->where('eventtimes',">",$timestamp)
                 ->where('checks',"Y")
                 ->where('rentid',"R")
                 ->orderBy('nums')
