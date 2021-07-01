@@ -167,19 +167,21 @@ class rent extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
         }
 
-        //取出最近 30 天的還杯記錄
+        //取出最近 30 天的借杯記錄
         $cus = DB::table('rentlogs')
             ->where('cusphone','like','%'.$cusphone.'%')
             ->where('eventtimes','>',$timestamp)
-            ->where('checks',"B")
-            ->where('rentid',"B")
-            ->orderByDesc('backtimes')
+            ->where('checks',"Y")
+            ->where('rentid',"R")
+            ->orderBy('backtimes')
             ->first();
 
         //若沒有，則是取出最近 30 天的借杯記錄
         if (($cus == "[]") or (is_null($cus))){
-            $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
-            return $result;
+            //$result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
+            //return $result;
+            $msg = array(["Error" => "三十天內無借杯記錄！"]);
+            return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
         //若有，從上次還杯的時間點到現在時間，取出借杯資料
             $timestamp = $cus->backtimes;
@@ -235,7 +237,7 @@ class rent extends Model
                 $msg = array(["Error" => "店家未處理借杯確認，無法還杯，請洽店家或管理人員！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             } elseif ($cus2_count == 0) {
-                $msg = array(["Error" => "請勿重複要求還杯！"]);
+                $msg = array(["Error" => "無借杯記錄！"]);
                 return json_encode($msg,JSON_PRETTY_PRINT);
             }
         }
