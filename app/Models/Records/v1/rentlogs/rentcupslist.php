@@ -78,14 +78,13 @@ class  rentcupslist extends Model
                         ->sum('nums');
         $totals['今日總還杯數'] = intval($backcups);
 
-        //今日異常筆數
+        //今日未還杯筆數
         $abcups = DB::table('rentlogs')
-                        ->where('rentid',"B")
+                        ->where('rentid',"R")
                         ->where('checks',"Y")
-                        ->where('comments',"異常")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->count();
-        $totals['今日總異常筆數'] = intval($abcups);
+        $totals['今日未還杯筆數'] = intval($abcups);
 
         return json_encode($totals,JSON_PRETTY_PRINT);
 
@@ -102,7 +101,6 @@ class  rentcupslist extends Model
         $totals['今日借杯數'] = intval($rentcups);
 
         //目前還杯數
-
         $backcups = DB::table('rentlogs')
                         ->where('storeid',$storeid)
                         ->where('rentid',"B")
@@ -111,15 +109,14 @@ class  rentcupslist extends Model
                         ->sum('nums');
         $totals['今日還杯數'] = intval($backcups);
 
-        //今日異常筆數
-        $abcups = DB::table('rentlogs')
+        //今日未還杯筆數
+        $abcups = DB::table('aberrantlogs')
                         ->where('storeid',$storeid)
-                        ->where('rentid',"B")
+                        ->where('rentid',"R")
                         ->where('checks',"Y")
-                        ->where('comments',"異常")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->count();
-        $totals['今日異常筆數'] = intval($abcups);
+        $totals['今日未還杯筆數'] = intval($abcups);
 
         return json_encode($totals,JSON_PRETTY_PRINT);
     }
