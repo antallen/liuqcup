@@ -173,7 +173,7 @@ class rent extends Model
             ->where('eventtimes','>',$timestamp)
             ->where('checks',"Y")
             ->where('rentid',"R")
-            ->orderBy('backtimes')
+            ->orderBy('eventtimes')
             ->first();
 
         //若沒有，則是取出最近 30 天的借杯記錄
