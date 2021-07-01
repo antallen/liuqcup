@@ -91,7 +91,7 @@ class customers extends Model
         } else {
             //判斷手機號碼是否己經註冊過了
             //$detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->get('cusid');
-            $detect = DB::table('customers')->where('cusphone','like',trim($source['cusphone']))->count();
+            $detect = DB::table('customers')->where('cusphone','like','%'.strval(trim($source['cusphone'])).'%')->count();
             //if ($detect == "[]"){
             if ($detect < 1){
                 //遊客 ID ，預設使用時間編號
