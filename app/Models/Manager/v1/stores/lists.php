@@ -41,6 +41,7 @@ class lists extends Model
         if ($classes == "ALL"){
             $stores = DB::table('stores')
                         ->select('storeid','storename','phoneno','address','lock')
+                        ->where('lock','N')
                         ->get();
             return $stores;
         } else {
