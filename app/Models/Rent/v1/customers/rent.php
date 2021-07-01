@@ -198,7 +198,7 @@ class rent extends Model
         return $timestamp;
         $cus2 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
+                ->where('eventtimes','>=',$timestamp)
                 ->where('checks',"Y")
                 ->where('rentid',"R")
                 ->orderBy('nums')
@@ -207,7 +207,7 @@ class rent extends Model
         //應還杯的資料筆數
         $cus2test = DB::table('rentlogs')
                     ->where('cusphone','like','%'.$cusphone.'%')
-                    ->where('eventtimes','>',$timestamp)
+                    ->where('eventtimes','>=',$timestamp)
                     ->where('checks',"Y")
                     ->where('rentid',"R")
                     ->orderByDesc('eventtimes')
@@ -215,7 +215,7 @@ class rent extends Model
         //應還杯的杯數
         $cus2_count = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
+                ->where('eventtimes','>=',$timestamp)
                 ->where('checks',"Y")
                 ->where('rentid',"R")
                 ->orderByDesc('eventtimes')
@@ -228,7 +228,7 @@ class rent extends Model
 
             $cus3 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes','>',$timestamp)
+                ->where('eventtimes','>=',$timestamp)
                 ->where('checks',"N")
                 ->where('rentid',"R")
                 ->orderByDesc('eventtimes')
