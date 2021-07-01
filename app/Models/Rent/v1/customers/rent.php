@@ -195,7 +195,7 @@ class rent extends Model
     //還杯流程
     public function rentCups($cus,$cusphone,$timestamp,$nums,$storeid){
         //應還杯的借杯記錄
-        return $timestamp;
+        //return $timestamp;
         $cus2 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
                 ->where('eventtimes','>=',$timestamp)
