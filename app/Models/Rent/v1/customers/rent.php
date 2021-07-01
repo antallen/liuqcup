@@ -184,7 +184,7 @@ class rent extends Model
             return json_encode($msg,JSON_PRETTY_PRINT);
         } else {
         //若有，從上次還杯的時間點到現在時間，取出借杯資料
-            $timestamp = $cus->backtimes;
+            $timestamp = $cus->eventtimes;
             $result = $this->rentCups($cus,$cusphone,$timestamp,$nums,$storeid);
             return $result;
         }
@@ -195,10 +195,9 @@ class rent extends Model
     //還杯流程
     public function rentCups($cus,$cusphone,$timestamp,$nums,$storeid){
         //應還杯的借杯記錄
-        return $timestamp;
         $cus2 = DB::table('rentlogs')
                 ->where('cusphone','like','%'.$cusphone.'%')
-                ->where('eventtimes',">",$timestamp)
+                ->where('eventtimes','>',$timestamp)
                 ->where('checks',"Y")
                 ->where('rentid',"R")
                 ->orderBy('nums')
