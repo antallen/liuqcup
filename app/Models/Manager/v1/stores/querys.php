@@ -47,12 +47,15 @@ class querys extends Model
                             ->join('storesclass','stores.storeid','=','storesclass.storeid')
                             ->join('classes','storesclass.classid','=','classes.classid')
                             ->select('stores.storeid','stores.storename','stores.address','stores.phoneno','stores.lock','classes.classname')
-                            ->where('stores.storename','like','%'.$keyword.'%');
+                            ->where('stores.storename','like','%'.$keyword.'%')
+                            ->where('stores.lock','N');
             $result1 = DB::table('stores')
                             ->join('storesclass','stores.storeid','=','storesclass.storeid')
                             ->join('classes','storesclass.classid','=','classes.classid')
                             ->select('stores.storeid','stores.storename','stores.address','stores.phoneno','stores.lock','classes.classname')
-                            ->where('stores.address','like','%'.$keyword.'%')->union($result)
+                            ->where('stores.address','like','%'.$keyword.'%')
+                            ->where('stores.lock','N')
+                            ->union($result)
                             ->get();
             return $result1;
         }
