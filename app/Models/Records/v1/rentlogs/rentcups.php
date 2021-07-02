@@ -139,6 +139,7 @@ class  rentcups extends Model
                         $results_rent = DB::table('rentlogs')
                                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
                                             ->select('rentlogs.storeid','stores.storename',DB::raw('sum(nums) as nums'))
+                                            ->groupBy('rentlogs.storeid')
                                             ->get();
                         foreach ($results_rent as $value) {
                             $totals['rentid'] = "己借杯數量";
