@@ -231,6 +231,19 @@
 |rentlogid|varchar(200)|NULL|借杯記錄號碼|
 
 
+### 統計暫時存放記錄表 temrentlogs
+
++ 暫時存放的統計記錄
+
+|欄位名稱|資料類型規格|設定參數|說明|
+|:-------|:-----------|:-------|:---|
+|id|INT|PRI|流水序號|
+|storeid|char(100)|NOT NULL,UNIQUE|店家編號|
+|storename|char(150)|NOT NULL|店家名稱|
+|rentnums|int|NOT NULL,Default(0)|借杯數量|
+|backnums|int|NOT NULL,Default(0)|還杯數量|
+|notbacknums|int|NOT NULL,Default(0)|未還杯數量|
+
 <HR>
 <BR>
 

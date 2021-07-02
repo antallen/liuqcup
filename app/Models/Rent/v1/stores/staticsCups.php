@@ -27,10 +27,52 @@ class staticsCups extends Model
     public function generateCSV($source){
         $start_time = date("Y-m-d 00:00:00",strtotime(trim($source['timea'])));
         $end_time = date("Y-m-d 00:00:00",strtotime(trim($source['timeb'])." +1 day"));
-        $stores_result = DB::table('stores')->get();
-        foreach ($stores_result as $value) {
-            # code...
+        //先輸入店家資料
+        $stores_logs = DB::table('stores')
+                            ->select('storeid','storename')
+                            ->where('lock','N')
+                            ->get();
+        foreach ($stores_logs as $value) {
+            DB::table('temrentlogs')->insert(['storeid' => $value->storeid,'storename' => $value->storename]);
         }
-        return $end_time;
+        //借杯記錄統計
+        $stores_rent = DB::table('rentlogs')
+                        ->select('storeid',DB::raw('sum(nums) as nums'))
+                        ->whereBetween('eventtimes',[$start_time,$end_time])
+                        ->groupBy(['storeid'])
+                        ->orderBy('storeid')
+                        ->get();
+        foreach ($stores_rent as $value) {
+            DB::table('temrentlogs')
+                ->where('storeid',$value->storeid)
+                ->update(['rentnums' => $value->nums]);
+        }
+        //還杯記錄統計
+        $stores_back = DB::table('rentlogs')
+                        ->select('backstoreid',DB::raw('sum(nums) as nums'))
+                        ->where('rentid',"B")
+                        ->whereBetween('backtimes',[$start_time,$end_time])
+                        ->groupBy(['backstoreid'])
+                        ->orderBy('storeid')
+                        ->get();
+        foreach ($stores_back as $value) {
+            DB::table('temrentlogs')
+                ->where('storeid',$value->backstoreid)
+                ->update(['backnums' => $value->nums]);
+        }
+        //未還杯記錄統計
+        $stores_noback = DB::table('rentlogs')
+                        ->select('storeid',DB::raw('sum(nums) as nums'))
+                        ->where('rentid',"R")
+                        ->whereBetween('eventtimes',[$start_time,$end_time])
+                        ->groupBy(['storeid'])
+                        ->orderBy('storeid')
+                        ->get();
+        foreach ($stores_noback as $value) {
+            DB::table('temrentlogs')
+                ->where('storeid',$value->storeid)
+                ->update(['notbacknums' => $value->nums]);
+        }
+        return "complete";
     }
 }
