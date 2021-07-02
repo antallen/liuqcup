@@ -102,15 +102,13 @@ class  rentcupslist extends Model
 
         //目前還杯數
         $backcups = DB::table('rentlogs')
-                        ->where('storeid',$storeid)
-                        ->where('rentid',"B")
-                        ->where('checks',"B")
+                        ->where('backstoreid',$storeid)
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
                         ->sum('nums');
         $totals['今日還杯數'] = intval($backcups);
 
         //今日未還杯筆數
-        $abcups = DB::table('aberrantlogs')
+        $abcups = DB::table('rentlogs')
                         ->where('storeid',$storeid)
                         ->where('rentid',"R")
                         ->where('checks',"Y")
