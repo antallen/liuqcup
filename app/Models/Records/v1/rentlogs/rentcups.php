@@ -104,14 +104,14 @@ class  rentcups extends Model
             //總管理處看的資料！
             case "A000000001":
                 //每日統計
-
+                /* 舊的
                 $storeids = DB::table('rentlogs')
                             ->select('storeid')
                             ->whereBetween('eventtimes',[$starttime,$nowtime])
                             ->groupBy('storeid')
                             ->get();
                 $hello = json_decode($storeids);
-
+                */
                 $total_datas = array();
                 while ($a <= $days) {
                     //每日借杯資料
@@ -311,7 +311,7 @@ class  rentcups extends Model
                     $nums = DB::table('rentlogs')
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
-                    $totals['rentid'] = "己借杯數量";
+                    $totals['rentid'] = "己借杯總數量";
                     $totals['datetime'] = $dateTimes;
                     $totals['nums'] = intval($nums);
                     array_push($total_datas,$totals);
@@ -322,7 +322,7 @@ class  rentcups extends Model
                                 ->where('checks',"B")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
-                    $totals['rentid'] = "己還杯數量";
+                    $totals['rentid'] = "己還杯總數量";
                     $totals['datetime'] = $dateTimes;
                     $totals['nums'] = intval($nums);
                     array_push($total_datas,$totals);
@@ -333,7 +333,7 @@ class  rentcups extends Model
                                 ->where('checks',"Y")
                                 ->whereBetween('eventtimes',[$dateTimes,$nextTimes])
                                 ->sum('nums');
-                    $totals['rentid'] = "借杯未還數量";
+                    $totals['rentid'] = "借杯未還總數量";
                     $totals['datetime'] = $dateTimes;
                     $totals['nums'] = intval($nums);
                     array_push($total_datas,$totals);
