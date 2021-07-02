@@ -150,6 +150,7 @@ class  rentcups extends Model
                             array_push($total_datas,$totals);
                         }
                     //己還杯資料
+                    /* 舊的
                     foreach ($hello as $value) {
                         $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
@@ -168,6 +169,20 @@ class  rentcups extends Model
                         //$tatols['還杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
                         array_push($total_datas,$totals);
                     }
+                    */
+                        $results_rent = DB::table('rentlogs')
+                                            ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
+                                            ->select('rentlogs.backstoreid','stores.storename',DB::raw('sum(rentlogs.nums) as nums'))
+                                            ->whereBetween('rentlogs.eventtimes',[$dateTimes,$nextTimes])
+                                            ->groupBy(['rentlogs.backstoreid','stores.storename'])
+                                            ->get();
+                        foreach ($results_rent as $value) {
+                            $totals['rentid'] = "己還杯數量";
+                            $totals['storeid'] = strval($value->storename);
+                            $totals['datetime'] = $dateTimes;
+                            $totals['nums'] = $value->nums;
+                            array_push($total_datas,$totals);
+                        }
                     //借杯未還資料
                     foreach ($hello as $value) {
                         $nums = DB::table('rentlogs')
