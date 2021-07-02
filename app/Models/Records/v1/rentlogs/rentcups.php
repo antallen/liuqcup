@@ -173,6 +173,7 @@ class  rentcups extends Model
                         $results_rent = DB::table('rentlogs')
                                             ->leftJoin('stores','rentlogs.backstoreid','=','stores.storeid')
                                             ->select('rentlogs.backstoreid','stores.storename',DB::raw('sum(rentlogs.nums) as nums'))
+                                            ->where('rentlogs.rentid',"B")
                                             ->whereBetween('rentlogs.eventtimes',[$dateTimes,$nextTimes])
                                             ->groupBy(['rentlogs.backstoreid','stores.storename'])
                                             ->get();
