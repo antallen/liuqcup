@@ -138,12 +138,13 @@ class  rentcups extends Model
                     */
                         $results_rent = DB::table('rentlogs')
                                             ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
-                                            ->select('rentlogs.storeid','stores.storename',DB::raw('sum(nums) as nums'))
-                                            ->groupBy('rentlogs.storeid')
+                                            ->select('rentlogs.storeid','stores.storename',DB::raw('sum(rentlogs.nums) as nums'))
+                                            ->whereBetween('rentlogs.eventtimes',[$dateTimes,$nextTimes])
+                                            ->groupBy(['rentlogs.storeid','stores.storename'])
                                             ->get();
                         foreach ($results_rent as $value) {
                             $totals['rentid'] = "己借杯數量";
-                            $totals['storeid'] = strval($value->stores.storename);
+                            $totals['storeid'] = strval($value->storename);
                             $totals['datetime'] = $dateTimes;
                             $totals['nums'] = $value->nums;
                             array_push($total_datas,$totals);
