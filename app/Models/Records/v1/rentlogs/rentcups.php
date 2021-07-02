@@ -104,18 +104,21 @@ class  rentcups extends Model
             //總管理處看的資料！
             case "A000000001":
                 //每日統計
+
                 $storeids = DB::table('rentlogs')
                             ->select('storeid')
                             ->whereBetween('eventtimes',[$starttime,$nowtime])
                             ->groupBy('storeid')
                             ->get();
                 $hello = json_decode($storeids);
+
                 $total_datas = array();
                 while ($a <= $days) {
                     //每日借杯資料
                     $dateTimes = date('Y-m-d',strtotime('-'.$a.' days'));
                     $nextTimes = date('Y-m-d',strtotime('-'.strval(intval($a)-1).' days'));
                     $totals = array();
+                    /*舊的
                     foreach ($hello as $value) { //->select(DB::raw('sum(nums) as nums'))
                         $nums = DB::table('rentlogs')
                                     ->where('storeid',strval($value->storeid))
@@ -132,6 +135,18 @@ class  rentcups extends Model
                         //$tatols['借杯數量'][$dateTimes][strval($value->storeid)] = intval($nums);
                         array_push($total_datas,$totals);
                     }
+                    */
+                        $results_rent = DB::table('rentlogs')
+                                            ->leftJoin('stores','rentlogs.storeid','=','stores.storeid')
+                                            ->select('rentlogs.storeid','stores.storename',DB::raw('sum(nums) as nums'))
+                                            ->get();
+                        foreach ($results_rent as $value) {
+                            $totals['rentid'] = "己借杯數量";
+                            $totals['storeid'] = strval($value->stores.storename);
+                            $totals['datetime'] = $dateTimes;
+                            $totals['nums'] = $value->nums;
+                            array_push($total_datas,$totals);
+                        }
                     //己還杯資料
                     foreach ($hello as $value) {
                         $nums = DB::table('rentlogs')
@@ -279,7 +294,7 @@ class  rentcups extends Model
                     $totals['nums'] = intval($nums);
                     array_push($total_datas,$totals);
 
-                    //異常資料
+                    //未還杯資料
                     $nums = DB::table('rentlogs')
                                 ->where('rentid',"R")
                                 ->where('checks',"Y")
