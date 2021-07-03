@@ -83,8 +83,8 @@ class  rentcupslist extends Model
                         ->where('rentid',"R")
                         ->where('checks',"Y")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
-                        ->count();
-        $totals['今日未還杯筆數'] = intval($abcups);
+                        ->sum('nums');
+        $totals['今日未還杯數'] = intval($abcups);
 
         return json_encode($totals,JSON_PRETTY_PRINT);
 
@@ -113,8 +113,8 @@ class  rentcupslist extends Model
                         ->where('rentid',"R")
                         ->where('checks',"Y")
                         ->whereBetween('eventtimes',[$timestamp,$nexttime])
-                        ->count();
-        $totals['今日未還杯筆數'] = intval($abcups);
+                        ->sum('nums');
+        $totals['今日未還杯數'] = intval($abcups);
 
         return json_encode($totals,JSON_PRETTY_PRINT);
     }
