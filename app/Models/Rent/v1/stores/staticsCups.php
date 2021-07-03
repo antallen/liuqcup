@@ -27,13 +27,14 @@ class staticsCups extends Model
     public function generateCSV($source){
         $start_time = date("Y-m-d 00:00:00",strtotime(trim($source['timea'])));
         $end_time = date("Y-m-d 00:00:00",strtotime(trim($source['timeb'])." +1 day"));
+        DB::table('temrentlogs')->truncate();
         //先輸入店家資料
         $stores_logs = DB::table('stores')
                             ->select('storeid','storename')
                             ->where('lock','N')
                             ->get();
         foreach ($stores_logs as $value) {
-            DB::table('temrentlogs')->insert(['storeid' => $value->storeid,'storename' => $value->storename]);
+            DB::table('temrentlogs')->insertOrIgnore(['storeid' => $value->storeid,'storename' => $value->storename]);
         }
         //借杯記錄統計
         $stores_rent = DB::table('rentlogs')
@@ -73,6 +74,8 @@ class staticsCups extends Model
                 ->where('storeid',$value->storeid)
                 ->update(['notbacknums' => $value->nums]);
         }
-        return "complete";
+
+        $statics_results = DB::table('temrentlogs')->get();
+        return $statics_results;
     }
 }
