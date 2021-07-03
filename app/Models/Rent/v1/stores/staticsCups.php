@@ -54,7 +54,7 @@ class staticsCups extends Model
                         ->where('rentid',"B")
                         ->whereBetween('backtimes',[$start_time,$end_time])
                         ->groupBy('backstoreid')
-                        ->orderBy('storeid')
+                        ->orderBy('backstoreid')
                         ->get();
         foreach ($stores_back as $value) {
             DB::table('temrentlogs')
