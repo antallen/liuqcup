@@ -40,7 +40,7 @@ class staticsCups extends Model
         $stores_rent = DB::table('rentlogs')
                         ->select('storeid',DB::raw('sum(nums) as nums'))
                         ->whereBetween('eventtimes',[$start_time,$end_time])
-                        ->groupBy(['storeid'])
+                        ->groupBy('storeid')
                         ->orderBy('storeid')
                         ->get();
         foreach ($stores_rent as $value) {
@@ -53,7 +53,7 @@ class staticsCups extends Model
                         ->select('backstoreid',DB::raw('sum(nums) as nums'))
                         ->where('rentid',"B")
                         ->whereBetween('backtimes',[$start_time,$end_time])
-                        ->groupBy(['backstoreid'])
+                        ->groupBy('backstoreid')
                         ->orderBy('storeid')
                         ->get();
         foreach ($stores_back as $value) {
@@ -66,7 +66,7 @@ class staticsCups extends Model
                         ->select('storeid',DB::raw('sum(nums) as nums'))
                         ->where('rentid',"R")
                         ->whereBetween('eventtimes',[$start_time,$end_time])
-                        ->groupBy(['storeid'])
+                        ->groupBy('storeid')
                         ->orderBy('storeid')
                         ->get();
         foreach ($stores_noback as $value) {
