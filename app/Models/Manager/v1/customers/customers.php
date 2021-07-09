@@ -228,7 +228,7 @@ class customers extends Model
             $updata['lock'] = trim($source['lock']);
         }
         try {
-            DB::table('customers')->where('id',intval(trim($source['id'])))->update($updata);
+            DB::table('customers')->where('cusid',intval(trim($source['cusid'])))->update($updata);
             $msg = array(["result" => "更新成功！"]);
             return json_encode($msg,JSON_PRETTY_PRINT);
         } catch (QueryException $e){
